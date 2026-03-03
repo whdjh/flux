@@ -3,8 +3,27 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "echo 'TODO: setup Next.js'",
-    "build": "echo 'TODO: setup Next.js'",
-    "lint": "echo 'TODO: setup linter'"
+    "dev": "next dev",
+    "build": "next build",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@flux/api-client": "workspace:^",
+    "@flux/editor-core": "workspace:^",
+    "@flux/shared": "workspace:^",
+    "@flux/store": "workspace:^",
+    "@flux/ui": "workspace:^",
+    "next": "^16.1.6",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.2.1",
+    "@types/node": "^25.3.3",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "postcss": "^8.5.8",
+    "tailwindcss": "^4.2.1",
+    "typescript": "^5.9.3"
   }
 }

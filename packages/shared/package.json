@@ -7,5 +7,8 @@
   "scripts": {
     "build": "echo 'TODO: setup build'",
     "lint": "echo 'TODO: setup linter'"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
   }
 }

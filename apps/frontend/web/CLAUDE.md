@@ -13,6 +13,7 @@ Tauri WebView와 React 컴포넌트를 공유한다.
 | 상태 관리 | `@flux/store` (Zustand) |
 | 에디터 | `@flux/editor-core` (loro CRDT) |
 | 패키지 매니저 | pnpm (workspace) |
+| 캐싱 | Tanstack Query|
 
 ## 디렉토리
 

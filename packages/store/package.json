@@ -7,5 +7,11 @@
   "scripts": {
     "build": "echo 'TODO: setup build'",
     "lint": "echo 'TODO: setup linter'"
+  },
+  "dependencies": {
+    "zustand": "^5.0.11"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
   }
 }
