@@ -1,0 +1,58 @@
+name: Google Release
+
+on:
+  push:
+    branches:
+      - main
+      - release/*
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  inspect-release:
+    if: github.ref_name == 'main' || startsWith(github.ref_name, 'release/')
+    name: 릴리즈 커밋 확인
+    runs-on: ubuntu-latest
+    outputs:
+      isRelease: ${{ steps.inspect.outputs.result }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: inspect
+        uses: actions/github-script@v7
+        with:
+          result-encoding: string
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const latestCommit = await github.rest.repos.getCommit({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               ref: context.sha
+            });
+
+            const commitMessage = latestCommit.data.commit.message;
+
+            // "chore: release X.Y.Z" 패턴인지 확인 (SemVer)
+            const regex = /chore: release \d+\.\d+\.\d+/;
+            const isRelease = regex.test(commitMessage);
+
+            return isRelease.toString();
+
+  release:
+    name: GitHub Release 생성
+    runs-on: ubuntu-latest
+    needs: inspect-release
+    if: ${{ needs.inspect-release.outputs.isRelease == 'true' }}
+    steps:
+      - uses: googleapis/release-please-action@v3
+        with:
+          command: github-release
+          release-type: node
+          token: ${{ secrets.GITHUB_TOKEN }}
+          monorepo-tags: false
+          skip-github-release: false
+          pull-request-title-pattern: 'chore: release ${version}'
+          default-branch: ${{ github.ref_name }}

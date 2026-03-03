@@ -1,0 +1,202 @@
+# TODO: Swagger/OpenAPI 스펙 URL — JSON 스펙 주소 (예: https://api.example.com/swagger/v1/swagger.json)
+# TODO: 인증 필요 여부 — 해당 URL 접근 시 토큰이 필요한지
+name: Update API Types
+
+on:
+  # schedule:
+  #   - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '22'
+  PR_BRANCH_PREFIX: update-api-types
+
+jobs:
+  update-api:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Git
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Generate API types
+        run: bun run api:generate
+        env:
+          API_SPEC_URL: ${{ secrets.API_SPEC_URL }}
+
+      - name: Format and lint generated files only
+        run: |
+          # 변경된 파일만 가져오기
+          CHANGED_FILES=$(git diff --name-only --diff-filter=AM)
+
+          if [ -n "$CHANGED_FILES" ]; then
+            echo "Changed files:"
+            echo "$CHANGED_FILES"
+            
+            # 변경된 파일 중 JS/TS 파일만 필터링
+            JS_TS_FILES=$(echo "$CHANGED_FILES" | grep -E '\.(js|jsx|ts|tsx)$' || true)
+            
+            if [ -n "$JS_TS_FILES" ]; then
+              echo "Linting JS/TS files:"
+              echo "$JS_TS_FILES" | xargs bunx eslint --fix || true
+            fi
+            
+            # 변경된 파일 중 포맷팅 대상 파일만 필터링
+            FORMAT_FILES=$(echo "$CHANGED_FILES" | grep -E '\.(js|jsx|ts|tsx|json|css|md)$' || true)
+            
+            if [ -n "$FORMAT_FILES" ]; then
+              echo "Formatting files:"
+              echo "$FORMAT_FILES" | xargs bunx prettier --write || true
+            fi
+            
+            # 수정된 파일들을 스테이징
+            git add $CHANGED_FILES
+          else
+            echo "No files changed"
+          fi
+
+      - name: Check for changes
+        id: verify-changed-files
+        run: |
+          # 변경사항 확인 (스테이징된 파일과 워킹 디렉토리 모두 확인)
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "Changes detected:"
+            git status --porcelain
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "No changes detected"
+          fi
+
+      - name: Check for existing PR
+        if: steps.verify-changed-files.outputs.changed == 'true'
+        id: check-existing-pr
+        run: |
+          # 기존 API 타입 업데이트 관련 PR 확인
+          EXISTING_PR=$(gh pr list --state open --search "in:title \"chore: update API types\"" --json number,headRefName --jq '.[0].number // empty')
+          EXISTING_BRANCH=$(gh pr list --state open --search "update API types" --json number,headRefName --jq '.[0].headRefName // empty')
+
+          if [ -n "$EXISTING_PR" ]; then
+            echo "existing_pr=$EXISTING_PR" >> $GITHUB_OUTPUT
+            echo "existing_branch=$EXISTING_BRANCH" >> $GITHUB_OUTPUT
+            echo "Found existing PR: #$EXISTING_PR on branch: $EXISTING_BRANCH"
+          else
+            echo "existing_pr=" >> $GITHUB_OUTPUT
+            echo "existing_branch=" >> $GITHUB_OUTPUT
+            echo "No existing PR found"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate timestamp and PR info
+        if: steps.verify-changed-files.outputs.changed == 'true'
+        id: generate-info
+        run: |
+          TIMESTAMP=$(date +"%Y%m%d-%H%M")
+
+          # 기존 PR이 있으면 기존 브랜치 사용, 없으면 새 브랜치 생성
+          if [ -n "${{ steps.check-existing-pr.outputs.existing_branch }}" ]; then
+            BRANCH_NAME="${{ steps.check-existing-pr.outputs.existing_branch }}"
+            echo "Using existing branch: $BRANCH_NAME"
+          else
+            PR_NUMBER=$(date +"%Y%m%d%H%M%S")
+            BRANCH_NAME="${PR_BRANCH_PREFIX}-${PR_NUMBER}"
+            echo "Creating new branch: $BRANCH_NAME"
+          fi
+
+          echo "timestamp=${TIMESTAMP}" >> $GITHUB_OUTPUT
+          echo "branch_name=${BRANCH_NAME}" >> $GITHUB_OUTPUT
+        env:
+          PR_BRANCH_PREFIX: ${{ env.PR_BRANCH_PREFIX }}
+
+      - name: Update existing PR or create new one
+        if: steps.verify-changed-files.outputs.changed == 'true'
+        run: |
+          BRANCH_NAME="${{ steps.generate-info.outputs.branch_name }}"
+          TIMESTAMP="${{ steps.generate-info.outputs.timestamp }}"
+
+          # 변경사항을 커밋
+          git commit -m "chore: update generated API types ($TIMESTAMP)" || exit 1
+
+          if [ -n "${{ steps.check-existing-pr.outputs.existing_pr }}" ]; then
+            # 기존 PR 업데이트
+            echo "Updating existing PR #${{ steps.check-existing-pr.outputs.existing_pr }}"
+            
+            # 기존 브랜치로 체크아웃하고 푸시
+            git checkout -B "$BRANCH_NAME"
+            git push origin "$BRANCH_NAME" --force-with-lease
+            
+            # PR 본문 업데이트
+            gh pr edit ${{ steps.check-existing-pr.outputs.existing_pr }} --body "## 🔄 API Types 자동 업데이트
+
+            이 PR은 자동으로 생성된 API 타입 업데이트입니다.
+
+            **최근 업데이트:** $TIMESTAMP
+            **워크플로우 실행:** ${{ github.run_id }}
+
+            ### 변경 사항
+            - API 스키마 기반 타입 파일 업데이트
+            - 자동 생성된 인터페이스 및 타입 정의
+            - ESLint 및 Prettier 자동 적용
+
+            ### 처리된 파일들
+            자동으로 린트 및 포맷팅이 적용된 파일들입니다.
+
+            > 이 PR은 자동으로 생성되었으며, 검토 후 병합해주세요.
+            > 마지막 업데이트: $TIMESTAMP"
+            
+            echo "Updated existing PR #${{ steps.check-existing-pr.outputs.existing_pr }}"
+          else
+            # 새로운 PR 생성
+            echo "Creating new PR"
+            
+            # 새 브랜치 생성 및 푸시
+            git checkout -b "$BRANCH_NAME"
+            git push origin "$BRANCH_NAME"
+            
+            # 새 PR 생성
+            gh pr create \
+              --title "chore: update API types ($(date +"%Y-%m-%d %H:%M"))" \
+              --body "## 🔄 API Types 자동 업데이트
+
+            이 PR은 자동으로 생성된 API 타입 업데이트입니다.
+
+            **생성 시간:** $TIMESTAMP
+            **워크플로우 실행:** ${{ github.run_id }}
+
+            ### 변경 사항
+            - API 스키마 기반 타입 파일 업데이트
+            - 자동 생성된 인터페이스 및 타입 정의
+            - ESLint 및 Prettier 자동 적용
+
+            ### 처리된 파일들
+            자동으로 린트 및 포맷팅이 적용된 파일들입니다.
+
+            > 이 PR은 자동으로 생성되었으며, 검토 후 병합해주세요." \
+              --head "$BRANCH_NAME" \
+              --base main
+            
+            echo "Created new PR"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
