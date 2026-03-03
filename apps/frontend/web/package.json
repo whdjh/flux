@@ -1,0 +1,10 @@
+{
+  "name": "@flux/web",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "echo 'TODO: setup Next.js'",
+    "build": "echo 'TODO: setup Next.js'",
+    "lint": "echo 'TODO: setup linter'"
+  }
+}

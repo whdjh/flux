@@ -1,0 +1,10 @@
+{
+  "name": "@flux/backend",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "echo 'TODO: setup backend'",
+    "build": "echo 'TODO: setup backend'",
+    "lint": "echo 'TODO: setup linter'"
+  }
+}

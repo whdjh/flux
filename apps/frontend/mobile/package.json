@@ -1,0 +1,10 @@
+{
+  "name": "@flux/mobile",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "echo 'TODO: setup Expo'",
+    "build": "echo 'TODO: setup Expo'",
+    "lint": "echo 'TODO: setup linter'"
+  }
+}

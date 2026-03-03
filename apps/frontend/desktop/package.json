@@ -1,0 +1,10 @@
+{
+  "name": "@flux/desktop",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "echo 'TODO: setup Tauri'",
+    "build": "echo 'TODO: setup Tauri'",
+    "lint": "echo 'TODO: setup linter'"
+  }
+}
