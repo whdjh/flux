@@ -1,1 +1,169 @@
 @import "tailwindcss";
+
+@theme {
+  /* ── Spacing: 4px 기반 배수 ── */
+  --spacing-0: 0;
+  --spacing-0-5: 0.125rem;
+  --spacing-1: 0.25rem;
+  --spacing-2: 0.5rem;
+  --spacing-3: 0.75rem;
+  --spacing-4: 1rem;
+  --spacing-5: 1.25rem;
+  --spacing-6: 1.5rem;
+  --spacing-8: 2rem;
+  --spacing-12: 3rem;
+
+  /* ── Radius ── */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-full: 9999px;
+
+  /* ── Typography ── */
+  --font-sans: "팔칠칠엠 일상체", "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --text-xs: 0.6875rem;
+  --text-sm: 0.75rem;
+  --text-md: 0.875rem;
+  --text-lg: 1rem;
+  --text-xl: 1.25rem;
+
+  /* ── Breakpoints: 데스크톱 전용 ── */
+  --breakpoint-sm: 900px;
+  --breakpoint-md: 1024px;
+  --breakpoint-lg: 1280px;
+  --breakpoint-xl: 1440px;
+}
+
+:root {
+  /* ── Color: Semantic (라이트 모드, Figma dark에서 L 반전) ── */
+  --background: oklch(0.98 0.005 300);
+  --foreground: oklch(0.17 0.042 299);
+  --muted: oklch(0.95 0.008 300);
+  --muted-foreground: oklch(0.50 0.024 302);
+  --border: oklch(0.88 0.015 300);
+  --ring: oklch(0.50 0.213 296);
+
+  --primary: oklch(0.50 0.213 296);
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: oklch(0.96 0.010 300);
+  --secondary-foreground: oklch(0.17 0.042 299);
+  --accent: oklch(0.95 0.015 300);
+  --accent-foreground: oklch(0.17 0.042 299);
+
+  --destructive: oklch(0.60 0.198 26);
+  --warning: oklch(0.78 0.147 80);
+  --success: oklch(0.72 0.159 159);
+
+  --card: var(--background);
+  --card-foreground: var(--foreground);
+  --popover: var(--background);
+  --popover-foreground: var(--foreground);
+  --sidebar: oklch(0.96 0.012 305);
+
+  /* ── Shadow: 라이트 모드 전용 ── */
+  --shadow-sm: 0 1px 2px oklch(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px oklch(0 0 0 / 0.07);
+  --shadow-lg: 0 10px 15px oklch(0 0 0 / 0.1);
+
+  /* ── Typography: 행간 ── */
+  --leading-tight: 1;
+  --leading-snug: 1.3;
+  --leading-normal: 1.4;
+  --leading-relaxed: 1.5;
+
+  /* ── Typography: 웨이트 ── */
+  --font-regular: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+
+  /* ── Component: 레이아웃 (Figma export) ── */
+  --tabbar-height: 36px;
+  --toolbar-height: 40px;
+  --statusbar-height: 20px;
+  --sidebar-width: 256px;
+  --sidebar-min: 180px;
+  --sidebar-max: 360px;
+  --ai-panel-width: 380px;
+
+  /* ── Component: 인터랙티브 ── */
+  --button-height: 32px;
+  --input-height: 32px;
+  --tree-item-height: 28px;
+  --chip-height: 20px;
+
+  /* ── Component: 아이콘 ── */
+  --icon-sm: 16px;
+  --icon-md: 20px;
+  --icon-lg: 24px;
+
+  /* ── Component: 카드 (Figma: gallery 12px) ── */
+  --card-padding: var(--spacing-2);
+  --card-gap: var(--spacing-3);
+  --card-radius: var(--radius-xl);
+  --card-shadow: var(--shadow-sm);
+
+  /* ── Motion: 150ms 이하 ── */
+  --duration-instant: 0ms;
+  --duration-fast: 100ms;
+  --duration-normal: 150ms;
+  --duration-slow: 200ms;
+  --ease-out: cubic-bezier(0.33, 1, 0.68, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.dark {
+  /* Figma export 원본 (hsl 262 퍼플 → oklch 변환) */
+  --background: oklch(0.17 0.042 299);
+  --foreground: oklch(0.98 0 0);
+  --muted: oklch(0.27 0.051 300);
+  --muted-foreground: oklch(0.92 0.011 302);
+  --border: oklch(0.34 0.045 301);
+  --ring: oklch(0.61 0.213 296);
+
+  --primary: oklch(0.61 0.213 296);
+  --primary-foreground: oklch(0.17 0.042 299);
+  --secondary: oklch(0.23 0.065 298);
+  --secondary-foreground: oklch(0.92 0.011 302);
+  --accent: oklch(0.27 0.051 300);
+  --accent-foreground: oklch(0.92 0.011 302);
+
+  --destructive: oklch(0.60 0.198 26);
+  --warning: oklch(0.78 0.147 80);
+  --success: oklch(0.72 0.159 159);
+
+  --card: var(--background);
+  --card-foreground: var(--foreground);
+  --popover: var(--background);
+  --popover-foreground: var(--foreground);
+  --sidebar: oklch(0.21 0.060 305);
+
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration-normal: 0ms;
+    --duration-slow: 0ms;
+  }
+}
+
+/* ── 접근성: 포커스 링 ── */
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* ── Base ── */
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  font-size: var(--text-md);
+  line-height: var(--leading-relaxed);
+}
