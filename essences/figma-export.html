@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eagle - Image Gallery</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: hsl(262, 50%, 8%);
+      --fg: hsl(0, 0%, 98%);
+      --secondary: hsl(262, 45%, 15%);
+      --secondary-fg: hsl(0, 0%, 95%);
+      --tertiary: hsl(262, 83%, 65%);
+      --muted: hsl(262, 30%, 18%);
+      --muted-fg: hsl(262, 15%, 90%);
+      --border: hsl(262, 20%, 25%);
+      --sidebar-bg: hsl(270, 50%, 12%);
+      --detail-bg: hsl(225, 70%, 10%);
+      --gray-100: hsl(262, 15%, 90%);
+      --gray-200: hsl(262, 10%, 75%);
+      --gray-300: hsl(262, 10%, 60%);
+      --gray-400: hsl(262, 8%, 45%);
+      --gray-500: hsl(262, 8%, 35%);
+      --purple-900-30: hsla(270, 50%, 30%, 0.3);
+      --radius: 8px;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    .app {
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ===== SIDEBAR ===== */
+    .sidebar {
+      width: 256px;
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--purple-900-30);
+      height: 100vh;
+      overflow-y: auto;
+      flex-shrink: 0;
+      padding: 16px;
+    }
+
+    .sidebar-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 24px;
+      padding: 0 8px;
+    }
+
+    .sidebar-logo {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, hsl(262, 60%, 50%), hsl(262, 60%, 30%));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .sidebar-logo svg {
+      width: 20px;
+      height: 20px;
+      color: white;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .sidebar-title {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .folder-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .folder-item:hover {
+      background: hsla(262, 30%, 18%, 0.5);
+    }
+
+    .folder-item-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .folder-item svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      color: var(--gray-400);
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .folder-item .chevron {
+      width: 14px;
+      height: 14px;
+    }
+
+    .folder-item-name {
+      font-size: 14px;
+      color: var(--gray-100);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .folder-item-count {
+      font-size: 12px;
+      color: var(--gray-500);
+      flex-shrink: 0;
+      margin-left: 8px;
+    }
+
+    .folder-children {
+      margin-left: 16px;
+      margin-top: 4px;
+    }
+
+    .folder-children .folder-item-name {
+      color: var(--gray-300);
+    }
+
+    .section-title {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--gray-500);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0 12px;
+      margin-bottom: 8px;
+      margin-top: 24px;
+    }
+
+    /* ===== MAIN CONTENT ===== */
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    /* ===== IDE TAB BAR ===== */
+    .tab-bar {
+      height: 36px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--purple-900-30);
+      display: flex;
+      align-items: stretch;
+      flex-shrink: 0;
+      overflow-x: auto;
+    }
+
+    .tab-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 14px;
+      border: none;
+      background: none;
+      color: var(--gray-400);
+      font-size: 12px;
+      font-family: inherit;
+      cursor: pointer;
+      white-space: nowrap;
+      border-right: 1px solid var(--purple-900-30);
+      transition: background 0.1s, color 0.1s;
+      position: relative;
+    }
+
+    .tab-item:hover {
+      background: hsla(262, 30%, 18%, 0.4);
+      color: var(--gray-200);
+    }
+
+    .tab-item.active {
+      background: var(--sidebar-bg);
+      color: var(--fg);
+      border: 1.5px solid hsl(40, 90%, 60%);
+      border-radius: 4px;
+      margin: 3px 2px;
+      padding: 0 12px;
+    }
+
+    .tab-item svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+
+    .tab-item .tab-icon-ts {
+      color: hsl(210, 80%, 60%);
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .tab-item .tab-icon-css {
+      color: hsl(262, 83%, 65%);
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .tab-item .tab-icon-json {
+      color: hsl(40, 80%, 55%);
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .tab-close {
+      width: 16px;
+      height: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 3px;
+      opacity: 0;
+      transition: opacity 0.1s, background 0.1s;
+      margin-left: 4px;
+    }
+
+    .tab-item:hover .tab-close,
+    .tab-item.active .tab-close {
+      opacity: 0.6;
+    }
+
+    .tab-close:hover {
+      opacity: 1 !important;
+      background: hsla(262, 30%, 25%, 0.6);
+    }
+
+    .tab-close svg {
+      width: 10px;
+      height: 10px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      color: var(--gray-300);
+    }
+
+    .tab-bar-spacer {
+      flex: 1;
+    }
+
+    .layout-toggles {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 12px;
+      flex-shrink: 0;
+    }
+
+    .layout-toggle-btn {
+      width: 20px;
+      height: 15px;
+      border-radius: 4px;
+      border: 1.5px solid var(--gray-400);
+      background: none;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.15s;
+      display: flex;
+      align-items: stretch;
+    }
+
+    .layout-toggle-btn:hover {
+      border-color: var(--gray-200);
+    }
+
+    .layout-toggle-btn.active {
+      border-color: var(--gray-200);
+    }
+
+    .lt-panel {
+      background: var(--gray-400);
+      border-radius: 1px;
+    }
+
+    .layout-toggle-btn.active .lt-panel {
+      background: var(--gray-200);
+    }
+
+    .lt-left {
+      width: 5px;
+      margin: 1.5px 0 1.5px 1.5px;
+      border-radius: 1px;
+    }
+
+    .lt-right {
+      width: 6px;
+      margin: 1.5px 1.5px 1.5px auto;
+      border-radius: 1px;
+    }
+
+    /* ===== TOOLBAR ===== */
+    .toolbar {
+      height: 40px;
+      background: var(--sidebar-bg);
+      border-bottom: 1px solid var(--purple-900-30);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 12px;
+      flex-shrink: 0;
+    }
+
+    .toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      color: var(--gray-400);
+    }
+
+    .breadcrumb span {
+      color: var(--gray-300);
+    }
+
+    .breadcrumb .sep {
+      color: var(--gray-500);
+      font-size: 10px;
+    }
+
+    .icon-btn {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      background: none;
+      border-radius: 6px;
+      cursor: pointer;
+      color: var(--gray-400);
+      transition: background 0.15s;
+    }
+
+    .icon-btn:hover {
+      background: var(--muted);
+    }
+
+    .icon-btn svg {
+      width: 16px;
+      height: 16px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .page-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--fg);
+    }
+
+    .search-container {
+      flex: 1;
+      max-width: 448px;
+      margin: 0 32px;
+      position: relative;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      color: var(--gray-500);
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .search-input {
+      width: 100%;
+      height: 36px;
+      padding-left: 40px;
+      padding-right: 16px;
+      background: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      color: var(--fg);
+      outline: none;
+      font-family: inherit;
+    }
+
+    .search-input::placeholder {
+      color: var(--gray-500);
+    }
+
+    .search-bar-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ===== GALLERY GRID ===== */
+    .gallery-scroll {
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .gallery-grid {
+      padding: 24px;
+      columns: 5;
+      column-gap: 16px;
+    }
+
+    .gallery-item {
+      break-inside: avoid;
+      margin-bottom: 16px;
+      cursor: pointer;
+    }
+
+    .gallery-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+      background: var(--secondary);
+      border: 1px solid var(--border);
+      transition: border-color 0.2s;
+    }
+
+    .gallery-card:hover {
+      border-color: hsla(262, 83%, 65%, 0.5);
+    }
+
+    .gallery-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.3s;
+    }
+
+    .gallery-card:hover img {
+      transform: scale(1.05);
+    }
+
+    .gallery-card-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, hsla(262, 50%, 8%, 0.6), transparent, transparent);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .gallery-card:hover .gallery-card-overlay {
+      opacity: 1;
+    }
+
+    /* ===== AI CHAT PANEL (Cursor-style) ===== */
+    .ai-panel {
+      width: 380px;
+      background: var(--sidebar-bg);
+      border-left: 1px solid var(--purple-900-30);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+
+    .ai-panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--purple-900-30);
+      flex-shrink: 0;
+    }
+
+    .ai-panel-tabs {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .ai-tab {
+      padding: 5px 12px;
+      border: none;
+      background: none;
+      color: var(--gray-400);
+      font-size: 13px;
+      font-family: inherit;
+      font-weight: 500;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .ai-tab:hover {
+      background: var(--muted);
+      color: var(--gray-200);
+    }
+
+    .ai-tab.active {
+      background: var(--muted);
+      color: var(--fg);
+    }
+
+    .ai-panel-actions {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .ai-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .ai-msg {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .ai-msg-avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .ai-msg-avatar.user {
+      background: var(--muted);
+      color: var(--gray-200);
+    }
+
+    .ai-msg-avatar.assistant {
+      background: linear-gradient(135deg, hsl(262, 83%, 58%), hsl(280, 75%, 55%));
+      color: white;
+    }
+
+    .ai-msg-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .ai-msg-role {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--gray-200);
+      margin-bottom: 4px;
+    }
+
+    .ai-msg-text {
+      font-size: 13px;
+      color: var(--gray-300);
+      line-height: 1.65;
+    }
+
+    .ai-msg-text p {
+      margin-bottom: 8px;
+    }
+
+    .ai-msg-text p:last-child {
+      margin-bottom: 0;
+    }
+
+    .ai-msg-text strong {
+      color: var(--gray-100);
+      font-weight: 600;
+    }
+
+    .ai-msg-text code {
+      background: var(--muted);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 12px;
+      color: var(--tertiary);
+    }
+
+    .ai-code-block {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin: 10px 0;
+      overflow: hidden;
+    }
+
+    .ai-code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 12px;
+      background: hsla(262, 30%, 18%, 0.5);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .ai-code-lang {
+      font-size: 11px;
+      color: var(--gray-400);
+      font-family: 'SF Mono', 'Fira Code', monospace;
+    }
+
+    .ai-code-copy {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: none;
+      border: none;
+      color: var(--gray-400);
+      font-size: 11px;
+      cursor: pointer;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: inherit;
+      transition: background 0.15s;
+    }
+
+    .ai-code-copy:hover {
+      background: var(--muted);
+    }
+
+    .ai-code-copy svg {
+      width: 12px;
+      height: 12px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .ai-code-content {
+      padding: 12px 16px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--gray-200);
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .ai-code-content .kw { color: hsl(280, 70%, 70%); }
+    .ai-code-content .str { color: hsl(120, 50%, 60%); }
+    .ai-code-content .fn { color: hsl(200, 80%, 70%); }
+    .ai-code-content .cm { color: var(--gray-500); }
+    .ai-code-content .num { color: hsl(30, 80%, 65%); }
+
+    .ai-file-ref {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--muted);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      color: var(--tertiary);
+      text-decoration: none;
+      margin: 2px 0;
+    }
+
+    .ai-file-ref svg {
+      width: 12px;
+      height: 12px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .ai-input-area {
+      padding: 12px 16px 16px;
+      border-top: 1px solid var(--purple-900-30);
+      flex-shrink: 0;
+    }
+
+    .ai-input-box {
+      background: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      transition: border-color 0.15s;
+    }
+
+    .ai-input-box:focus-within {
+      border-color: var(--tertiary);
+    }
+
+    .ai-input-textarea {
+      width: 100%;
+      background: none;
+      border: none;
+      outline: none;
+      color: var(--fg);
+      font-size: 13px;
+      font-family: inherit;
+      resize: none;
+      line-height: 1.5;
+      min-height: 20px;
+    }
+
+    .ai-input-textarea::placeholder {
+      color: var(--gray-500);
+    }
+
+    .ai-input-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 8px;
+    }
+
+    .ai-input-hints {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ai-hint-tag {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 11px;
+      color: var(--gray-500);
+    }
+
+    .ai-hint-tag kbd {
+      background: hsla(262, 30%, 25%, 0.5);
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-family: inherit;
+      font-size: 10px;
+      color: var(--gray-400);
+      border: 1px solid var(--border);
+    }
+
+    .ai-send-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      border: none;
+      background: var(--tertiary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+
+    .ai-send-btn:hover {
+      opacity: 0.85;
+    }
+
+    .ai-send-btn svg {
+      width: 14px;
+      height: 14px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .ai-model-badge {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      background: var(--muted);
+      border-radius: 6px;
+      font-size: 11px;
+      color: var(--gray-300);
+      cursor: pointer;
+      border: none;
+      font-family: inherit;
+      transition: background 0.15s;
+    }
+
+    .ai-model-badge:hover {
+      background: var(--border);
+    }
+
+    .ai-model-badge .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: hsl(155, 70%, 45%);
+    }
+
+    .ai-model-badge svg {
+      width: 10px;
+      height: 10px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      color: var(--gray-400);
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--gray-400);
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+
+    <!-- ===== SIDEBAR ===== -->
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        </div>
+        <span class="sidebar-title">Flux</span>
+      </div>
+
+      <!-- Main Items -->
+      <div style="margin-bottom: 24px;">
+        <div class="folder-item">
+          <div class="folder-item-left">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            <span class="folder-item-name">Text</span>
+          </div>
+          <span class="folder-item-count">847</span>
+        </div>
+        <div class="folder-item">
+          <div class="folder-item-left">
+            <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <span class="folder-item-name">Link</span>
+          </div>
+          <span class="folder-item-count">1203</span>
+        </div>
+        <div class="folder-item" style="background: hsla(262,30%,18%,0.5);">
+          <div class="folder-item-left">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span class="folder-item-name" style="color: var(--fg);">Image</span>
+          </div>
+          <span class="folder-item-count">356</span>
+        </div>
+        <div class="folder-item">
+          <div class="folder-item-left">
+            <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+            <span class="folder-item-name">Clipboard</span>
+          </div>
+          <span class="folder-item-count">92</span>
+        </div>
+        <div class="folder-item">
+          <div class="folder-item-left">
+            <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            <span class="folder-item-name">Screenshot</span>
+          </div>
+          <span class="folder-item-count">55</span>
+        </div>
+      </div>
+
+      <!-- Smart Folders -->
+      <div class="section-title">Storage</div>
+
+      <!-- Inspiration -->
+      <div class="folder-item">
+        <div class="folder-item-left">
+          <svg class="chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          <span class="folder-item-name">Inspiration</span>
+        </div>
+        <span class="folder-item-count">113</span>
+      </div>
+      <div class="folder-children">
+        <div class="folder-item">
+          <div class="folder-item-left">
+            <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            <span class="folder-item-name">AI Prompts</span>
+          </div>
+          <span class="folder-item-count">65</span>
+        </div>
+        <div class="folder-item">
+          <div class="folder-item-left">
+            <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            <span class="folder-item-name">Illustrations</span>
+          </div>
+          <span class="folder-item-count">275</span>
+        </div>
+        <div class="folder-item">
+          <div class="folder-item-left">
+            <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            <span class="folder-item-name">Photography</span>
+          </div>
+          <span class="folder-item-count">801</span>
+        </div>
+        <div class="folder-item">
+          <div class="folder-item-left">
+            <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            <span class="folder-item-name">Interior Design</span>
+          </div>
+          <span class="folder-item-count">183</span>
+        </div>
+        <div class="folder-item">
+          <div class="folder-item-left">
+            <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            <span class="folder-item-name">Game Concepts</span>
+          </div>
+          <span class="folder-item-count">234</span>
+        </div>
+        <div class="folder-item">
+          <div class="folder-item-left">
+            <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            <span class="folder-item-name">UI Design</span>
+          </div>
+          <span class="folder-item-count">159</span>
+        </div>
+        <div class="folder-item">
+          <div class="folder-item-left">
+            <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            <span class="folder-item-name">Motion Graphics</span>
+          </div>
+          <span class="folder-item-count">117</span>
+        </div>
+      </div>
+
+      <!-- Design Assets -->
+      <div class="folder-item">
+        <div class="folder-item-left">
+          <svg class="chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          <span class="folder-item-name">Design Assets</span>
+        </div>
+        <span class="folder-item-count">146</span>
+      </div>
+
+      <!-- Tutorials -->
+      <div class="folder-item">
+        <div class="folder-item-left">
+          <svg class="chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          <span class="folder-item-name">Tutorials</span>
+        </div>
+        <span class="folder-item-count">282</span>
+      </div>
+
+      <div class="section-title">Pad</div>
+      <div style="margin-top: 4px;">
+        <div class="folder-item">
+          <div class="folder-item-left">
+            <svg viewBox="0 0 24 24" style="color: var(--gray-400); fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round;"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            <span class="folder-item-name" style="color: var(--gray-300);">API 키 임시 저장</span>
+          </div>
+          <span class="folder-item-count" style="color: var(--gray-500); font-size: 10px;">23h</span>
+        </div>
+        <div class="folder-item">
+          <div class="folder-item-left">
+            <svg viewBox="0 0 24 24" style="color: var(--gray-400); fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round;"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            <span class="folder-item-name" style="color: var(--gray-300);">디자인 피드백 메모</span>
+          </div>
+          <span class="folder-item-count" style="color: var(--gray-500); font-size: 10px;">18h</span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <div class="main-content">
+
+      <!-- IDE Tab Bar -->
+      <div class="tab-bar">
+        <button class="tab-item active">
+          <svg class="tab-icon-ts" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          App.tsx
+          <span class="tab-close"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+        </button>
+        <button class="tab-item">
+          <svg class="tab-icon-ts" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          GalleryGrid.tsx
+          <span class="tab-close"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+        </button>
+        <button class="tab-item">
+          <svg class="tab-icon-ts" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          GalleryCard.tsx
+          <span class="tab-close"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+        </button>
+        <button class="tab-item">
+          <svg class="tab-icon-css" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          index.css
+          <span class="tab-close"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+        </button>
+        <button class="tab-item">
+          <svg class="tab-icon-json" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          package.json
+          <span class="tab-close"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+        </button>
+
+        <div class="tab-bar-spacer"></div>
+
+        <div class="layout-toggles">
+          <button class="icon-btn" style="width:24px; height:24px;" title="Swap Sidebars">
+            <svg viewBox="0 0 24 24" style="width:13px; height:13px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round;">
+              <line x1="3" y1="8" x2="21" y2="8"/>
+              <polyline points="18 5 21 8 18 11"/>
+              <line x1="21" y1="16" x2="3" y2="16"/>
+              <polyline points="6 13 3 16 6 19"/>
+            </svg>
+          </button>
+          <button class="layout-toggle-btn active" title="Toggle Left Sidebar">
+            <div class="lt-panel lt-left"></div>
+          </button>
+          <button class="layout-toggle-btn active" title="Toggle Right Sidebar">
+            <div class="lt-panel lt-right"></div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Breadcrumb Toolbar -->
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <div class="breadcrumb">
+            <span>src</span>
+            <span class="sep">›</span>
+            <span>App.tsx</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gallery Grid -->
+      <div class="gallery-scroll">
+        <div class="gallery-grid">
+
+          <div class="gallery-item">
+            <div class="gallery-card">
+              <img src="https://c.animaapp.com/mmdhk8nhRSGLf0/img/ai_2.png" alt="dreamy white cat illustration" style="aspect-ratio: 3/4;">
+              <div class="gallery-card-overlay"></div>
+            </div>
+          </div>
+
+          <div class="gallery-item">
+            <div class="gallery-card">
+              <img src="https://c.animaapp.com/mmdhk8nhRSGLf0/img/ai_3.png" alt="colorful 3d character" style="aspect-ratio: 4/5;">
+              <div class="gallery-card-overlay"></div>
+            </div>
+          </div>
+
+          <div class="gallery-item">
+            <div class="gallery-card">
+              <img src="https://c.animaapp.com/mmdhk8nhRSGLf0/img/ai_4.png" alt="artistic portrait" style="aspect-ratio: 3/4;">
+              <div class="gallery-card-overlay"></div>
+            </div>
+          </div>
+
+          <div class="gallery-item">
+            <div class="gallery-card">
+              <img src="https://c.animaapp.com/mmdhk8nhRSGLf0/img/ai_5.png" alt="serene portrait" style="aspect-ratio: 4/5;">
+              <div class="gallery-card-overlay"></div>
+            </div>
+          </div>
+
+          <div class="gallery-item">
+            <div class="gallery-card">
+              <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&h=600&fit=crop" alt="blue fluffy character" style="aspect-ratio: 2/3;">
+              <div class="gallery-card-overlay"></div>
+            </div>
+          </div>
+
+          <div class="gallery-item">
+            <div class="gallery-card">
+              <img src="https://images.unsplash.com/photo-1635322966219-b75ed372eb01?w=400&h=500&fit=crop" alt="bunny character" style="aspect-ratio: 4/5;">
+              <div class="gallery-card-overlay"></div>
+            </div>
+          </div>
+
+          <div class="gallery-item">
+            <div class="gallery-card">
+              <img src="https://images.unsplash.com/photo-1618556450994-a6a128ef0d9d?w=400&h=300&fit=crop" alt="person in pink sweater" style="aspect-ratio: 4/3;">
+              <div class="gallery-card-overlay"></div>
+            </div>
+          </div>
+
+          <div class="gallery-item">
+            <div class="gallery-card">
+              <img src="https://images.unsplash.com/photo-1620121692029-d088224ddc74?w=400&h=600&fit=crop" alt="pink bear character" style="aspect-ratio: 2/3;">
+              <div class="gallery-card-overlay"></div>
+            </div>
+          </div>
+
+          <div class="gallery-item">
+            <div class="gallery-card">
+              <img src="https://images.unsplash.com/photo-1618005198919-d3d4b5a92ead?w=400&h=500&fit=crop" alt="pink penguin character" style="aspect-ratio: 4/5;">
+              <div class="gallery-card-overlay"></div>
+            </div>
+          </div>
+
+          <div class="gallery-item">
+            <div class="gallery-card">
+              <img src="https://images.unsplash.com/photo-1618556450991-2f1af64e8191?w=400&h=600&fit=crop" alt="red dog character" style="aspect-ratio: 2/3;">
+              <div class="gallery-card-overlay"></div>
+            </div>
+          </div>
+
+          <div class="gallery-item">
+            <div class="gallery-card">
+              <img src="https://images.unsplash.com/photo-1618556450994-a6a128ef0d9d?w=400&h=400&fit=crop" alt="frog character" style="aspect-ratio: 1/1;">
+              <div class="gallery-card-overlay"></div>
+            </div>
+          </div>
+
+          <div class="gallery-item">
+            <div class="gallery-card">
+              <img src="https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?w=400&h=600&fit=crop" alt="astronaut illustration" style="aspect-ratio: 2/3;">
+              <div class="gallery-card-overlay"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== AI CHAT PANEL (Cursor-style) ===== -->
+    <aside class="ai-panel">
+
+      <!-- Header -->
+      <div class="ai-panel-header">
+        <span style="font-size:13px; font-weight:600; color:var(--fg);">Chat</span>
+        <div class="ai-panel-actions"></div>
+      </div>
+
+      <!-- Chat Messages -->
+      <div class="ai-messages">
+
+        <!-- User Message -->
+        <div class="ai-msg">
+          <div class="ai-msg-body">
+            <div class="ai-msg-role">You</div>
+            <div class="ai-msg-text">
+              <p>이 이미지 갤러리에서 선택된 카드의 색상 팔레트를 추출하는 유틸리티 함수를 만들어줘.</p>
+              <a class="ai-file-ref" href="#">
+                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                GalleryCard.tsx
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Assistant Message -->
+        <div class="ai-msg">
+          <div class="ai-msg-body">
+            <div class="ai-msg-role">Agent</div>
+            <div class="ai-msg-text">
+              <p><strong>GalleryCard</strong>에서 사용하는 색상 데이터를 기반으로 팔레트를 추출하는 유틸 함수를 만들겠습니다. <code>canvas</code> API를 활용해 이미지에서 직접 dominant color도 뽑을 수 있도록 구성했습니다.</p>
+
+              <div class="ai-code-block">
+                <div class="ai-code-header">
+                  <span class="ai-code-lang">src/lib/extractColors.ts</span>
+                  <button class="ai-code-copy">
+                    <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                    Copy
+                  </button>
+                </div>
+                <div class="ai-code-content"><span class="kw">export</span> <span class="kw">async function</span> <span class="fn">extractPalette</span>(
+  imageUrl: <span class="kw">string</span>,
+  count = <span class="num">5</span>
+): Promise&lt;<span class="kw">string</span>[]&gt; {
+  <span class="kw">const</span> img = <span class="kw">new</span> <span class="fn">Image</span>();
+  img.crossOrigin = <span class="str">"anonymous"</span>;
+  img.src = imageUrl;
+
+  <span class="kw">await</span> <span class="kw">new</span> Promise(r =&gt; img.onload = r);
+
+  <span class="kw">const</span> canvas = document.<span class="fn">createElement</span>(<span class="str">"canvas"</span>);
+  <span class="kw">const</span> ctx = canvas.<span class="fn">getContext</span>(<span class="str">"2d"</span>);
+  canvas.width = <span class="num">50</span>;
+  canvas.height = <span class="num">50</span>;
+  ctx.<span class="fn">drawImage</span>(img, <span class="num">0</span>, <span class="num">0</span>, <span class="num">50</span>, <span class="num">50</span>);
+
+  <span class="cm">// quantize pixel data</span>
+  <span class="kw">const</span> data = ctx.<span class="fn">getImageData</span>(<span class="num">0</span>, <span class="num">0</span>, <span class="num">50</span>, <span class="num">50</span>);
+  <span class="kw">return</span> <span class="fn">quantize</span>(data, count);
+}</div>
+              </div>
+
+              <p>이 함수를 <code>GalleryCard</code> 클릭 핸들러에서 호출하면 선택된 이미지의 색상 팔레트를 동적으로 추출할 수 있습니다.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- User Message 2 -->
+        <div class="ai-msg">
+          <div class="ai-msg-body">
+            <div class="ai-msg-role">You</div>
+            <div class="ai-msg-text">
+              <p>좋아, 이걸 DetailPanel에도 연결해줘.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Assistant Message 2 -->
+        <div class="ai-msg">
+          <div class="ai-msg-body">
+            <div class="ai-msg-role">Agent</div>
+            <div class="ai-msg-text">
+              <p><strong>DetailPanel</strong>에 연결했습니다. 이제 카드 클릭 시 자동으로 색상 팔레트가 추출되어 우측 패널에 표시됩니다.</p>
+              <p>변경된 파일:</p>
+              <a class="ai-file-ref" href="#">
+                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                DetailPanel.tsx
+              </a>
+              <a class="ai-file-ref" href="#" style="margin-left: 4px;">
+                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                App.tsx
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Input Area -->
+      <div class="ai-input-area">
+        <div class="ai-input-box">
+          <textarea class="ai-input-textarea" rows="1" placeholder="Ask anything... or type / for commands"></textarea>
+          <div class="ai-input-bottom">
+            <div class="ai-input-hints">
+              <span class="ai-hint-tag"><kbd>@</kbd> Files</span>
+              <span class="ai-hint-tag"><kbd>#</kbd> Symbols</span>
+            </div>
+            <button class="ai-send-btn">
+              <svg viewBox="0 0 24 24"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </aside>
+
+  </div>
+</body>
+</html>
