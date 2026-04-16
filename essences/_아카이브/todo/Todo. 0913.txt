@@ -1,0 +1,350 @@
+Todo. 0913
+
+The project's structure is organized into four primary directories to enforce a clear separation of concerns and a "Demo → Feature" workflow:
+
+- **`demos/`**: The starting point for all new features. Used for experimentation and prototyping.
+- **`features/`**: Contains stable, production-ready modules that have been validated in the `demos` phase.
+- **`app/`**: Holds the core application infrastructure, including layout, views, and system-level integrations.
+- **`shared/`**: A library of reusable code, such as UI components, hooks, and utility functions, accessible by all parts of the application.
+
+```
+electron-boilerplate/
+├── src/
+│   ├── demos/              # 🧪 Experimental features (Demo → Test)
+│   │   ├── vscode-tabs-demo/     # VS Code tab implementation
+│   │   ├── chrome-tabs-demo/     # Chrome tab animations
+│   │   ├── split-view-demo/      # Split view system
+│   │   └── DemoIndex.tsx          # Demo showcase page
+│   │
+│   ├── features/           # ✅ Production-ready features
+│   │   ├── file-explorer/        # File system browser
+│   │   ├── tab-system/           # Tab management
+│   │   └── drag-drop/            # Unified drag system
+│   │
+│   ├── app/                # 🏗️ Core application infrastructure
+│   │   ├── layout/              # Layout system (MasterLayout, Sidebars)
+│   │   ├── views/               # View systems (split-view)
+│   │   ├── integrations/        # External integrations (VS Code, Chrome)
+│   │   └── config/              # Configuration (workspace settings)
+│   │
+│   └── shared/             # 🔧 Shared utilities
+│       ├── components/ui/       # Reusable UI components
+│       ├── lib/                 # Utility functions
+│       ├── hooks/               # Shared React hooks
+│       └── types/               # TypeScript types
+│
+├── public/                 # Static assets
+├── .env                    # Environment variables
+└── package.json           # Dependencies
+
+
+[Pasted text #1 +45 lines]
+  여기서
+  [Pasted text #2 +30 lines]
+  이렇게 바뀌었잖아,
+
+  개선 된 걸까?
+  부정적인 부분 없는지 체크해줘.
+  그리고
+  ## 📁 Project Structure (Simplified)
+
+  The project's structure is organized into four primary directories to enforce a clear separation of concerns and a "Demo → Feature" workflow:
+
+  - **`demos/`**: The starting point for all new features. Used for experimentation and prototyping.
+  - **`features/`**: Contains stable, production-ready modules that have been validated in the `demos` phase.
+  - **`app/`**: Holds the core application infrastructure, including layout, views, and system-level integrations.
+  - **`shared/`**: A library of reusable code, such as UI components, hooks, and utility functions, accessible by all parts of the application.
+  이 설명도 적절한지 봐주고
+
+  ## Project Overview
+
+  Electron + React + TypeScript desktop application with Clean Architecture, featuring a VS Code-style file explorer, resizable panels, and Supabase backend integration.
+  이 부분 설명도 지금 보일러 플레이트를 위한 레이아웃 구성중 VSCode 의 파일 시스템, 탭 시스템, 분할 시스템을 클론 코딩 하고있고, 탭 시스템에 크롬 애니메이션만 추가된
+  형태로 레이아웃을 구성하고 있는 상황이야. 앞으로 분할 시스템과 파일 시스템을 제대로 클론코딩 할 거고, 다 끝나면 보일러 플레이트를 위한 레이아웃이 완성 되는 거지.
+
+  맥락을 잘 이해해줘.
+
+# CLAUDE.md
+
+## Project Overview
+
+Electron + React + TypeScript desktop application boilerplate. Currently implementing VS Code-inspired layout system (file explorer, tabs with Chrome animations, split views). Once complete, you'll have a ready-to-use desktop app foundation - just add your features!
+
+### Development Workflow
+
+```
+1. Setup & Configuration → 2. Layout Structure → 3. Feature Development → 4. Folder Organization
+                                                           ↓
+                                              Demo → Test → Integrate → Ship
+```
+
+## Essential Commands
+
+### Development
+```bash
+npm start                    # Start Electron dev server with hot reload
+npm run make                 # Build production app (output in out/)
+npm run lint                 # Run ESLint
+npm test                     # Run Vitest tests
+npm run test:watch          # Run tests in watch mode
+npm run test:ui             # Open Vitest UI
+npm run test:coverage       # Generate test coverage report
+```
+
+### Database Management
+```bash
+npx drizzle-kit push        # Push schema changes to Supabase
+npx drizzle-kit generate    # Generate migration files
+npx drizzle-kit studio      # Open Drizzle Studio GUI
+```
+
+### Initial Setup
+```bash
+npm install                  # Install dependencies
+cp .env.example .env         # Create env file - add Supabase credentials
+npx drizzle-kit push        # Initialize database schema
+```
+
+## 📁 Project Structure
+
+The project's structure is organized into four primary directories to enforce a clear separation of concerns and a "Demo → Feature" workflow:
+
+- **`demos/`**: The starting point for all new features. Used for experimentation and prototyping.
+- **`features/`**: Contains stable, production-ready modules that have been validated in the `demos` phase.
+- **`app/`**: Core infrastructure including layout system, view management, and VS Code/Chrome integrations.
+- **`shared/`**: Reusable components, utilities, hooks, and types used across the application.
+
+### Folder Responsibilities
+
+| Folder | Purpose | When to Use |
+|--------|---------|-------------|
+| `demos/` | Experimental features, prototypes | Starting new features, testing ideas |
+| `features/` | Stable, tested features | After demo validation |
+| `app/` | Infrastructure, framework | Core system components |
+| `shared/` | Utilities, common code | Reusable across features |
+
+### Feature Development Cycle
+
+1. **Demo First** (`src/demos/`): Create experimental prototypes
+2. **Test & Iterate**: Validate functionality and UX
+3. **Extract to Features** (`src/features/`): Stable, production-ready code
+4. **Integrate**: Connect to main application infrastructure
+5. **Ship**: Deploy with confidence
+
+#### Demo-First Workflow Example
+
+**Step 1: Create a Demo** (Fast experimentation)
+```typescript
+// src/demos/my-feature/MyFeatureDemo.tsx
+export const MyFeatureDemo = () => {
+  // Quick prototype - no need for perfect code
+  return <div>Experimental feature</div>;
+};
+```
+
+**Step 2: Add to Demo Index**
+```typescript
+// src/demos/DemoIndex.tsx
+{
+  title: 'My Feature',
+  path: '/demos/my-feature',
+  status: 'wip'  // or 'complete'
+}
+```
+
+**Step 3: Test in Browser**
+- Navigate to `/demos` to see all demos
+- Test your feature in isolation
+- Iterate quickly without affecting main app
+
+**Step 4: Extract to Production** (After validation)
+```typescript
+// Move stable parts to src/features/my-feature/
+// Add proper types, error handling, tests
+// Integrate with app infrastructure
+```
+
+This workflow allows rapid prototyping while maintaining code quality in production features.
+
+```
+electron-boilerplate/
+├── src/
+│   ├── demos/              # 🧪 Experimental features (Demo → Test)
+│   │   ├── vscode-tabs/          # VS Code tab implementation
+│   │   ├── chrome-tabs/          # Chrome tab animations
+│   │   ├── split-view/           # VS Code split view system
+│   │   ├── file-explorer/        # File explorer demo
+│   │   └── DemoIndex.tsx          # Demo showcase page
+│   │
+│   ├── features/           # ✅ Production-ready features
+│   │   ├── file-explorer/        # File system browser with virtual scrolling
+│   │   └── tab-system/           # Basic tab components (TabBar, TabItem)
+│   │
+│   ├── app/                # 🏗️ Core application infrastructure
+│   │   ├── layout/              # Layout system (MasterLayout, Sidebars)
+│   │   ├── views/               # View systems (split-view)
+│   │   ├── integrations/        # External integrations (VS Code, Chrome)
+│   │   └── config/              # Configuration (workspace settings)
+│   │
+│   └── shared/             # 🔧 Shared utilities
+│       ├── components/ui/       # Reusable UI components
+│       ├── lib/                 # Utility functions
+│       ├── hooks/               # Shared React hooks
+│       └── types/               # TypeScript types
+│
+├── public/                 # Static assets
+├── .env                    # Environment variables
+└── package.json           # Dependencies
+
+```
+
+### Component Architecture
+
+The project follows Clean Architecture principles for better separation of concerns.
+
+The app uses a 3-panel layout inspired by VS Code:
+- **LeftSidebar**: File explorer with tree view, drag & drop, context menus
+- **MainViewArea**: Split-view capable content area with tabs
+- **RightSidebar**: Collapsible panel for AI chat or additional tools
+
+Key components:
+- `MasterLayout`: Orchestrates panel state and keyboard shortcuts
+- `FileExplorerContent`: Virtual scrolling file tree with optimization for large directories
+- `SimpleTitlebar`: Custom frameless window controls with tab management
+- `ViewContainer`: Handles different view types (Grid, List, Masonry, Note)
+
+### IPC Communication Pattern
+
+Type-safe IPC using contracts:
+1. Define contract in `src/shared/ipc/contracts.ts`
+2. Implement handler in `src/backend/interfaces/ipc/[feature]Handler.ts`
+3. Register in `src/backend/interfaces/ipc/index.ts`
+4. Access via `window.electronAPI` in renderer
+
+Example:
+```typescript
+// Contract
+export interface FileAPI {
+  listDirectory(path: string): Promise<FileItem[]>;
+}
+
+// Usage
+const files = await window.electronAPI.file.listDirectory(path);
+```
+
+## Import Guidelines
+
+### Feature Imports
+```typescript
+// Import from feature modules
+import { FileExplorerContent } from '@/features/file-explorer';
+import { TabBar } from '@/features/tab-system';
+```
+
+### App Infrastructure Imports
+```typescript
+// Layout and views
+import { MasterLayout } from '@/app/layout/components/MasterLayout';
+import { useEditorGroupStore } from '@/app/views/split-view/stores/useEditorGroupStore';
+
+// Configuration
+import { useWorkspace } from '@/app/config/workspace/hooks/useWorkspace';
+
+// Integrations
+import { GridView } from '@/app/integrations/vscode/core/GridView';
+import { VSCodeIntegratedTabs } from '@/app/integrations/vscode/components/VSCodeIntegratedTabs';
+```
+
+### Shared Imports
+```typescript
+// UI components
+import { Button } from '@/shared/components/ui/button';
+import { Dialog } from '@/shared/components/ui/dialog';
+
+// Contracts and types
+import { FileItem } from '@/shared/ipc/contracts';
+import { ViewType } from '@/shared/types/view.types';
+
+// Utilities
+import { cn } from '@/shared/lib/utils';
+```
+
+### Demo Imports (Development)
+```typescript
+// Import demos for testing
+import { SplitViewDemo } from '@/demos/split-view/SplitViewDemo';
+import { VSCodeTabsDemo } from '@/demos/vscode-tabs/VSCodeTabsDemo';
+```
+
+## Performance Optimization Patterns
+
+### React Optimization
+- Use `React.memo` with custom comparison functions for complex components
+- Implement `useMemo` and `useCallback` for expensive computations and stable references
+- Virtual scrolling for file lists > 100 items
+
+### IPC Optimization
+- Request caching with TTL in `useFileSystemOptimized`
+- Batch operations for multiple file operations
+- Debounced directory watchers
+
+## Testing Strategy
+
+- Unit tests with Vitest for business logic
+- React Testing Library for component tests
+- Test files co-located with source in `__tests__` folders
+- Mock IPC calls in tests using `vi.mock`
+
+## Key Hooks
+
+### File System
+- `useFileSystem`: File operations abstraction
+- `useFileOperations`: File CRUD operations with undo/redo
+- `useFileStatus`: File status monitoring
+
+### UI State
+- `useDragContext`: Unified drag & drop management
+- `useWorkspace`: Current workspace state management
+- `useEditorGroupStore`: Split view state management
+
+### Layout
+- `useLayoutStore`: Global layout state (Zustand)
+
+## Database Schema
+
+Drizzle ORM with PostgreSQL (Supabase):
+- Schema defined in `src/backend/infrastructure/db/schema.ts`
+- Migrations in `drizzle/` directory
+- Connection via `DATABASE_URL` env variable
+
+## Code Style (from main-rules.mdc)
+
+- 반말 사용 ("합니다" → "해")
+- SOLID 원칙과 Clean Architecture 준수
+- DRY 원칙 - 중복 코드 제거
+- YAGNI - 당장 필요 없는 기능 만들지 않기
+- 함수명은 목적을 표현 (구현 방법 X)
+- 매직 넘버 대신 상수 사용
+- BDD 방식으로 테스트 작성 (행동 중심 개발)
+
+## 소통의 원칙
+
+효과적인 소통을 위한 원칙:
+
+### 1. 전문성의 원칙
+**대화의 주제를 정확히 알아야 합니다.**
+- 모르는 것에 대해 얘기하지 말고 아는 것만 얘기하세요.
+
+### 2. 공감의 원칙
+**듣는 사람의 입장에서 생각해야 합니다.**
+- 상대방에게 중요한 부분이 무엇인지 파악해야 정말 의미 있는 대화를 할 수 있습니다.
+
+### 3. 단순함의 원칙
+**간결하고 명확하게 전달하세요.**
+- 진정으로 듣는 사람의 입장에서 생각하고, 말하고자 하는 주제를 제대로 이해하고, 최대한 간결하고 명확하게 대화를 한다면 여러분은 어느새 소통의 달인이 될 겁니다.
+
+# important-instruction-reminders
+Do what has been asked; nothing more, nothing less.
+NEVER create files unless they're absolutely necessary for achieving your goal.
+ALWAYS prefer editing an existing file to creating a new one.
+NEVER proactively create documentation files (*.md) or README files. Only create documentation files if explicitly requested by the User.

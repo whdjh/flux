@@ -1,0 +1,19 @@
+Todo. 1011 저녁
+
+Todo-logger 현재 설계가 어떻게 돼?
+
+*chat-logger
+
+목적: Claude Code 의 채팅 내역을(전체 대화 내용) Notion 특정 페이지 내 (페이지 사용자 지정 가능) 데이터베이스에 백업해두는 것
+
+세션 또는 Task 단위로
+요약과 전체 대화 기록 저장
+가독성 좋게
+
+*todo-logger
+
+목적: TodoList 변경사항 로그
+저장 경로: $HOME/.claude/todo-history
+
+영어 TodoList 인 경우 한국어 번역과 같이 기록
+한국어 TodoList 인 경우 한국어만 기록

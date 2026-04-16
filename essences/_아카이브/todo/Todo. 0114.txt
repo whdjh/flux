@@ -1,0 +1,89 @@
+Todo. 0114
+
+계속해.
+please ultra think.
+---
+Writing Style과 달랑 원칙대로 간결하고 명확하지만 구체적이고 실용적으로.
+---
+/home/jun/.claude/docs/달랑원칙.md 에 따라 문서를 만들어줘.
+/home/jun/.claude/docs/Writing-Style.md WritingStyle이 필요한 부분을 잘 생각해서 스타일을 적용해줘.
+달랑 원칙과 WritingStyle 중에 하나로 선택하기 보단 둘의 장점을 적절히 섞어줘.
+---
+세션을 초기화 하고 도커 세팅을 진행하려 해. 그 세션에 어떤 프롬프트를 넣어야 할까?
+---
+🕐예정
+✅완료
+🔁진행
+💭고민중
+⭐중요
+---
+요구사항 문서화
+엔진 워크플로우 문서화
+도커세팅
+React Bits, shadcn custom ui
+
+도커 컴포즈 컨테이너
+radis
+python
+forntend
+
+EC2: Docker(container) dev/prod
+- redis
+- python
+- react
+RDS: MYSQL
+
+source: python, react
+database: mysql
+ci/cd: github action
+---
+changshin 프로젝트에 Feature Map 적용 해보기
+---
+사용자가 요청한 것:
+
+달랑원칙 + Writing-Style 장점 혼합
+폴더를 만들어서 문서 분리
+처음 읽는 사람이 스캔하기 쉽게
+달랑원칙:
+
+핵심만, 5초 안에 파악
+단일 책임 (한 문서 = 하나의 목적)
+스캔 가능한 구조
+한글 파일명
+최소 마크업
+하드코딩 경로 금지
+Writing-Style:
+
+서술형 중심
+레이블 없이 흐름
+반말
+연결어
+짧은 문단
+혼합 전략:
+
+구조/트리/코드블록 → 달랑원칙
+설명/개념/흐름 → Writing-Style
+폴더 구조를 만들어서 문서를 분리하자:
+---
+먼저 changshin-docs/ 루트의 기존 문서들을 읽어서 내용 파악
+이 문서들과 새로 작성한 docs/ 문서들의 관계 파악
+engine 폴더 분석 (이미 엔진/ 폴더에 문서가 있으므로 비교)
+backend 분석
+frontend 분석
+통합 정리 제안
+이 규모의 작업은 단계적으로
+---
+## 에이전트들
+
+Planner는 세션 시작 시 실행된다. 스모크 테스트를 돌리고 Feature Map을 분석해서 다음 작업을 추천한다. "뭘 해야 하지?" 고민할 필요가 없다.
+
+Context Builder는 의존 기능의 설계 결정을 자동으로 보여준다. auth를 구현할 때 jwt에서 결정한 내용이 바로 보인다. 구현하면서 "~하기로 했다"라고 말하면 자동으로 기록된다. "어떻게 하기로 했더라?" 찾아볼 필요가 없다.
+
+Verifier는 완료 감지 시 자동으로 검증한다. 빌드, 테스트, 린트, 타입체크를 돌린다. 실패하면 자동 수정을 3회까지 시도한다. 빼먹을 일이 없다.
+
+Commit Agent는 todo-history를 읽어서 커밋 메시지를 만든다. 매번 커밋 메시지를 고민할 필요가 없다.
+
+Todo Logger는 TodoWrite 직후 자동으로 작업 내역을 기록한다. "오늘 뭐 했지?" 기억을 더듬을 필요가 없다. Commit Agent가 이 기록을 읽는다.
+
+Chat Logger는 세션 대화 내역을 저장한다. "저번에 어떻게 해결했더라?" 찾아볼 수 있다.
+---

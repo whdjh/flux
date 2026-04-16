@@ -1,0 +1,77 @@
+Todo. 1116
+
+✅SK AX 자소서 쓰기
+
+세션 4개
+클론코딩 세션
+자소서 세션
+개발 전략 문서 수정 세션
+.claude 컨텍스트 절약 세션
+
+계속해.
+please ultra think.
+---
+Writing Style과 달랑 원칙대로 간결하고 명확하지만 구체적이고 실용적으로.
+---
+스냅노트/플럭스/영감수집 도구/통합 도구 가 모두 같은 프로젝트야.
+---
+🕐VSCode Tabs 시스템 클론코딩
+🕐VSCode 파일 시스템 클론 코딩
+🕐VSCode 분할 뷰 시스템 클론 코딩
+🕐Swagger로 API를 확인하는 과정의 전략도 설계해야겠어
+🕐Figma Make 사용해보기
+🕐Claude design plugin + Figma Make로 포폴 페이지 만들기.
+---
+💭KT 디자인 시스템. 페이지는 필요 없고
+달랑 원칙대로 00, 01, 02 문서화 해서,
+어떤 것들을 선택할 수 있는지, 
+---
+💭AI 코딩 워크플로우 완성하기
+Worktree 생성(git worktree) -> demo/기능명 폴더 생성 -> 병렬 코드 베이스를 위한 다중 창 키기(기능 갯수만큼)(이거 왜 하는거?) -> 탐색(이건 왜 하는데? 코드 분석인가? 탐색이라 하니까 못알아 듣겠어. 코드 분석(/feature-dev --explore)(이것도 어떻게 코드를 분석하는데? -> 설계(레이아웃 설계라는건가? 그럼 레이아웃 설계라고 적어.(/frontend-design)  -> 구현(/feature-dev --implement)(여기에  Codex-Claude Loop만 있는건가? generate_code도 있는건가? 또 더 있나? 그럼 다 적어. -> 사용자 검증 과정 -> 품질 검증(/security-guidance) -> 코드 리뷰(/code-review:code-review) -> 완성 후 feature 폴더로 이동 -> 커밋(/commit-commands)
+---
+Worktree 생성(컨텍스트 격리 / git worktree) 
+→ demo/{기능} 폴더 생성
+→ 다중 창 열기(병렬 개발) 
+→ 코드 분석(기존 패턴 찾기 / /feature-dev --explore) 
+→ 레이아웃 설계(UI 구조 / /frontend-design) 
+→ 구현(코드 작성 / /feature-dev --implement, Codex-Claude Loop, generate_code) 
+→ 사용자 검증(직접 테스트 / npm start) 
+→ 품질 검증(보안 / /security-guidance) 
+→ 코드 리뷰(품질 / /code-review:code-review) 
+→ feature 폴더로 이동(승격 / git mv) 
+→ 커밋(기록 / /commit-commands)
+
+Worktree 생성(git worktree) → demo/{기능} 폴더 생성 -> 
+
+Worktree 생성(git worktree) → demo/{기능} 폴더 생성 → Cursor 창 여러 개 열기(병렬 개발) → 코드 분석(/feature-dev --explore) → UI 설계(/frontend-design) 
+→ 구현(/feature-dev --implement + AI 선택적 Codex-Claude Loop) → 사용자 검증 → 보안 검증(/security-guidance) 
+→ 코드 리뷰(/code-review:code-review) → feature 폴더로 이동 → 커밋(/commit-commands)
+---
+React(상), Flutter(상), Electron(상), LangChain/LangGraph(상), FastAPI(중), NestJS(하), Supabase(하)
+클론 코딩용 웹사이트
+
+C(상): 42Seoul 과정에서 시스템 프로그래밍을 다뤘습니다. Bash Shell 구현, 멀티스레딩 동기화, RayCasting 3D 엔진을 구현, 메모리 관리와 포인터 최적화 경험이 있습니다. 
+
+C++(중): 42Seoul CPP Module 프로젝트를 통해 객체지향 프로그래밍을 학습했습니다. 클래스 설계, 가상 함수와 다형성, 추상 클래스와 인터페이스, STL 컨테이너, 반복자, 템플릿 프로그래밍을 적용했습니다. 깊은 복사와 RAII 패턴을 구현했습니다.
+
+Python(상): FastAPI 백엔드와 벡터 DB를 구축했습니다. 프리랜서로 5건의 자동화 프로젝트를 마쳤고, LLM을 통합했습니다.
+
+JavaScript/TypeScript (중) React, NestJS, Electron으로 다수의 대외 프로젝트를 마쳤으며, IA x AI 해커톤(공동 4위)와 World's Largest Hackathon에서 풀스택 개발 경험을 쌓았습니다.
+---
+Claude는 정말 최상급이야. claude, claude code, claude desktop, 공식문서, config, agent, sub-agent, skills, plugin, permissoins, hook, CLAUDE.md/AGENT.md, MCP, superclaude 라이브러리, model 설정 등 다 할 수 있고 잘 알고 있고 팁도 가득하거든. 내 개발 전략 워크플로우만 봐도 알 거야.
+---
+AI를 비즈니스 가치로 만드는 개발 경험을 쌓아왔습니다. 향수 추천 AI 서비스 개발에서 LLM으로 네이버 시향 리뷰 2만개를 분석하고, 벡터 DB와 Graph DB를 결합한 추천 시스템을 구축했습니다. 당시 시장에 나온 300여개의 AI 도구를 직접 분석하며 최적의 기술 스택을 선정했고, 조향사분들과 매일 협업하며 데이터를 정제했습니다. CTO로 기술 의사결정을 담당하며 글로벌 향수 브랜드 2곳에 B2B 납품했고, 1,500만원 프로젝트를 마쳤습니다. 강점은 빠른 학습 능력과 AI 도구 활용입니다. React를 2일 만에 학습해 프로덕션 개발을 했고, Cursor AI를 2023년 7월 Beta부터 유료로 사용하며 AI 기반 개발 방법을 익혔습니다. 42Seoul에서는 하루 150명과 만나며 동료 코드 리뷰를 통해 협업 능력을 길렀습니다. 다만 기업 환경에서의 실무 경험과 대규모 프로덕션 시스템 경험이 부족합니다. 개인 프로젝트와 프리랜서 경험으로 역량을 키웠지만, 수백만 사용자를 대상으로 하는 서비스 운영과 팀 단위 개발 프로세스를 경험하지 못했습니다. SKALA에서 기업급 시스템 개발과 실무 노하우를 배우고 싶습니다. 실제 사용자 데이터를 다루며 확장 가능한 아키텍처를 설계하는 방법을 익히고, AI를 안정적으로 비즈니스에 통합하는 경험을 쌓아 신뢰할 수 있는 AI 서비스를 만드는 개발자로 성장하겠습니다.
+---
+Chrome 데모 페이지 모든 탭 닫기, 클론코딩 안된 부분들 체크하기. 원본 코드와 다른 부분들 체크하기.
+---
+Step 1: Worktree 생성
+Step 2: Demo 폴더 생성
+Step 3: Cursor 창 열기
+Step 4: 코드 분석           (/feature-dev --explore)
+Step 5: UI 설계             (/frontend-design)
+Step 6: 뷰 구현             (/feature-dev --implement)
+Step 7: 통합 및 상태 관리    (useState, 버튼)
+Step 8: 사용자 검증         (브라우저 테스트, Worktree에서!)
+Step 9: 보안 검증           (/security-guidance)
+Step 10: 코드 리뷰          (/code-review)
+Step 11: 커밋 및 병합       (git mv, /commit, git merge)

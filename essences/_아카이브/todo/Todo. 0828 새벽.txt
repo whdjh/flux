@@ -1,0 +1,116 @@
+Todo. 0828 새벽
+
+지금까지 좌측 사이드바, 메인뷰어, 우측사이드바의 기능을 거의 완성했어.                                 │
+│   layout, views, hooks, utils, service 폴더와 등등 모든 파일을 체크할 시간이야.                          │
+│   최적화와 테스트코드가 덜 작성된 것, 철학에 위배되지 않았는지, 등                                       │
+│   꼼꼼히 빠짐없이 체크해줘.                                                                              │
+│   /mnt/c/Users/jjy84/Desktop/리서치 프로젝트/모음집                                                      │
+│   /home/jun/8_August/electron/electron-boilerplate/src    
+
+메인 뷰어 분할 기능(cursor, vscode 같은 탭 분할)
+-> https://github.com/microsoft/vscode/tree/main/src/vs/base/browser/ui/splitview
+Tauri로 마이그레이션 하기
+
+AI 채팅창 컴팩트하고 미니멀하게.
+뷰어 UI도 컴팩트하고 미니멀하게.
+Masonry 정렬은 핀터레스트 UI처럼.
+List 정렬은 한 줄로 웨일 브라우저의 방문기록처럼
+오름차순, 내림차순이 공간을 차지하는게 불편함.
+
+주제 별 분류 UI 생각하기
+설정 UI 만들기
+
+AI채팅 기록 UI 만들기
+ctrl + 휠 업/다운으로 cursor, vscode, 웹브라우저 같이 확대/축소
+사이드바 접기/펴기 버튼 위치를 옮길지 말지.
+
+│ 1. 중복 파일 정리                                                  │
+     │ 2. TODO 구현체 완성                                                │
+     │ 3. Clean Architecture 리팩토링                                     │
+성능 최적화 적용                                                │
+5. 테스트 코드 작성                                                │
+ 6. 타입 및 스타일 정리
+
+  ✅ 완료된 작업
+
+  1. VirtualizedFileList calculateVisibleRange 구현 ✓
+    - 가상 스크롤링 핵심 로직 구현
+    - 버퍼를 포함한 효율적인 렌더링 범위 계산
+  2. ElectronFileSystemService TODO 주석 제거 ✓
+    - 이미 구현된 코드의 불필요한 TODO 주석 제거
+  3. useDragAndDrop 외부 파일 드롭 처리 ✓
+    - onExternalDrop 콜백 추가
+    - File[] 타입으로 외부 파일 처리
+  4. 중복 파일 제거 ✓
+    - 5개의 .optimized 파일 모두 제거
+    - 최신 버전만 유지
+  5. 위험한 any 타입 수정 ✓
+    - preload.ts, types/preload.d.ts의 any 타입 수정
+    - FileSearchBar, FileExplorerContent의 any 타입 수정
+    - 타입 안전성 향상
+  6. 핵심 컴포넌트 React.memo 추가 ✓
+    - LeftSidebar, RightSidebar에 React.memo 적용
+    - 불필요한 리렌더링 방지
+  7. 코드 품질 개선 ✓
+    - constants/layout.ts 파일 생성
+    - 매직 넘버 상수화
+    - MasterLayout, VirtualizedFileList에 상수 적용
+
+*레이아웃
+헤더 IPC 창 제어버튼
+좌측 사이드바
+	헤더
+	작업영역 이름, 새 파일, 새 폴더, 모든 폴더 접기, 사이드바 접기/펴기
+	메인
+	파일 시스템
+	이름 변경, 잘라내기, 복사, 삭제, 경로 복사, 상대 경로 복사, 파일 탐색기에서 열기
+	Shift + 클릭, ctrl + 클릭 다중 선택
+	파일 드래그 후 뷰어로 드롭
+	파일 아이콘 vscode symbols
+	푸터
+	유저 프로파일
+	설정
+메인 뷰어
+	탭 시스템
+	탭 드래그앤 드롭해서 순서 변경(Chrome, whale 벤치)
+	새 탭
+	ctrl + 휠 클릭 탭 닫기
+	탭 닫기 버튼
+	아이콘 + 제목
+	헤더
+	파일 경로 Breadcrumb
+	정렬 옵션
+	뷰어 옵션
+	필터
+	메인
+	무한 스크롤
+	벽돌, 그리드, 리스트, 양쪽 정렬, 메모 뷰어
+	벽돌
+		핀터레스트 식 Masonry 뷰어
+	그리드
+		ㅁ
+	리스트
+		ㅁ
+	양쪽
+		ㅁ
+	메모
+		ㅁ
+	푸터
+	확대/축소 표시
+	메모
+		글자 수, 행, 열, 공백 크기, 문자 인코딩 방식
+우측 사이드바
+	헤더
+		탭 시스템
+			메인 뷰어 채팅과 같은 기능
+		새 채팅
+		채팅 기록
+		사이드바 접기/펴기
+	메인
+		AI 어시스턴트 창
+			AI 어시스턴트 답변
+	푸터
+		AI 채팅 창
+			파일/폴더
+			채팅 전송 버튼
+				

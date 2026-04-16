@@ -1,0 +1,415 @@
+Todo. 0208
+
+dotclaude Migration Plan (WSL)
+Context
+현재 ~/.claude가 hackathon-claude-sync repo(branch: windows)로 관리 중.
+이를 junyjeon/dotclaude repo(branch: main)로 교체하되, 런타임 데이터를 보존해야 함.
+
+현재 Claude 세션이 ~/.claude 안에서 실행 중이므로, rm + clone 대신
+remote swap 방식을 사용하여 안전하게 전환.
+
+현재 상태
+repo: hackathon-claude-sync (branch: windows)
+런타임 데이터 (~280MB): projects/, todos/, statsig/, plugins/, file-history/, credentials/, .credentials.json, history.jsonl, debug/
+이미 설치된 플러그인: mgrep, commit-commands, feature-dev, frontend-design, security-guidance, code-review, agent-sdk-dev, document-skills, example-skills
+play-sound.js: 없음 (dotclaude repo에 포함되어 있을 것으로 예상)
+Steps
+1. 런타임 데이터 백업
+
+mkdir -p /tmp/claude-backup
+cp -r ~/.claude/projects /tmp/claude-backup/
+cp -r ~/.claude/todos /tmp/claude-backup/
+cp -r ~/.claude/statsig /tmp/claude-backup/
+cp -r ~/.claude/plugins /tmp/claude-backup/
+cp -r ~/.claude/file-history /tmp/claude-backup/
+cp -r ~/.claude/credentials /tmp/claude-backup/
+cp ~/.claude/.credentials.json /tmp/claude-backup/
+cp ~/.claude/history.jsonl /tmp/claude-backup/
+cp -r ~/.claude/debug /tmp/claude-backup/ 2>/dev/null
+2. Git remote 교체 + dotclaude 체크아웃
+
+cd ~/.claude
+git remote rename origin hackathon-backup
+git remote add origin https://github.com/junyjeon/dotclaude.git
+git fetch origin
+git checkout -b main origin/main --force
+이렇게 하면 hackathon-claude-sync 히스토리도 hackathon-backup remote로 보존됨.
+
+3. 런타임 데이터 복원
+
+cp -r /tmp/claude-backup/projects ~/.claude/
+cp -r /tmp/claude-backup/todos ~/.claude/
+cp -r /tmp/claude-backup/statsig ~/.claude/
+cp -r /tmp/claude-backup/plugins ~/.claude/
+cp -r /tmp/claude-backup/file-history ~/.claude/
+cp -r /tmp/claude-backup/credentials ~/.claude/
+cp /tmp/claude-backup/.credentials.json ~/.claude/
+cp /tmp/claude-backup/history.jsonl ~/.claude/
+cp -r /tmp/claude-backup/debug ~/.claude/ 2>/dev/null
+4. 플러그인 설치
+mgrep은 이미 설치됨. everything-claude-code만 추가:
+
+
+claude plugin marketplace add https://github.com/anthropics/everything-claude-code
+claude plugin install everything-claude-code@everything-claude-code
+5. 사운드 테스트
+
+node ~/.claude/scripts/play-sound.js done
+dotclaude repo에 play-sound.js가 없으면 별도 확인 필요.
+
+6. 정리
+
+rm -rf /tmp/claude-backup  # 모든 것이 정상이면
+git -C ~/.claude remote remove hackathon-backup  # 선택: 이전 remote 제거
+Verification
+git -C ~/.claude remote -v → origin이 dotclaude를 가리키는지 확인
+git -C ~/.claude log --oneline -3 → dotclaude 커밋 히스토리 확인
+ls ~/.claude/projects/ → 런타임 데이터 보존 확인
+claude plugin list → 플러그인 상태 확인
+node ~/.claude/scripts/play-sound.js done → WSL 오디오 브릿지 테스트
+주의사항
+현재 세션이 ~/.claude 안에서 실행 중이므로 rm + clone 대신 remote swap 사용
+settings.json은 dotclaude repo의 것으로 대체됨 (크로스 플랫폼 호환)
+.claude.json (MCP 서버 설정)은 repo에 포함 안 됨, 필요시 별도 설정
+hackathon-claude-sync의 windows 브랜치 작업물은 hackathon-backup remote로 보존
+Stayed in plan mode
+remote 식으로 하면 깔끔하게 전환이 가능해?
+The user is asking whether the remote swap approach will result in a clean transition. Let me think about this honestly.
+
+The issue is: the two repos (hackathon-claude-sync and dotclaude) have completely different git histories. When we do git fetch origin (the new dotclaude remote) and then git checkout -b main origin/main --force, we'll get the dotclaude files, but:
+
+Any tracked files from hackathon-claude-sync that aren't in dotclaude will remain as untracked files
+The git history will be completely different
+There might be leftover files from the old repo
+So it's NOT as clean as rm + clone.
+
+The real problem is that untracked files from the old repo will stick around and clutter things. I could use git clean -fd to remove them, but that's risky since it might delete runtime data I want to keep—though ideally that stuff should be in .gitignore anyway.
+
+Actually, the safest approach is probably to back up the runtime data first, then do a hard reset to the new remote and clean up untracked files, then restore the data. But honestly, the user's instinct about just removing and cloning fresh might be the cleanest solution after all. Let me think through the actual tradeoffs here.
+
+The real issue with rm + clone during an active session is that Claude Code might try to read or write to ~/.claude while it's being replaced—config files are mostly loaded into memory, but things like todos or session data could cause problems if the directory vanishes mid-operation. I should be straightforward about these limitations rather than overselling the remote swap approach.
+
+솔직히 말하면, 완전히 깔끔하진 않습니다. 두 repo의 git 히스토리가 완전히 다르기 때문에:
+
+remote swap의 한계:
+
+hackathon-claude-sync에만 있던 tracked 파일들이 untracked 상태로 남음
+git clean -fd로 정리 가능하지만, .gitignore에 없는 파일이 날아갈 수 있음
+두 repo의 히스토리가 섞이진 않지만, old remote가 남아있어 지저분함
+rm + clone이 더 깔끔한 이유:
+
+완전히 새로운 시작, 잔여 파일 없음
+git 히스토리가 dotclaude 것만 남음
+현실적 권장안: 이 세션 종료 후 별도 터미널에서 rm + clone 하는 게 가장 깔끔합니다. 마이그레이션 스크립트를 미리 만들어두면 복사-붙여넣기로 끝낼 수 있습니다.
+
+플랜을 rm + clone 방식으로 수정할까요?
+
+AskUserQuestion
+OUT
+User has answered your questions: "마이그레이션 방식을 어떻게 할까요?"="rm + clone 스크립트 (Recommended)". You can now continue with the user's answers in mind.
+rm + clone 스크립트 방식으로 플랜을 수정합니다.
+
+Write enumerated-stargazing-kurzweil.md
+97 lines
+# dotclaude Migration Plan (WSL)
+
+## Context
+
+현재 `~/.claude`가 `hackathon-claude-sync` repo(branch: windows)로 관리 중.
+`junyjeon/dotclaude` repo(branch: main)로 교체하되, 런타임 데이터를 보존해야 함.
+
+## 방식: rm + clone 스크립트
+
+이 세션에서 마이그레이션 스크립트를 생성 → 세션 종료 → 별도 터미널에서 실행.
+
+## 보존할 런타임 데이터
+
+- projects/ (209MB) - 세션 데이터
+- todos/ (1.4MB) - 할일 상태
+- statsig/ (44KB) - 통계
+- plugins/ (62MB) - 설치된 플러그인 + 마켓플레이스
+- file-history/ (6MB) - 파일 변경 이력
+- credentials/ + .credentials.json - 인증 정보
+- history.jsonl - 명령 히스토리
+- debug/ - 디버그 로그
+
+## 스크립트 내용 (`/tmp/migrate-dotclaude.sh`)
+
+```bash
+#!/bin/bash
+set -euo pipefail
+
+BACKUP_DIR="/tmp/claude-backup-$(date +%Y%m%d%H%M%S)"
+TARGET="$HOME/.claude"
+
+echo "=== Step 1: 런타임 데이터 백업 ==="
+mkdir -p "$BACKUP_DIR"
+for dir in projects todos statsig plugins file-history credentials debug; do
+  [ -d "$TARGET/$dir" ] && cp -r "$TARGET/$dir" "$BACKUP_DIR/"
+done
+[ -f "$TARGET/.credentials.json" ] && cp "$TARGET/.credentials.json" "$BACKUP_DIR/"
+[ -f "$TARGET/history.jsonl" ] && cp "$TARGET/history.jsonl" "$BACKUP_DIR/"
+echo "백업 완료: $BACKUP_DIR"
+
+echo "=== Step 2: ~/.claude 제거 및 clone ==="
+rm -rf "$TARGET"
+git clone https://github.com/junyjeon/dotclaude.git "$TARGET"
+echo "Clone 완료"
+
+echo "=== Step 3: 런타임 데이터 복원 ==="
+for dir in projects todos statsig plugins file-history credentials debug; do
+  [ -d "$BACKUP_DIR/$dir" ] && cp -r "$BACKUP_DIR/$dir" "$TARGET/"
+done
+[ -f "$BACKUP_DIR/.credentials.json" ] && cp "$BACKUP_DIR/.credentials.json" "$TARGET/"
+[ -f "$BACKUP_DIR/history.jsonl" ] && cp "$BACKUP_DIR/history.jsonl" "$TARGET/"
+echo "복원 완료"
+
+echo "=== Step 4: 플러그인 설치 ==="
+claude plugin marketplace add https://github.com/anthropics/everything-claude-code
+claude plugin install everything-claude-code@everything-claude-code
+echo "플러그인 설치 완료 (mgrep은 plugins/ 복원으로 유지됨)"
+
+echo "=== Step 5: 사운드 테스트 ==="
+if [ -f "$TARGET/scripts/play-sound.js" ]; then
+  node "$TARGET/scripts/play-sound.js" done
+  echo "사운드 테스트 실행됨 (소리가 들리면 정상)"
+else
+  echo "⚠ play-sound.js가 dotclaude repo에 없음. 확인 필요"
+fi
+
+echo "=== 검증 ==="
+echo "Remote: $(git -C "$TARGET" remote -v | head -1)"
+echo "Branch: $(git -C "$TARGET" branch --show-current)"
+echo "Projects: $(ls "$TARGET/projects/" 2>/dev/null | wc -l) dirs"
+echo "Plugins: $(ls "$TARGET/plugins/installed_plugins.json" 2>/dev/null && echo 'OK' || echo 'MISSING')"
+
+echo ""
+echo "=== 완료 ==="
+echo "백업 위치: $BACKUP_DIR"
+echo "문제 발생 시: cp -r $BACKUP_DIR/* $TARGET/ 로 복구"
+```
+
+## 실행 방법
+
+1. 이 세션에서 스크립트 생성: `/tmp/migrate-dotclaude.sh`
+2. 이 세션 종료 (`exit` 또는 Ctrl+C)
+3. 별도 터미널에서:
+   ```
+   chmod +x /tmp/migrate-dotclaude.sh
+   /tmp/migrate-dotclaude.sh
+   ```
+4. 새 claude 세션 시작하여 확인
+
+## 사후 확인
+
+- `git -C ~/.claude remote -v` → dotclaude를 가리키는지
+- `git -C ~/.claude log --oneline -3` → dotclaude 커밋
+- `ls ~/.claude/projects/` → 런타임 데이터 보존
+- `claude plugin list` → 플러그인 상태
+- .claude.json (MCP 설정) → 별도 확인/설정 필요할 수 있음
+플랜 수정 완료. 핵심은:
+
+이 세션에서 /tmp/migrate-dotclaude.sh 스크립트만 생성
+세션 종료 후 별도 터미널에서 스크립트 실행
+스크립트가 백업 → rm + clone → 복원 → 플러그인 설치 → 사운드 테스트를 순차 처리
+Claude’s Plan
+dotclaude Migration Plan (WSL)
+Context
+현재 ~/.claude가 hackathon-claude-sync repo(branch: windows)로 관리 중.
+junyjeon/dotclaude repo(branch: main)로 교체하되, 런타임 데이터를 보존해야 함.
+
+방식: rm + clone 스크립트
+이 세션에서 마이그레이션 스크립트를 생성 → 세션 종료 → 별도 터미널에서 실행.
+
+보존할 런타임 데이터
+projects/ (209MB) - 세션 데이터
+todos/ (1.4MB) - 할일 상태
+statsig/ (44KB) - 통계
+plugins/ (62MB) - 설치된 플러그인 + 마켓플레이스
+file-history/ (6MB) - 파일 변경 이력
+credentials/ + .credentials.json - 인증 정보
+history.jsonl - 명령 히스토리
+debug/ - 디버그 로그
+스크립트 내용 (/tmp/migrate-dotclaude.sh)
+
+#!/bin/bash
+set -euo pipefail
+
+BACKUP_DIR="/tmp/claude-backup-$(date +%Y%m%d%H%M%S)"
+TARGET="$HOME/.claude"
+
+echo "=== Step 1: 런타임 데이터 백업 ==="
+mkdir -p "$BACKUP_DIR"
+for dir in projects todos statsig plugins file-history credentials debug; do
+  [ -d "$TARGET/$dir" ] && cp -r "$TARGET/$dir" "$BACKUP_DIR/"
+done
+[ -f "$TARGET/.credentials.json" ] && cp "$TARGET/.credentials.json" "$BACKUP_DIR/"
+[ -f "$TARGET/history.jsonl" ] && cp "$TARGET/history.jsonl" "$BACKUP_DIR/"
+echo "백업 완료: $BACKUP_DIR"
+
+echo "=== Step 2: ~/.claude 제거 및 clone ==="
+rm -rf "$TARGET"
+git clone https://github.com/junyjeon/dotclaude.git "$TARGET"
+echo "Clone 완료"
+
+echo "=== Step 3: 런타임 데이터 복원 ==="
+for dir in projects todos statsig plugins file-history credentials debug; do
+  [ -d "$BACKUP_DIR/$dir" ] && cp -r "$BACKUP_DIR/$dir" "$TARGET/"
+done
+[ -f "$BACKUP_DIR/.credentials.json" ] && cp "$BACKUP_DIR/.credentials.json" "$TARGET/"
+[ -f "$BACKUP_DIR/history.jsonl" ] && cp "$BACKUP_DIR/history.jsonl" "$TARGET/"
+echo "복원 완료"
+
+echo "=== Step 4: 플러그인 설치 ==="
+claude plugin marketplace add https://github.com/anthropics/everything-claude-code
+claude plugin install everything-claude-code@everything-claude-code
+echo "플러그인 설치 완료 (mgrep은 plugins/ 복원으로 유지됨)"
+
+echo "=== Step 5: 사운드 테스트 ==="
+if [ -f "$TARGET/scripts/play-sound.js" ]; then
+  node "$TARGET/scripts/play-sound.js" done
+  echo "사운드 테스트 실행됨 (소리가 들리면 정상)"
+else
+  echo "⚠ play-sound.js가 dotclaude repo에 없음. 확인 필요"
+fi
+
+echo "=== 검증 ==="
+echo "Remote: $(git -C "$TARGET" remote -v | head -1)"
+echo "Branch: $(git -C "$TARGET" branch --show-current)"
+echo "Projects: $(ls "$TARGET/projects/" 2>/dev/null | wc -l) dirs"
+echo "Plugins: $(ls "$TARGET/plugins/installed_plugins.json" 2>/dev/null && echo 'OK' || echo 'MISSING')"
+
+echo ""
+echo "=== 완료 ==="
+echo "백업 위치: $BACKUP_DIR"
+echo "문제 발생 시: cp -r $BACKUP_DIR/* $TARGET/ 로 복구"
+실행 방법
+이 세션에서 스크립트 생성: /tmp/migrate-dotclaude.sh
+이 세션 종료 (exit 또는 Ctrl+C)
+별도 터미널에서:
+
+chmod +x /tmp/migrate-dotclaude.sh
+/tmp/migrate-dotclaude.sh
+새 claude 세션 시작하여 확인
+사후 확인
+git -C ~/.claude remote -v → dotclaude를 가리키는지
+git -C ~/.claude log --oneline -3 → dotclaude 커밋
+ls ~/.claude/projects/ → 런타임 데이터 보존
+claude plugin list → 플러그인 상태
+.claude.json (MCP 설정) → 별도 확인/설정 필요할 수 있음
+User approved the plan
+Update Todos
+
+Create migration script at /tmp/migrate-dotclaude.sh
+
+Verify script is executable and ready to run
+
+Provide post-migration instructions
+Write migrate-dotclaude.sh
+54 lines
+#!/bin/bash
+set -euo pipefail
+
+BACKUP_DIR="/tmp/claude-backup-$(date +%Y%m%d%H%M%S)"
+TARGET="$HOME/.claude"
+
+echo "=== Step 1: 런타임 데이터 백업 ==="
+mkdir -p "$BACKUP_DIR"
+for dir in projects todos statsig plugins file-history credentials debug; do
+  [ -d "$TARGET/$dir" ] && cp -r "$TARGET/$dir" "$BACKUP_DIR/"
+done
+[ -f "$TARGET/.credentials.json" ] && cp "$TARGET/.credentials.json" "$BACKUP_DIR/"
+[ -f "$TARGET/history.jsonl" ] && cp "$TARGET/history.jsonl" "$BACKUP_DIR/"
+echo "백업 완료: $BACKUP_DIR"
+
+echo "=== Step 2: ~/.claude 제거 및 clone ==="
+rm -rf "$TARGET"
+git clone https://github.com/junyjeon/dotclaude.git "$TARGET"
+echo "Clone 완료"
+
+echo "=== Step 3: 런타임 데이터 복원 ==="
+for dir in projects todos statsig plugins file-history credentials debug; do
+  [ -d "$BACKUP_DIR/$dir" ] && cp -r "$BACKUP_DIR/$dir" "$TARGET/"
+done
+[ -f "$BACKUP_DIR/.credentials.json" ] && cp "$BACKUP_DIR/.credentials.json" "$TARGET/"
+[ -f "$BACKUP_DIR/history.jsonl" ] && cp "$BACKUP_DIR/history.jsonl" "$TARGET/"
+echo "복원 완료"
+
+echo "=== Step 4: 플러그인 설치 ==="
+claude plugin marketplace add https://github.com/anthropics/everything-claude-code && \
+claude plugin install everything-claude-code@everything-claude-code || \
+echo "⚠ 플러그인 설치 실패 - 수동 설치 필요"
+echo "mgrep은 plugins/ 복원으로 유지됨"
+
+echo "=== Step 5: 사운드 테스트 ==="
+if [ -f "$TARGET/scripts/play-sound.js" ]; then
+  node "$TARGET/scripts/play-sound.js" done
+  echo "사운드 테스트 실행됨 (소리가 들리면 정상)"
+else
+  echo "⚠ play-sound.js가 dotclaude repo에 없음. 확인 필요"
+fi
+
+echo ""
+echo "=== 검증 ==="
+echo "Remote: $(git -C "$TARGET" remote -v | head -1)"
+echo "Branch: $(git -C "$TARGET" branch --show-current)"
+echo "Projects: $(ls "$TARGET/projects/" 2>/dev/null | wc -l) dirs"
+echo "Plugins: $(ls "$TARGET/plugins/installed_plugins.json" 2>/dev/null && echo 'OK' || echo 'MISSING')"
+
+echo ""
+echo "=== 완료 ==="
+echo "백업 위치: $BACKUP_DIR"
+echo "문제 발생 시: cp -r $BACKUP_DIR/* $TARGET/ 로 복구"
+Bash Make script executable and validate syntax
+IN
+chmod +x /tmp/migrate-dotclaude.sh && echo "chmod OK" && bash -n /tmp/migrate-dotclaude.sh && echo "syntax OK"
+
+OUT
+chmod OK
+syntax OK
+Update Todos
+
+Create migration script at /tmp/migrate-dotclaude.sh
+
+Verify script is executable and ready to run
+
+Provide post-migration instructions
+스크립트 생성 완료. 실행 방법:
+
+
+★ Insight ─────────────────────────────────────
+- set -euo pipefail: 에러 시 즉시 중단(-e), 미정의 변수 에러(-u),
+  파이프 중간 실패 감지(-o pipefail). 마이그레이션처럼 순차적이고
+  실패 시 복구가 중요한 스크립트에 필수적인 패턴
+─────────────────────────────────────────────────
+실행 순서
+이 세션 종료 (Ctrl+C 또는 /exit)
+별도 터미널에서:
+
+/tmp/migrate-dotclaude.sh
+새 claude 세션 시작하여 확인:
+
+claude
+문제 발생 시 복구
+스크립트 출력에 백업 경로가 표시됨. 예:
+
+
+cp -r /tmp/claude-backup-20260208XXXXXX/* ~/.claude/
+.claude.json (MCP 설정)
+dotclaude repo에 포함 안 되어 있으면 별도 설정 필요. 마이그레이션 후 확인하세요.
+
+Update Todos
+
+Create migration script at /tmp/migrate-dotclaude.sh
+
+Verify script is executable and ready to run
+
+Provide post-migration instructions
+준비 완료. 세션 종료 후 /tmp/migrate-dotclaude.sh 실행하면 됩니다.
+
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+=== Step 1: 런타임 데이터 백업 ===
+백업 완료: /tmp/claude-backup-20260208003550
+=== Step 2: ~/.claude 제거 및 clone ===
+Cloning into '/home/jun/.claude'...
+fatal: Unable to read current working directory: No such file or directory

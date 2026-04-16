@@ -1,0 +1,122 @@
+Todo. 0825
+
+  1. Domain Layer 최적화
+
+  - ✅ Value Object 캐싱 (싱글톤)
+  - ✅ 이벤트 배치 처리
+  - ✅ 불필요한 업데이트 스킵
+  - ✅ Factory 패턴으로 생성 최적화
+
+  2. React Component 최적화
+
+  - ✅ 컴포넌트 분할 (NameSection, ThemeSection
+   등)
+  - ✅ React.memo로 불필요한 리렌더링 방지
+  - ✅ useCallback으로 함수 재생성 방지
+  - ✅ 디바운싱으로 입력 성능 개선
+
+  3. IPC 통신 최적화
+
+  - ✅ 싱글톤 패턴으로 인스턴스 재사용
+  - ✅ 메모리 캐싱 (TTL 5분)
+  - ✅ 배치 업데이트 지원
+  - ✅ 캐시 무효화 전략
+
+☒ Clean Architecture 기능 정의 및 설계    
+☒ Domain Layer 생성 (entities, value-objects, events)
+☒ Application Layer 생성 (use-cases, ports)
+☒ Infrastructure Layer 생성 (repositories, adapters)
+☒ Interface Layer 생성 (IPC handlers, React components)
+☒ 테스트 파일 생성
+
+☒ Clean Architecture 성능 분석
+☒ React 컴포넌트 최적화
+☒ IPC 통신 최적화
+☒ 타입 및 메모리 최적화
+
+☒ 정렬 옵션(크기, 타입) 제거
+
+☐ Create ViewerToolbar test file with basic setup
+☐ Write rendering tests (RED phase)
+☐ Write interaction tests (RED phase)
+☐ Verify tests pass (GREEN phase)
+☐ Refactor test code (REFACTOR phase)
+
+ ☒ Simplify handleSidebarToggle to only update state
+     ☒ Update useEffect to sync panels with state
+     ☒ Test the fix in development
+
+ ☒ Remove onCollapse/onExpand handlers to prevent circular updates
+     ☒ Optimize event listener with ref pattern
+     ☒ Add state check before DOM manipulation
+     ☒ Add shallow comparison to store
+
+  ☒ Delete current incorrect JustifiedView.tsx implementation 
+     ☒ Create new JustifiedView.tsx as image gallery layout
+     ☒ Update ViewContainer.tsx to use new JustifiedView properly
+     ☒ Update ViewerToolbar.test.tsx for justified view
+     ☒ Test the new justified gallery implementation
+
+☒ Extend IPC contracts for clipboard operations         
+     ☒ Update preload.ts with new IPC methods
+     ☒ Add backend handlers for clipboard and path operations
+     ☐ Create useFileOperations hook for centralized logic
+     ☐ Create FileContextMenu component
+     ☐ Create FileRenameInput component for inline editing
+     ☐ Integrate context menu into FileExplorerContent
+     ☐ Add keyboard shortcuts for file operations
+     ☐ Test file system operations
+
+ ☒ Create FileSystemError types                
+     ☒ Implement ElectronFileSystemService
+     ☒ Update registerFileSystemIPC to use service
+     ☒ Update useFileOperations hook to use service
+     ☒ Test improved file system
+
+ ☐ FileTreeItem 컴포넌트 React.memo 적용  
+     ☐ handleContextMenuActions useMemo 최적화
+     ☐ listDirectory 병렬 처리 최적화
+     ☐ JustifiedView 레이아웃 계산 최적화
+     ☐ 파일 워처 중복 방지
+     ☐ 성능 최적화 테스트
+
+☒ 파일 시스템 서비스 단위 테스트 작성     
+     ☐ FileExplorerContent 컴포넌트 테스트 작성
+     ☐ useFileOperations 훅 테스트 작성
+     ☐ 성능 최적화 검증 테스트
+
+✅메인뷰어 헤더에 노트 아이콘 없애기
+✅정렬 옵션 손보기(타입, 크기 정렬이 필요한지?)
+🤝메모 좌측 목차 아이디어는 좋은데 불필요할 가능성. 다른 방식으로 둘 지 없앨지 생각하기.
+-> ✅제거
+✅사이드바 접기/펴기 단축키가 두 번 눌러야 작동하는 문제. 직접 코드 보기 MasterLayout.tsx 98줄
+단축키 두 번 눌러야 하는 문제 해결 계획
+✅뷰어 양쪽 정렬을 넣을지, 넣게되면 저스티파이드 justified 정렬이 필요한지?
+-> ✅필요하다 판단하고 만듬
+
+     문제 원인:
+
+     1. ResizablePanel 조작과 상태 store 업데이트가 동기화되지 않음
+     2. 패널 상태와 store 상태가 불일치하는 race condition
+     3. WSL 환경에서 X11 포워딩으로 인한 추가 지연
+
+     해결 방안:
+
+     상태 기반 단일 소스 방식
+
+     - ResizablePanel 조작을 제거하고 상태만 변경
+     - useEffect에서 상태 변경을 감지하여 패널 조작
+     
+     1. handleSidebarToggle 단순화:
+       - ResizablePanel 직접 조작 제거
+       - toggle() 함수만 호출
+     2. useEffect로 패널 동기화:
+       - leftSidebarOpen/rightSidebarOpen 변경 감지
+       - 변경 시 패널 collapse/expand 실행
+     3. 초기화 로직 통합:
+       - 기존 초기화 useEffect와 통합
+       - 상태 변경 시마다 패널 동기화
+
+✅파일 시스템 이름 수정, 삭제, 경로 복사, 상대 경로 복사, 복사, 잘라내기 추가하기
+
+하나씩 하기..

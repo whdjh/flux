@@ -1,0 +1,118 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Claude 답변 가이드라인
+
+## 어체 및 문체
+- 존댓말 금지: "합니다", "습니다" 등 존댓말 사용하지 않기
+- 간결한 반말: "이야", "야", "거야", "해" 등 자연스러운 반말 사용
+- 불필요한 부사 제거: "아주", "정말", "매우" 등 과도한 수식어 최소화
+
+## 답변 스타일
+- 핵심 위주: 맥락 손실 없이 최대한 간결하게
+- 빠른 이해: 읽는 부담을 줄이고 즉시 이해 가능한 구조
+- 정보 밀도 향상: 글자 수 대비 정보량 최대화
+- 가독성 우선: 긴 설명보다는 명확하고 짧은 설명
+
+## 예시
+❌ "이것은 매우 중요한 개념입니다. 자세히 설명해드리겠습니다."
+✅ "중요한 개념이야. 간단히 설명할게."
+
+❌ "프로그래밍에서 이 방법을 사용하시면 훨씬 더 효율적으로 작업하실 수 있습니다."
+✅ "이 방법을 쓰면 더 효율적이야."
+
+## 구현 작업 원칙
+- 비즈니스 로직 구현 작업은 테스트를 먼저 작성해
+- SOLID 원칙 사용해서 구현해
+- Clean Architecture 사용해서 구현해
+
+## 코드 품질 원칙
+- 단순성: 언제나 복잡한 솔루션보다 가장 단순한 솔루션을 우선해
+- 중복 방지: 코드 중복 피하고, 기존 기능 재사용해 (DRY 원칙)
+- 가이드라인: 테스트에서 개발/프로덕션 환경의 모의 데이터 사용하지 마
+- 효율성: 명확성 희생 없이 토큰 사용 최소화해
+
+## 리팩토링
+- 리팩토링이 필요한 경우 계획 설명하고 허락받은 다음 진행해
+- 코드 구조 개선이 목표고, 기능 변경은 아니야
+- 리팩토링 후에 모든 테스트가 통과하는지 확인해
+
+## 디버깅  
+- 디버깅 시 원인 및 해결책 설명하고 허락받은 다음 진행해
+- 에러 해결이 중요한 게 아니라 제대로 동작하는 게 중요해
+- 원인 불분명할 때 분석용 상세 로그 추가해
+
+## 언어
+- AWS 리소스 설명은 영문으로 작성해
+- 기술적인 용어나 라이브러리 이름 등은 원문 유지해
+- 간단한 다이어그램은 mermaid 사용, 복잡한 아키텍처는 별도 svg 파일 생성해서 문서에 포함시켜
+
+### 복잡하지 않게
+- 당장 필요 없는 기능은 만들지 마 (YAGNI)
+- 미래를 위한 복잡한 구조 만들지 마
+- 5분 안에 이해 못하면 너무 복잡한 거야
+- 순서: 작동하는 코드 → 깔끔한 코드 → 빠른 코드
+
+### 네이밍
+- 코드 보면 "뭘 하는지"가 아니라 "왜 하는지" 알아야 해
+- 함수명은 구현 방법 말고 목적을 써
+- 주석 없이도 코드만으로 이해되게 써
+
+### 폴더 구조
+- 관련된 파일들 같은 폴더에 넣어
+- 파일 간 의존성 최대한 줄여
+- 각 폴더가 뭘 하는 폴더인지 명확하게 해
+
+# Clean Code Guidelines
+
+## Constants Over Magic Numbers
+- Replace hard-coded values with named constants
+- Use descriptive constant names that explain the value's purpose
+- Keep constants at the top of the file or in a dedicated constants file
+
+## Meaningful Names
+- Variables, functions, and classes should reveal their purpose
+- Names should explain why something exists and how it's used
+- Avoid abbreviations unless they're universally understood
+
+## Smart Comments
+- Don't comment on what the code does - make the code self-documenting
+- Use comments to explain why something is done a certain way
+- Document APIs, complex algorithms, and non-obvious side effects
+
+## Single Responsibility
+- Each function should do exactly one thing
+- Functions should be small and focused
+- If a function needs a comment to explain what it does, it should be split
+
+## DRY (Don't Repeat Yourself)
+- Extract repeated code into reusable functions
+- Share common logic through proper abstraction
+- Maintain single sources of truth
+
+## Clean Structure
+- Keep related code together
+- Organize code in a logical hierarchy
+- Use consistent file and folder naming conventions
+
+## Encapsulation
+- Hide implementation details
+- Expose clear interfaces
+- Move nested conditionals into well-named functions
+
+## Code Quality Maintenance
+- Refactor continuously
+- Fix technical debt early
+- Leave code cleaner than you found it
+
+## Testing
+- Write tests before fixing bugs
+- Keep tests readable and maintainable
+- Test edge cases and error conditions
+
+## Version Control
+- Write clear commit messages
+- Make small, focused commits
+- Use meaningful branch names

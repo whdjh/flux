@@ -1,0 +1,522 @@
+Todo. 1020
+
+→ 구체적인 문제 찾기? 사례 찾기?
+
+아버지 수면 무호흡증
+
+스마트워치 접근성. 데이터가 무슨 의미를 가지는지 모를 수 있다?
+
+헬창 → 어제 이만큼 운동했는데, → 오늘 술을 마시면, 근 합성이 이만큼 방해될 수 있다
+
+수면부족 → 브레인포그
+
+일반적인 문제를 해결하는 서비스지만 실 사례로서-
+
+가능성? 스마트워치에 어떤 데이터가 들어가는지를 봐야할듯.
+
+## 🎯 트리거 발동 조건
+
+### 트리거 종류
+
+**1. 데이터 변화 트리거 (Data-driven)**
+**2. 시간 트리거 (Time-based)**
+**3. 이벤트 트리거 (Event-driven)**
+**4. 패턴 트리거 (Pattern-based)**
+**5. 조합 트리거 (Contextual)**
+
+---
+
+## 1️⃣ 데이터 변화 트리거
+
+### 실시간 감지
+
+```python
+# 새 데이터 도착 시
+@app.post("/api/health-data")
+async def receive_health_data(data: HealthData):
+    """워치에서 데이터 올 때마다"""
+    
+    # 즉시 체크
+    if data.type == "HRV":
+        # 기준선과 비교
+        baseline = get_user_baseline(data.user_id, "HRV")
+        
+        if data.value <= baseline.p10:  # 하위 10%
+            # 트리거 후보
+            await check_context(data.user_id)
+```
+
+**하지만 단독으로는 트리거 안 함:**
+```
+HRV 낮음 → 즉시 알림 ❌
+
+왜?
+- 운동 후 당연히 낮음
+- 자는 중에도 변함
+- 하루에도 여러 번 변함
+- False positive 너무 많음
+
+→ 맥락 확인 필수
+```
+
+---
+
+### 급격한 변화 감지
+
+```python
+# 급변만 체크
+async def detect_rapid_change(data: HealthData):
+    """10분 내 급격한 변화"""
+    
+    recent = get_last_10min_data(data.user_id, data.type)
+    
+    if data.type == "heart_rate":
+        # 안정 상태인데 심박 급증
+        if is_resting(user) and data.value > recent.avg + 20:
+            # 이상 신호
+            return await trigger_alert("heart_rate_spike")
+    
+    if data.type == "HRV":
+        # 10분 만에 30% 하락
+        if data.value < recent.avg * 0.7:
+            # 저혈당 의심
+            return await trigger_alert("possible_hypoglycemia")
+```
+
+**이런 경우만 즉시:**
+```
+✅ 심박 급증 (활동 없는데 +20)
+✅ HRV 급락 (10분에 30%↓)
+✅ SpO₂ 급락 (92% 미만)
+
+→ 응급 상황 의심
+→ 즉시 알림
+```
+
+---
+
+## 2️⃣ 시간 트리거
+
+### 정해진 시간
+
+```python
+# Celery 스케줄
+@celery_app.on_after_configure.connect
+def setup_periodic_tasks(sender, **kwargs):
+    
+    # 매일 아침 7시
+    sender.add_periodic_task(
+        crontab(hour=7, minute=0),
+        morning_check.s(),
+    )
+    
+    # 매일 저녁 10시
+    sender.add_periodic_task(
+        crontab(hour=22, minute=0),
+        evening_check.s(),
+    )
+
+@shared_task
+def morning_check():
+    """아침 체크"""
+    for user in get_active_users():
+        # 어젯밤 데이터 분석
+        sleep_data = get_last_night_sleep(user.id)
+        today_calendar = get_today_schedule(user.id)
+        
+        # 오늘 위험 예측
+        risk = await pattern_agent.analyze(
+            sleep=sleep_data,
+            schedule=today_calendar
+        )
+        
+        if risk.level == "high":
+            # 아침 알림
+            send_notification(
+                user.id,
+                "⚠️ 오늘 주의 필요",
+                risk.message
+            )
+```
+
+**시간 트리거 예시:**
+```
+07:00 - 아침 체크
+        → 어젯밤 수면 분석
+        → 오늘 일정 확인
+        → 위험도 계산
+        → 알림
+
+22:00 - 저녁 체크
+        → 오늘 피로도
+        → 내일 일정 확인
+        → 수면제 주의 등
+
+매시 정각 - 복약 알림
+        → 정기 복약 시간
+
+활동 1h 전 - 사전 체크
+        → 컨디션 확인
+```
+
+---
+
+## 3️⃣ 이벤트 트리거
+
+### 사용자 행동 기반
+
+```python
+@app.post("/api/medication/record")
+async def record_medication(med: Medication):
+    """복약 기록 → 즉시 트리거"""
+    
+    # 1. 기록 저장
+    await db.save_medication(med)
+    
+    # 2. 즉시 위험 체크
+    risks = await medical_context_agent.check_risks(
+        user_id=med.user_id,
+        medication=med
+    )
+    
+    # 3. 24시간 내 일정 확인
+    upcoming = await get_upcoming_activities(
+        user_id=med.user_id,
+        hours=24
+    )
+    
+    # 4. 충돌 체크
+    for activity in upcoming:
+        if is_dangerous_combination(med, activity):
+            # 즉시 경고
+            await send_critical_alert(
+                user_id=med.user_id,
+                warning=f"⚠️ {med.name} + {activity.name} 위험!"
+            )
+
+@app.post("/api/calendar/event")
+async def add_calendar_event(event: CalendarEvent):
+    """일정 추가 → 즉시 트리거"""
+    
+    # 1. 일정 저장
+    await db.save_event(event)
+    
+    # 2. 최근 복약 조회 (7일)
+    recent_meds = await get_recent_medications(
+        user_id=event.user_id,
+        days=7
+    )
+    
+    # 3. 위험 약물 체크
+    for med in recent_meds:
+        if is_dangerous_for_activity(med, event):
+            await send_alert(...)
+```
+
+**이벤트 종류:**
+```
+복약 기록 입력 → 즉시 체크
+일정 추가 → 즉시 체크
+증상 기록 → 패턴 업데이트
+목표 설정 → 추적 시작
+운동 시작 → 실시간 모니터링
+운동 종료 → 회복 추적
+```
+
+---
+
+## 4️⃣ 패턴 트리거
+
+### 누적 분석
+
+```python
+@shared_task
+def daily_pattern_analysis():
+    """매일 새벽 2시 - 패턴 분석"""
+    
+    for user in get_active_users():
+        # 7일 데이터 분석
+        week_data = get_week_data(user.id)
+        
+        patterns = await pattern_agent.analyze_trends(
+            hrv=week_data.hrv,
+            sleep=week_data.sleep,
+            activity=week_data.activity
+        )
+        
+        # 악화 추세 감지
+        if patterns.hrv_trend == "declining":
+            if patterns.consecutive_days >= 3:
+                # 3일 연속 하락
+                flag_user_for_morning_alert(user.id)
+        
+        # 과부하 누적
+        if patterns.overload_score > 70:
+            # 번아웃 위험
+            flag_burnout_risk(user.id)
+        
+        # 수면 부족 누적
+        if patterns.sleep_debt > 10:  # 10시간 부족
+            flag_sleep_recovery_needed(user.id)
+```
+
+**패턴 예시:**
+```
+HRV 하락 추세 (7일)
+→ 3일 연속 ↓ → 주의
+→ 5일 연속 ↓ → 경고
+→ 7일 연속 ↓ → 강력 경고
+
+수면 부족 누적
+→ 부족 3일 → 회복 권장
+→ 부족 5일 → 강력 휴식
+→ 부족 7일 → 위험 상태
+
+과부하 패턴
+→ 고강도 운동 후 회복 부족
+→ 3일 연속 반복
+→ 번아웃 위험
+```
+
+---
+
+## 5️⃣ 조합 트리거 (핵심)
+
+### 맥락 기반 판단
+
+```python
+async def check_context_trigger(user_id: str):
+    """맥락 종합 판단 - 가장 중요"""
+    
+    # 1. 현재 생체 데이터
+    current = await get_current_vitals(user_id)
+    
+    # 2. 24시간 내 일정
+    schedule = await get_upcoming_schedule(user_id, hours=24)
+    
+    # 3. 최근 복약
+    medications = await get_recent_meds(user_id, days=1)
+    
+    # 4. 7일 패턴
+    pattern = await get_week_pattern(user_id)
+    
+    # 5. 현재 시각/상황
+    context = {
+        "time": datetime.now(),
+        "day_of_week": datetime.now().weekday(),
+        "vitals": current,
+        "schedule": schedule,
+        "medications": medications,
+        "pattern": pattern
+    }
+    
+    # 6. 조합 판단
+    risks = await orchestrator.evaluate_risks(context)
+    
+    return risks
+```
+
+**조합 예시:**
+
+**Case 1: 새벽 운동 위험**
+```
+조건:
+✓ HRV < P10
+✓ 수면 < 6h
+✓ 현재 시각 05:00-07:00
+✓ 캘린더 "러닝" 06:00
+
+→ 트리거 발동
+→ "오늘 운동 위험" 알림
+```
+
+**Case 2: 수면제 + 다이빙**
+```
+조건:
+✓ 복약: 졸피뎀 23:00
+✓ 캘린더: 다이빙 08:00 (9h 후)
+✓ 약물 잔존 가능
+
+→ 즉시 트리거
+→ "복약 금지" 경고
+```
+
+**Case 3: 누적 과부하**
+```
+조건:
+✓ 7일 평균 수면 < 6h
+✓ HRV 20% ↓ (추세)
+✓ 주말 등산 일정
+✓ 금요일 저녁
+
+→ 트리거 발동
+→ "주말 휴식 권장"
+```
+
+**Case 4: 혈압약 미복용**
+```
+조건:
+✓ 복약 시간 +2h 경과
+✓ 복용 기록 없음
+✓ 심박 > 평소 +10
+✓ 골프 일정 (고온)
+
+→ 트리거 발동
+→ "복약 확인" 알림
+```
+
+---
+
+## 📊 트리거 우선순위
+
+```python
+class TriggerPriority:
+    CRITICAL = 1   # 생명 위험 (즉시)
+    HIGH = 2       # 심각 위험 (당일)
+    MEDIUM = 3     # 주의 필요 (1-2일)
+    LOW = 4        # 정보성 (주간)
+
+# 트리거 평가
+async def evaluate_trigger(context):
+    
+    # Critical - 즉시 알림
+    if has_drug_conflict(context):
+        return Trigger(priority=CRITICAL, immediate=True)
+    
+    if detect_hypoglycemia(context):
+        return Trigger(priority=CRITICAL, immediate=True)
+    
+    # High - 당일 알림
+    if poor_recovery_before_exercise(context):
+        return Trigger(priority=HIGH, timing="before_activity")
+    
+    # Medium - 예방적 알림
+    if declining_trend(context):
+        return Trigger(priority=MEDIUM, timing="morning")
+    
+    # Low - 주간 리포트
+    if general_improvement_needed(context):
+        return Trigger(priority=LOW, timing="weekly_report")
+```
+
+---
+
+## 🔧 실제 트리거 플로우
+
+### 전체 흐름
+
+```
+[워치 데이터 도착]
+    ↓
+[DB 저장]
+    ↓
+[실시간 체크]
+    ├→ 급격 변화? → 즉시 알림
+    └→ 정상 → 다음 단계
+    ↓
+[맥락 로딩]
+    ├→ 최근 일정 (24h)
+    ├→ 최근 복약 (7d)
+    └→ 7일 패턴
+    ↓
+[조합 분석]
+    ↓
+위험 있음?
+    ├→ Critical → 즉시 푸시
+    ├→ High → 타이밍 맞춰 푸시
+    ├→ Medium → 큐에 저장
+    └→ Low → 주간 리포트
+    ↓
+[시간 트리거 대기]
+    ↓
+정해진 시간 (07:00, 22:00 등)
+    ↓
+[배치 분석]
+    ↓
+[알림 발송]
+```
+
+---
+
+## 💡 MVP 트리거 전략
+
+### Phase 1: 핵심만
+
+**즉시 트리거 (3개)**
+```
+1. 약물 충돌 감지
+   - 복약 기록 시 즉시
+   - 일정 입력 시 즉시
+
+2. 급격한 생체 변화
+   - HRV 급락
+   - 심박 급증
+
+3. 복약 미준수
+   - 정기 복약 시간 +2h
+```
+
+**시간 트리거 (2개)**
+```
+4. 아침 체크 (07:00)
+   - 어젯밤 분석
+   - 오늘 위험도
+
+5. 저녁 체크 (22:00)
+   - 내일 일정 확인
+   - 사전 경고
+```
+
+**조합 트리거 (1개)**
+```
+6. 운동 전 체크
+   - 일정 1h 전
+   - 컨디션 확인
+```
+
+---
+
+## 🎯 정리
+
+### 질문: "데이터 변할 때만 트리거?"
+
+**답: 아니다 ❌**
+
+**트리거 발동 조건:**
+```
+1. 데이터 변화 (10%)
+   - 급격한 변화만
+   - 대부분은 저장만
+
+2. 시간 (30%)
+   - 정해진 시각
+   - 일정 전
+
+3. 이벤트 (20%)
+   - 복약, 일정 입력
+   - 사용자 행동
+
+4. 패턴 (20%)
+   - 누적 분석
+   - 추세 감지
+
+5. 조합 (20%)
+   - 맥락 종합
+   - 진짜 위험
+
+→ 조합이 핵심!
+```
+
+**핵심:**
+```
+워치 데이터만으로는 부족
+데이터 + 일정 + 복약 + 시간 + 패턴
+= 전부 합쳐서 판단
+
+단편적 트리거 = False Positive 많음
+맥락적 트리거 = 정확도 ↑
+```
+
+---
+
+이제 이해됐어? 더 궁금한 부분 있어?

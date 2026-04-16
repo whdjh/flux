@@ -1,0 +1,23 @@
+{
+  "folders": [
+    {
+      "name": "ailayout",
+      "path": "../../ailayout"
+    },
+    {
+      "name": "ailayout-docs",
+      "path": "../../ailayout-docs"
+    },
+    {
+      "name": "research",
+      "path": "."
+    },
+    {
+      "name": ".claude",
+      "path": "../../.claude"
+    },
+    {
+      "path": "../everything-claude-code"
+    }
+  ]
+}

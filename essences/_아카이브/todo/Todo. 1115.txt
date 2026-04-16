@@ -1,0 +1,53 @@
+Todo. 1115
+
+멋사 창업트랙 신청 https://event-us.kr/likelionuniv/event/114921?utm_source=instagram&utm_medium=cardnews&utm_campaign=eaa0caaar0
+SK AX 자소서 쓰기.
+✅영구임대주택
+✅유니버셜디자인하우스
+
+---
+계속해.
+please ultra think.
+---
+Writing Style과 달랑 원칙대로 간결하고 명확하지만 구체적이고 실용적으로.
+---
+스냅노트/플럭스/영감수집 도구/통합 도구 가 모두 같은 프로젝트야.
+---
+🕐VSCode Tabs 시스템 클론코딩
+🕐VSCode 파일 시스템 클론 코딩
+🕐VSCode 분할 뷰 시스템 클론 코딩
+🕐Swagger로 API를 확인하는 과정의 전략도 설계해야겠어
+---
+💭KT 디자인 시스템. 페이지는 필요 없고
+달랑 원칙대로 00, 01, 02 문서화 해서,
+어떤 것들을 선택할 수 있는지, 
+
+💭AI 코딩 워크플로우 완성하기
+worktree로 데모 폴더 만들고, 라우팅 하고, 새 cursor 창 키고, sc:spawn으로 작업을 분리하는데 거기에 agent 사용해서 프로토타입 만드는 과정에 Codex-Claude Loop 작업이 들어가는데, 여기서 Codex가 코드를 생성할지 말지 하는 generate_code mcp가 선택과정에 있고, 코드를 완성하면 feature/ 폴더로 worktree를 통합하는 이 과정이 맞아?
+---
+✅Claude 공식 Plugin 쓰기,
+🕐Figma Make 사용해보기
+🕐Claude design plugin + Figma Make로 포폴 페이지 만들기.
+---
+그리고 1:1 분석에서 뉘앙스는 정말정말 중요해. 모든 파일에서 꼼꼼히 찾아줘
+---
+VSCode를 클론 코딩 할 건데, 개발 전략에 따라 잘 클론코딩 할 거야. 클론코딩 전략도 쓰고, 데모 UI 개발 원칙도 쓸 거야.
+please ultra think.
+
+마지막에 이렇게 말했었어.
+계속 진행해.
+---
+Codex-Claude Loop:
+역할: 품질 검증 루프
+패턴: 계획(Claude) → 검증(Codex) → 구현(Claude) → 리뷰(Codex) → 수정(Claude) → 재검증(Codex)
+핵심: Claude가 모든 코드 작성, Codex는 검증만 수행
+목적: 코드 품질 향상
+---
+이런 뉘앙스 문제도 AI스럽지 않게 쓰기에 넣어둘까?
+---
+Todo-Logger 중복되는 Todo, 구조(텍스트 구조랑, 섹션 구조(세션의 제목이 .md파일 제목으로 되게) 손보기
+---
+Worktree 생성(Git Worktree) → Demo 폴더(Demo-first) → Cursor 4창(병렬 개발) 
+→ 구현(플러그인 + Codex-Claude Loop + generate_code) → 수동 검증 → 품질 검증 
+→ feature 이동(Demo-first 승격) → 커밋
+---

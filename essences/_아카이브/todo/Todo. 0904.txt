@@ -1,0 +1,75 @@
+Todo. 0904
+
+💭메인 뷰어 분할 기능(vscode 같은 탭 분할)
+1. **[editorDropTarget.ts](https://github.com/microsoft/vscode/blob/main/src/vs/workbench/browser/parts/editor/editorDropTarget.ts)** - 드롭 타겟 시스템 (⭐ 가장 중요)
+2. **[dnd.ts](https://github.com/microsoft/vscode/blob/main/src/vs/workbench/browser/dnd.ts)** - 메인 드래그 앤 드롭 시스템
+3. **[editorGroupView.ts](https://github.com/microsoft/vscode/blob/main/src/vs/workbench/browser/parts/editor/editorGroupView.ts)** - 에디터 그룹 관리
+4. **[tabsTitleControl.ts](https://github.com/microsoft/vscode/blob/main/src/vs/workbench/browser/parts/editor/tabsTitleControl.ts)** - 탭 드래그
+5. **[gridview.ts](https://github.com/microsoft/vscode/blob/main/src/vs/base/browser/ui/grid/gridview.ts)** - 그리드 레이아웃
+6. **[explorerViewer.ts](https://github.com/microsoft/vscode/blob/main/src/vs/workbench/contrib/files/browser/views/explorerViewer.ts)** - 파일 탐색기 드래그
+
++ 크롬 탭 드래그 위치변경 애니메이션
+Chrome 탭 애니메이션 +  VS Code 분할 시스템
+
+2.
+뷰어 UI 컴팩트하고 미니멀하게.
+	Masonry 정렬은 핀터레스트 UI처럼.
+	List 정렬은 한 줄로 웨일 브라우저의 방문기록처럼
+	오름차순, 내림차순이 공간을 차지하는게 불편함.
+
+3.
+주제 별 분류 UI 생각하기
+
+4.
+설정 UI 만들기 (claude desktop 처럼 메인 뷰어의 탭으로 표시)
+
+5.
+AI채팅 기록 UI 만들기
+
+6.
+ctrl + 휠 업/다운으로 cursor, vscode, 웹브라우저 같이 확대/축소
+
+7.
+사이드바 접기/펴기 버튼 위치를 옮길지 말지.
+
+8.
+디자인 시스템 .json 문서화
+
+9.
+Tauri로 마이그레이션 하기
+
+10. 폴더 아이콘과 이름엔 간격이 있고,
+	파일 아이콘과 이름 사이엔 간격이 없는데, 통일하는게 좋을까? 어떤 걸 선택해야 할까?
+
+11. 새 파일 생성 기능
+
+12. 새 폴더 생성 기능
+
+13. 모든 폴더 접기/펼치기 기능
+
+14. 창 제어버튼의 최소화 버튼쪽에 배경? 투명화인지 블러인지 색이 다르게 보이는 문제
+
+15. 탭 드래그앤 드롭 애니메이션 60fps가 맞는지?
+
+16. 분할 드롭존도 VSCode의 로직과 똑같이.
+
+17. 외부 파일 드래그
+
+
+BDD 방식으로 나에게 보여줘봐.
+좌측 사이드바의 파일 시스템,
+메인 뷰어의 탭 시스템,
+Chrome 탭 애니메이션,
+VSCode의 분할 시스템.
+어떻게 해야 옳은건지 나에게 BDD방식으로 보여줘.
+
+MCP 연결 문제 해결,
+
+드래그앤 드롭 안됨
+
+클릭 이벤트? 문제
+
+docs 폴더 두개임.
+
+component 안의 views와 feature안의 layout ?
+적절히 나누어진건지?

@@ -1,0 +1,53 @@
+Todo. 0118
+
+계속해.
+please ultra think.
+---
+Writing Style과 달랑 원칙대로 간결하고 명확하지만 구체적이고 실용적으로.
+---
+/home/jun/.claude/docs/달랑원칙.md 에 따라 문서를 만들어줘.
+/home/jun/.claude/docs/Writing-Style.md WritingStyle이 필요한 부분을 잘 생각해서 스타일을 적용해줘.
+달랑 원칙과 WritingStyle 중에 하나로 선택하기 보단 둘의 장점을 적절히 섞어줘.
+---
+세션을 초기화 하고 도커 세팅을 진행하려 해. 그 세션에 어떤 프롬프트를 넣어야 할까?
+---
+🕐예정
+✅완료
+🔁진행
+💭고민중
+⭐중요
+---
+
+맥북 세팅하기
+
+AI 가르칠거 생각하기
+
+AFK 앱 실행
+
+config, agent, sub-agent, skills, plugin, permissoins, hook, CLAUDE.md/AGENT.md, superclaude 라이브러리, model, think hard, ultra thinking, Plan, Ask, Edit, Bypass
+
+Plan mode, Ask before edits, Edit automatically, Bypass pemissions 대화 방식
+
+settings.jsons 설정. 권한 요청 알람, 작업 완료 알람
+hook
+
+plugin
+agents, sub-agents
+skills
+
+permissions
+
+superclaude 라이브러리
+https://github.com/SuperClaude-Org/SuperClaude_Framework
+
+model
+
+CLAUDE.md / AGENT.md
+
+think hard, ultra think
+
+---
+https://github.com/junyjeon/research
+https://github.com/junyjeon/changshin
+https://github.com/junyjeon/changshin-docs
+/home/jun/.claude

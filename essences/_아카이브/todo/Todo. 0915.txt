@@ -1,0 +1,471 @@
+Todo. 0915
+
+프로젝트 리팩토링 구조변경에 의한 문서검토.
+
+BDD 문서도 요구사항과,  VSCode의 파일 시스템, 분할 시스템, 탭 시스템 + Chrome 탭 재정렬 애니메이션을 클론 코딩하는 의도가 담겨있는지.
+또는 BDD 대신 의도를 포함할 수 있는 개발방법론이 있는지 검토
+
+디자이너만이 타겟이 아니야. 앱을 안다면, 그걸 알겠지. 타겟을 지정하긴 해야해서 디자이너라고 했는데, 더 
+  나은것들이 있을거야. 그러니까 요구사항, 기능 정의서에 있는 것들을 모두 신뢰하진 마. 다시 말하지만, 지금은 
+  /mnt/c/Users/jjy84/Desktop/리서치 프로젝트/모음집/보일러 플레이트 README.md 여기에 레아이웃을 씌우고 있는 작업을 
+  하고있고, 레이아웃엔 상단 바, 좌측 사이드바, 메인 뷰어, 우측 사이드바를 세세하게 설정했고, 여기에 VSCode의 파일 시스템, 
+  분할 시스템, 탭 시스템 + Chrome 탭 재정렬 애니메이션을 클론 코딩 하고 있는거야.
+
+*
+✅claude init
+
+*
+좌측 사이드바의 파일 드래그앤드롭
+VS Code 탭 드래그 분할 그리드 기능
+새 파일 생성
+새 폴더 생성
+모든 폴더 접기/펼치기
+폴더 아이콘과 이름 사이엔 간격이 있고, 파일 아이콘과 이름 사이엔 간격이 없는데, 어떤걸로 통일하면 좋을지
+외부 파일 드래그앤드롭
+
+*
+주제 별 분류 UI
+설정 UI
+AI채팅 기록 UI
+사이드바 접기/펴기 버튼 위치
+창 제어버튼의 최소화 버튼쪽에 배경? 투명화인지 블러인지 색이 다르게 보이는 문제
+
+
+*
+Masonry 핀터레스트 UI
+Grid 일반적인 Grid
+Justified 사진첩 vs 양쪽 정렬(eagle 식)
+List 한 줄로 웨일 브라우저의 방문기록
+
+*
+ctrl + 휠 업/다운으로 cursor, vscode, 웹브라우저 같이 확대/축소
+
+*
+테마 색상 5가지로 일관성 정하기
+디자인 시스템 .json 문서화
+
+*
+Tauri 마이그레이션
+
+★ Insight ─────────────────────────────────────
+  지금 프로젝트의 "왜"를 설명하는 문서를 작성해야 합니다. 당신이 VS Code와 Chrome을 선택한 진짜 이유, 그리고 이
+  프로젝트로 해결하려는 문제를 명확히 적어야 합니다.
+  ─────────────────────────────────────────────────
+
+  📝 당신이 작성해야 할 내용들
+
+  1. 왜 이 프로젝트를 만드는가? (프로젝트의 존재 이유)
+
+  # docs/rationale/project-vision.md
+
+  ## 우리가 해결하려는 문제
+  (예시)
+  - 웹에서 발견한 정보들이 북마크, 스크린샷, 메모 등으로 파편화됨
+  - 수집한 자료를 나중에 찾기 어려움
+  - 여러 도구를 오가며 컨텍스트가 끊김
+
+  ## 우리의 해결책
+  - 하나의 통합된 환경에서 수집, 정리, 활용
+  - 작업 흐름을 방해하지 않는 자연스러운 UX
+
+  2. 왜 VS Code와 Chrome을 선택했는가? (디자인 결정의 이유)
+
+  # docs/rationale/why-vscode-chrome.md
+
+  ## VS Code를 선택한 이유
+  (당신이 생각하는 진짜 이유를 적으세요)
+  - 예: "파일 시스템은 누구나 아는 정리 방식이다"
+  - 예: "개발자들이 코드를 관리하듯, 우리도 정보를 관리하고 싶다"
+
+  ## Chrome 탭을 선택한 이유
+  (당신이 생각하는 진짜 이유를 적으세요)
+  - 예: "브라우저 탭처럼 여러 정보를 동시에 열어두고 싶다"
+  - 예: "부드러운 애니메이션이 작업의 연속성을 유지해준다"
+
+  3. 누구를 위한 앱인가? (타겟 사용자)
+
+  # docs/rationale/target-users.md
+
+  ## 주요 사용자 (페르소나 말고 실제 사용 케이스)
+  - 리서치를 많이 하는 사람
+  - 레퍼런스를 수집하는 디자이너
+  - 자료 조사를 하는 학생/연구원
+  - 영감을 모으는 창작자
+
+  ## 그들의 공통된 니즈
+  - 정보를 체계적으로 관리하고 싶음
+  - 나중에 쉽게 찾고 싶음
+  - 수집과 정리를 한 곳에서 하고 싶음
+
+  4. 어떤 가치를 제공하는가? (핵심 가치)
+
+  # docs/rationale/core-values.md
+
+  ## 우리가 제공하는 가치
+  1. **즉시성**: Alt+우클릭으로 바로 수집
+  2. **통합성**: 수집-정리-활용이 한 곳에서
+  3. **친숙함**: 이미 아는 UX 패턴 사용
+  4. **효율성**: 작업 흐름을 끊지 않음
+
+  5. 기술적 트레이드오프는 무엇인가?
+
+  # docs/architecture/decisions/ADR-001-layout.md
+
+  ## 우리가 감수한 것
+  - 구현 복잡도 증가
+  - 초기 개발 시간 증가
+  - 성능 최적화 필요
+
+  ## 우리가 얻은 것
+  - 검증된 UX 패턴
+  - 사용자 학습 비용 최소화
+  - 확장 가능한 구조
+
+  🎯 당신이 답해야 할 핵심 질문들
+
+  1. 왜 이 앱을 만들고 있나요?
+    - 어떤 불편함을 겪었나요?
+    - 기존 도구의 어떤 점이 마음에 안 들었나요?
+  2. 왜 VS Code 레이아웃인가요?
+    - 파일 트리 구조가 왜 적합하다고 생각했나요?
+    - 다른 옵션(예: Notion, Obsidian)은 왜 안 되나요?
+  3. 왜 Chrome 탭 애니메이션인가요?
+    - 부드러운 전환이 왜 중요한가요?
+    - 단순한 탭 전환과 뭐가 다른가요?
+  4. 누가 이 앱을 쓸 건가요?
+    - "3년차 디자이너 지나" 말고, 진짜 타겟은 누구인가요?
+    - 어떤 작업을 하는 사람들인가요?
+  5. 이 앱의 핵심 차별점은 뭔가요?
+    - Notion, Obsidian, Roam Research와 뭐가 다른가요?
+    - 왜 새로운 앱이 필요한가요?
+
+  ✍️ 작성 예시
+
+  # 왜 VS Code 레이아웃을 선택했는가
+
+  ## 개인적 경험
+  매일 VS Code로 코딩하면서 느낀 점:
+  - 파일 트리는 직관적이다
+  - 분할 화면은 비교 작업에 최적이다
+  - 탭으로 컨텍스트를 유지할 수 있다
+
+  ## 이걸 정보 관리에 적용하면?
+  - 레퍼런스도 폴더로 정리할 수 있다
+  - 메모와 이미지를 나란히 볼 수 있다
+  - 여러 자료를 탭으로 열어둘 수 있다
+
+  ## 결론
+  개발 도구의 효율성을 정보 관리에 가져오자!
+
+  이런 식으로 당신의 진짜 생각과 의도를 적으면 됩니다.
+
+-----
+
+ ★ Insight ─────────────────────────────────────
+  의도 중심 문서화의 핵심은 "Why → What → How" 순서입니다.
+  현재 BDD는 "How"만 있고, 요구사항은 "What"만 있습니다.
+  "Why"를 추가하면 완전한 문서가 됩니다.
+  ─────────────────────────────────────────────────
+
+  🔍 문서화 방법론 검증
+
+  ✅ 제안된 방법론의 타당성
+
+  1. ADR (Architecture Decision Records)
+
+  - 검증된 방법론: ThoughtWorks Technology Radar 추천
+  - 장점: 의사결정의 맥락과 이유를 영구 보존
+  - 적합성: ✅ VS Code/Chrome 선택 같은 큰 결정 기록에 최적
+
+  2. Design Rationale Documentation
+
+  - 학술적 기반: HCI 분야에서 30년간 사용
+  - 장점: 설계 의도를 명확히 전달
+  - 적합성: ✅ UX 패턴 차용 이유 설명에 적합
+
+  3. Intent-Driven Development
+
+  - 현대적 접근: Clean Code, DDD에서 강조
+  - 장점: 코드와 의도를 함께 유지
+  - 적합성: ✅ 유지보수 시 의도 파악 용이
+
+  📊 다른 프로젝트들의 사례
+
+  - VS Code: ADR 사용 (github.com/microsoft/vscode/tree/main/docs/adr)
+  - Rust: RFC(Request for Comments) 방식
+  - React: Design Principles 문서화
+
+  📁 최적화된 문서 구조 설계
+
+  docs/
+  ├── 00-vision/                    # WHY - 왜 만드는가
+  │   ├── README.md                 # 프로젝트 비전과 목표
+  │   ├── problem-statement.md      # 해결하려는 문제
+  │   ├── target-users.md           # 대상 사용자
+  │   └── core-values.md            # 핵심 가치
+  │
+  ├── 01-rationale/                 # WHY - 왜 이렇게 만드는가
+  │   ├── why-vscode-chrome.md      # VS Code와 Chrome 선택 이유
+  │   ├── design-philosophy.md      # 설계 철학
+  │   └── tradeoffs.md              # 트레이드오프
+  │
+  ├── 02-decisions/                 # WHAT - 무엇을 결정했는가
+  │   ├── ADR-001-layout-system.md  # 3-panel 레이아웃 결정
+  │   ├── ADR-002-tab-animation.md  # Chrome 탭 애니메이션 결정
+  │   ├── ADR-003-split-view.md     # 분할 화면 시스템 결정
+  │   └── ADR-template.md           # ADR 작성 템플릿
+  │
+  ├── 03-specifications/            # HOW - 어떻게 작동하는가
+  │   ├── bdd/                      # 기존 BDD 문서들
+  │   │   ├── vscode-tab-system.feature.md
+  │   │   ├── chrome-tabs.feature.md
+  │   │   ├── split-view.feature.md
+  │   │   └── file-explorer.feature.md
+  │   └── technical/                # 기술 명세
+  │       ├── architecture.md       # 시스템 아키텍처
+  │       └── api.md                # 컴포넌트 API
+  │
+  ├── 04-guides/                    # HOW TO - 어떻게 사용하는가
+  │   ├── setup.md                  # 설치 가이드
+  │   ├── development.md            # 개발 가이드
+  │   └── contributing.md           # 기여 가이드
+  │
+  └── README.md                     # 문서 인덱스
+
+  📝 문서 템플릿과 내용
+
+  1. 프로젝트 비전 (00-vision/README.md)
+
+  # Project Vision
+
+  ## 우리가 만드는 것
+  정보 수집과 관리를 통합한 데스크톱 애플리케이션
+
+  ## 우리가 해결하는 문제
+  - 웹 서핑 중 발견한 정보가 여러 도구에 파편화
+  - 수집한 자료를 나중에 찾기 어려움
+  - 컨텍스트 전환으로 인한 생산성 저하
+
+  ## 우리의 해결책
+  - 하나의 통합 환경
+  - 익숙한 UX 패턴 활용
+  - 작업 흐름 방해 최소화
+
+  2. 설계 근거 (01-rationale/why-vscode-chrome.md)
+
+  # Why VS Code and Chrome?
+
+  ## VS Code 레이아웃을 선택한 이유
+
+  ### 검증된 효율성
+  - 4년 연속 Stack Overflow 개발자 선호도 1위
+  - 수백만 사용자가 검증한 작업 패턴
+  - 정보 계층화에 최적화된 구조
+
+  ### 친숙한 메타포
+  - 폴더/파일 구조는 보편적 정리 방식
+  - 드래그 앤 드롭은 직관적 상호작용
+  - 분할 화면은 비교 작업의 표준
+
+  ## Chrome 탭 시스템을 선택한 이유
+
+  ### 시각적 연속성
+  - 200ms 애니메이션은 인지적 최적값
+  - 탭 이동 시 시선 추적 가능
+  - 컨텍스트 유지에 효과적
+
+  ### 사용자 기대치
+  - 65% 브라우저 점유율
+  - 탭 인터랙션은 웹의 표준
+  - 학습 비용 제로
+
+  3. 아키텍처 결정 기록 (02-decisions/ADR-001-layout-system.md)
+
+  # ADR-001: 3-Panel Layout System
+
+  ## Status
+  Accepted (2024-09-15)
+
+  ## Context
+  정보 관리 앱에서 사용자는:
+  - 파일 트리를 탐색해야 함
+  - 메인 콘텐츠를 봐야 함
+  - 보조 정보(AI, 메모)가 필요함
+
+  ## Decision
+  VS Code 스타일 3-panel 레이아웃 채택:
+  - Left: 파일 탐색기
+  - Center: 메인 뷰어
+  - Right: 보조 패널
+
+  ## Consequences
+
+  ### Positive
+  - ✅ 개발자/파워유저에게 친숙
+  - ✅ 효율적 공간 활용
+  - ✅ 확장 가능한 구조
+
+  ### Negative
+  - ❌ 초기 구현 복잡도 높음
+  - ❌ 모바일 대응 어려움
+  - ❌ 성능 최적화 필요
+
+  ### Risks
+  - 너무 개발자 중심적일 수 있음
+  - 일반 사용자에게 복잡해 보일 수 있음
+
+  ## Links
+  - [VS Code Architecture](https://github.com/microsoft/vscode/wiki/How-to-Contribute)
+  - [Related: ADR-003-split-view.md]
+
+  4. 개선된 BDD (03-specifications/bdd/vscode-tab-system.feature.md)
+
+  # VS Code Tab System - BDD Specification
+
+  ## Design Rationale
+  **Why This Design**: VS Code의 탭 시스템은 개발자들이 가장 효율적으로 사용하는 패턴
+  **User Value**: 이미 익숙한 인터랙션으로 즉시 생산적
+  **Tradeoff**: 구현 복잡도 vs 사용성
+
+  ## Business Context
+  - **Problem**: 여러 콘텐츠를 동시에 열고 관리하기 어려움
+  - **Solution**: 검증된 탭 시스템으로 멀티태스킹 지원
+  - **Metric**: 평균 3-5개 탭 동시 관리
+
+  ## Feature: Tab Creation and Display
+  [기존 BDD 내용...]
+
+  Todos
+  ☒ Review and validate the documentation methodology
+  ☒ Design new documentation folder structure
+  ☐ Create rationale documents
+  ☐ Create ADR documents
+  ☐ Update existing BDD documents with Design Rationale
+  ☐ Create project vision and philosophy documents
+
+╭───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Ready to code?                                                                                                            │
+│                                                                                                                           │
+│ Here is Claude's plan:                                                                                                    │
+│ ╭───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮ │
+│ │ 📚 의도 중심 문서화 전체 정리 계획                                                                                    │ │
+│ │                                                                                                                       │ │
+│ │ ✅ 방법론 검증 완료                                                                                                    │ │
+│ │                                                                                                                       │ │
+│ │ - ADR: ThoughtWorks 추천, VS Code도 사용                                                                              │ │
+│ │ - Design Rationale: HCI 분야 30년 검증                                                                                │ │
+│ │ - Intent Documentation: Clean Code 원칙                                                                               │ │
+│ │                                                                                                                       │ │
+│ │ 📁 새로운 문서 구조                                                                                                   │ │
+│ │                                                                                                                       │ │
+│ │ docs/                                                                                                                 │ │
+│ │ ├── 00-vision/           # WHY 만드는가                                                                               │ │
+│ │ ├── 01-rationale/        # WHY 이렇게 만드는가                                                                        │ │
+│ │ ├── 02-decisions/        # WHAT 결정했는가                                                                            │ │
+│ │ ├── 03-specifications/   # HOW 작동하는가                                                                             │ │
+│ │ └── 04-guides/          # HOW TO 사용하는가                                                                           │ │
+│ │                                                                                                                       │ │
+│ │ 📝 생성할 문서들                                                                                                      │ │
+│ │                                                                                                                       │ │
+│ │ 1. Vision 문서 (5개)                                                                                                  │ │
+│ │                                                                                                                       │ │
+│ │ - 00-vision/README.md - 프로젝트 비전                                                                                 │ │
+│ │ - 00-vision/problem-statement.md - 해결하려는 문제                                                                    │ │
+│ │ - 00-vision/target-users.md - 대상 사용자                                                                             │ │
+│ │ - 00-vision/core-values.md - 핵심 가치                                                                                │ │
+│ │ - 00-vision/success-metrics.md - 성공 지표                                                                            │ │
+│ │                                                                                                                       │ │
+│ │ 2. Rationale 문서 (3개)                                                                                               │ │
+│ │                                                                                                                       │ │
+│ │ - 01-rationale/why-vscode-chrome.md - VS Code/Chrome 선택 이유                                                        │ │
+│ │ - 01-rationale/design-philosophy.md - 설계 철학                                                                       │ │
+│ │ - 01-rationale/tradeoffs.md - 기술적 트레이드오프                                                                     │ │
+│ │                                                                                                                       │ │
+│ │ 3. ADR 문서 (4개)                                                                                                     │ │
+│ │                                                                                                                       │ │
+│ │ - 02-decisions/ADR-001-layout-system.md - 3-panel 레이아웃                                                            │ │
+│ │ - 02-decisions/ADR-002-tab-animation.md - Chrome 탭 애니메이션                                                        │ │
+│ │ - 02-decisions/ADR-003-split-view.md - 분할 화면                                                                      │ │
+│ │ - 02-decisions/ADR-template.md - ADR 템플릿                                                                           │ │
+│ │                                                                                                                       │ │
+│ │ 4. BDD 개선 (4개 기존 파일)                                                                                           │ │
+│ │                                                                                                                       │ │
+│ │ 각 파일 상단에 추가:                                                                                                  │ │
+│ │ - Design Rationale 섹션                                                                                               │ │
+│ │ - Business Context 섹션                                                                                               │ │
+│ │ - Success Criteria 섹션                                                                                               │ │
+│ │                                                                                                                       │ │
+│ │ 5. 기존 문서 재구성                                                                                                   │ │
+│ │                                                                                                                       │ │
+│ │ - architecture/ → 03-specifications/technical/                                                                        │ │
+│ │ - guides/ → 04-guides/                                                                                                │ │
+│ │ - bdd/ → 03-specifications/bdd/                                                                                       │ │
+│ │                                                                                                                       │ │
+│ │ 🎯 핵심 메시지                                                                                                        │ │
+│ │                                                                                                                       │ │
+│ │ "검증된 UX 패턴을 의도적으로 차용하여 학습 비용 최소화"                                                               │ │
+│ │                                                                                                                       │ │
+│ │ 실행 순서                                                                                                             │ │
+│ │                                                                                                                       │ │
+│ │ 1. 새 폴더 구조 생성                                                                                                  │ │
+│ │ 2. Vision 문서 작성                                                                                                   │ │
+│ │ 3. Rationale 문서 작성                                                                                                │ │
+│ │ 4. ADR 문서 작성                                                                                                      │ │
+│ │ 5. BDD 문서 개선                                                                                                      │ │
+│ │ 6. 문서 인덱스 업데이트                                                                                               │ │
+│ ╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯ │
+│                                                                                                                           │
+│ Would you like to proceed?                                                                                                │
+│                                                                                                                           │
+│ ❯ 1. Yes, and auto-accept edits                                                                                           │
+│   2. Yes, and manually approve edits                                                                                      │
+│   3. No, keep planning                                                                                                    │
+│                                                                
+
+
+docs를 내가 편하게 읽으려면 한국어로 되어있어야 하거든, 이걸 새 한국어 폴더를 만들어서 번역본을 작성할지, 파일을 아예
+  한국어로 번역할지. 어떤게 나을지 고민중. 이게 번역이 제대로 되려면 Deepl을 사용하는게 나으려나?
+
+  그리고 불필요한 문서가 있는지 봐줘.
+
+  일단 가이드엔 '보일러 플레이트 READEME.md' 의 정보랑 VSCode의 파일 시스템, 분할 시스템, 탭 시스템 + Chrome 탭 재정렬
+  애니메이션을 클론 코딩 한 정보까지의 것만 담겨있으면 되겠지? 왜냐면 문서까지도 보일러플레이트거든.
+
+  그리고 문서를 싹 정리해서 README.md 랑 docs/README.md 랑 나머지 문서들도 정리하자. 그리고 COMPONENT_API.md 이런건
+  필요하다면 새로 만드는게 나을것 같아서 지웠어, 근데 API를 만들기 시작하기 전까지 미리 만들고 가는건 나쁜것 같아. 기획이
+  다 되지도 않았는데, 방향이 달라질지도 모르는데 만들고 가는거니까.
+
+  그리고 Chrome 애니메이션 200ms가 아니라 167ms 아닌지 체크해줘.  
+
+  ★ Insight ─────────────────────────────────────
+  "Why → What → How" 구조로 문서를 재정리했습니다. 이제 사용자가 직접 작성해야 할 부분이 명확하게 TODO로 표시되어 있어,
+  보일러플레이트의 의도를 설명하면서도 프로젝트별 구체적인 내용은 사용자가 채울 수 있습니다.
+  ─────────────────────────────────────────────────
+
+  📝 완성된 문서 구조
+
+  생성된 문서들:
+
+  00-vision/ (비전과 목표)
+  - README.md - 프로젝트 비전
+  - problem-statement.md - 해결하려는 문제
+  - target-users.md - 대상 사용자
+  - core-values.md - 핵심 가치
+
+  01-rationale/ (설계 근거)
+  - why-vscode-chrome.md - VS Code와 Chrome 선택 이유
+  - design-philosophy.md - 설계 철학
+  - tradeoffs.md - 의도적 트레이드오프
+
+  02-decisions/ (설계 결정)
+  - ADR-001-layout-system.md - 3패널 레이아웃 결정
+  - ADR-002-tab-animation.md - 200ms 애니메이션 결정
+  - ADR-003-split-view-system.md - 분할 뷰 시스템 결정
+
+  03-specifications/bdd/ (BDD 명세 + Design Rationale)
+  - 기존 BDD 문서들에 "왜 필요한가" 섹션 추가
+
+  04-guides/ (실무 가이드)
+  - setup.md - 프로젝트 설정 가이드
+  - development.md - 개발 워크플로우 (TODO(human) 포함)
+  - contributing.md - 기여 가이드

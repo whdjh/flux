@@ -1,0 +1,80 @@
+Todo. 1020
+
+목표는 Claude가 TodoList를 만들 때 그것을 기록하는 거야.
+그럼, Claude Code 사용자는 todo-history에서 세션, 날짜 별 폴더 내에서
+TodoList가 기록된 것을 찾아볼 수 있지. 영어로 기록된 TodoList는 한국어로 번역된
+버전과 같이 기록될 거야.
+
+세부적으로는,
+Claude가 TodoWrite를 실행할 때
+TodoRead를 해서 TodoList를 가져오고,
+TodoList가 영어일 경우 한국어 번역본을 추가로 달아주며,
+
+```
+todo-history/
+├── sessions/                    # 실제 데이터 저장소
+│   ├── 73f472cd.md             # 세션 1 (새벽)
+│   ├── abc123de.md             # 세션 2 (오후)
+│   └── def45678.md             # 세션 3
+└── by-date/                     # 날짜별 인덱스 (참조만)
+    ├── 2025-10-11.md           # → sessions/ 참조
+    ├── 2025-10-18.md
+    └── 2025-10-19.md
+```
+
+## 📝 출력 포맷
+
+### sessions/ (실제 데이터)
+
+```markdown
+# Session: 73f472cd-1e45-4150-9711-82f3468a7276
+
+**Title**: "이전 세션이 날아가서..."
+**Started**: 2025-10-19 04:13:05
+**Last Activity**: 2025-10-19 04:17:11
+**Status**: closed
+
+---
+
+## TodoWrite 04:13:05
+
+### Korean (한국어)
+- ✅ 현재 설계 문제 진단 완료 (completed)
+- 🔄 RULES.md 자동 실행 메커니즘 검증 (in_progress)
+- 📋 실제 작동 여부 확인 및 필요시 수정 (pending)
+
+---
+
+## TodoWrite 04:16:25
+
+### English
+- 🔄 Understand the actual current working system (in_progress)
+- 📋 Test if automatic recording works as designed (pending)
+
+### Korean (한국어)
+- 🔄 실제 작동 중인 시스템 이해하기 (in_progress)
+- 📋 설계대로 자동 기록이 작동하는지 테스트 (pending)
+```
+
+### by-date/ (날짜별 인덱스)
+
+```markdown
+# TodoList History - 2025-10-19
+
+## Sessions
+
+### [73f472cd - "이전 세션이..."](../sessions/73f472cd.md)
+- **Time**: 04:13 ~ 04:17 (4분)
+- **TodoWrites**: 3
+- **Tasks**: 7 tasks (1 completed, 4 in progress, 2 pending)
+- **Languages**: Korean, English
+
+### [abc123de - "Sub-agent로 전환 검토"](../sessions/abc123de.md)
+- **Time**: 13:36 ~ 13:55 (19분)
+- **TodoWrites**: 4
+- **Tasks**: 10 tasks (3 completed, 5 in progress, 2 pending)
+- **Languages**: Korean, English
+
+---
+
+이런식으로 만드는것

@@ -1,0 +1,46 @@
+Todo. 0213
+
+계속해.
+please ultra think.
+🕐예정
+✅완료
+🔁진행
+💭고민중
+⭐중요
+---
+/home/jun/claude-codex-orchestrator 를 agentic-boilerplate에 합치기
+---
+리서치 프로젝트, 플럭스, flux, 스냅노트, 영감 수집 생산성 도구, 통합 도구, 메모앱이 모두 같은 프로젝트를 가르켜.
+---
+*2/9 - 2/13: 프로젝트 온보딩
+- 릴리즈 플리즈가 무엇인지
+- "pages/list pages/create라 둘게
+그럼 list에 readme create Readme
+각각 두면 좋겠음" 도메인 별 README.md 작성
+- git action 설정됨
+branch-cleanup
+pr-title-check
+release
+- AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY — AWS IAM 자격증명
+S3_BUCKET_NAME — 배포 대상 S3 버킷 이름
+- 패키지 관리자 bun 사용
+- 노션의 실시간 저장.
+- React Native
+- 타이포그래피 -> 87mm
+- 아이콘 -> lucide
+- 팔칠칠엠 일상체
+- 주훈's 초기세팅 프롬프트 https://keen-dust-2a0.notion.site/302e1e8ce2da805cbacded5695fcb906
+- 선언적 방식 개발
+- 내가 잘만 만들어두면 알아서 연동해서
+- <Calendar …props /> 이렇게 props 알아서 연동하면 되도록
+- 레퍼런스 쌓기
+- ARC 브라우저 Oaxaca Trip 휘발성
+- TBD(Trunk Based Development)
+
+-현재 프로젝트 참고하거나 가져와서 로그인API 모두 구현
+-스웨거 문서 업데이트
+-관련 문서 모두 에센스화
+-간이과세자->일반과세자 변경 서류뽑기
+-문서
+-워크플로우 돌리기
+-

@@ -1,0 +1,54 @@
+Todo. 1112
+
+
+짐 정리
+멋사 창업트랙 신청 https://event-us.kr/likelionuniv/event/114921?utm_source=instagram&utm_medium=cardnews&utm_campaign=eaa0caaar0
+SK AX 신청
+
+
+---
+계속해.
+please ultra think.
+---
+Writing Style과 달랑 원칙대로 가독성 좋게, 간결하고 명확하지만 구체적이고 실용적으로.
+---
+🔁기능 전부 demo로 옮겨서 다시 만들기
+---
+🔁좌측 사이드바에 VSCode 폴더 트리 구조 파일 탐색기(작업 영역), 메인 뷰어에 VSCode 탭 시스템 + Chrome 탭 애니메이션, VSCode 수직/수평 분할 뷰 시스템 클론 코딩
+---
+🕐Swagger로 API를 확인하는 과정의 전략도 설계해야겠어
+---
+✅docs/integration-2025 워크트리를 종료하고 main으로 돌아가자.
+---
+✅Claude Code 다중 인스턴스 문제 해결
+---
+스냅노트/플럭스/영감수집 도구/통합 도구 가 모두 같은 프로젝트야.
+---
+6. Codex
+6-1. Codex-Claude Loop
+---
+💭KT 디자인 시스템. 페이지는 필요 없고
+달랑 원칙대로 00, 01, 02 문서화 해서,
+어떤 것들을 선택할 수 있는지, 
+---
+✅/sc:spawn 으로 태스크를 나누고, Worktree 기반 Demo-First 워크플로우로 기능을 하나씩 만드는것이라고 생각하면 돼?
+둘 다 같이쓰면 엄청나지 않아?
+---
+역할 분담의 명확성
+각 AI의 강점 활용
+워크플로우 복잡도
+품질 보장
+토큰 비용
+실용성
+유지보수성
+에러 핸들링
+---
+claude-codex-orchestrator
+/home/jun/.claude/skills/codex-claude-loop
+/home/jun/11_November/claude-codex-orchestrator
+---
+✅기능 개발할 때, demo 먼저 만들기 위해서 Worktree 생성, Cursor 열기, /sc:spawn 실행, 통합하는 과정에 Codex-Claude Loop(claude-codex-orchestrator처럼 Codex를 쓸 지 말지 결정하는 설계를 추가한 상황이라면)를 어딘가에서 실행시키게 하면 어떨까?
+---
+✅'Inbox 피드 4가지 뷰를 Codex가 10분에 생성하면 Claude는 상태 관리에 집중한다.'
+'M0 필수 10개 페이지를 만들 때 적합하다. App Shell을 먼저 완성하고 나머지 9개를 3개씩 묶어서 병렬 작업한다. 프론트/백엔드 분리할 때도 유용하다. 순차 의존성이 있으면 단일 세션이 낫다.'
+이 내용은 왜 들어갔는지?

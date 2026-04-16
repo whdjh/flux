@@ -1,0 +1,98 @@
+Todo. 0113
+
+계속해.
+please ultra think.
+---
+Writing Style과 달랑 원칙대로 간결하고 명확하지만 구체적이고 실용적으로.
+/home/jun/.claude/docs/달랑원칙.md 에 따라 문서를 만들어줘.
+/home/jun/.claude/docs/Writing-Style.md WritingStyle이 필요한 부분을 잘 생각해서 스타일을 적용해줘.
+달랑 원칙과 WritingStyle 중에 하나로 선택하기 보단 둘의 장점을 적절히 섞어줘.
+---
+🕐예정
+✅완료
+🔁진행
+💭고민중
+⭐중요
+---
+- common bash commands
+- code style conventions
+- ui and content design guidelines
+- how to do state management, logging, error handling, gating, and debugging
+- pull request template
+
+- 일반적인 bash 명령어
+- 코드 스타일 규칙
+- UI 및 콘텐츠 디자인 가이드라인
+- 상태 관리, 로깅, 오류 처리, 게이팅 및 디버깅
+- 요청 템플릿 가져오기
+---
+24EA430V
+https://prod.danawa.com/info/?pcode=75656927
+를 사용한단다.
+---
+Orphan branch로 새 브랜치를 만들어 docs를 저장하고
+git worktree로 docs 브랜치에 들어가 작업하면 main과 같은 .git이며 물리적으로 다른 디렉토리에서 작업할 수 있다.
+---
+컨텍스트를 분리하기 위해서는
+Claude code의 세션에서 Docs를 항상 참조하여 Claude code의 성능 이슈로 가끔 불필요한 참조를 해 컨텍스트를 낭비하지 않게 해야한다.
+---
+https://www.figma.com/design/D22EDF2KJISG6GBVbiE7CO/%EB%B0%94%EC%9D%B4%ED%8A%B8%EC%82%AC%EC%9D%B4%EC%A6%88_%ED%8E%B8%EC%A7%91%EC%9A%A9?node-id=194-1034&t=J9ML9PGj3MoFGQsv-4
+edge 피드백 반영 섹션 디자인을 참고해야 한다.
+---
+Q1. 엣지(20250605)에 모니터: 24EA430V 라고 적힌건 공장에서 사용되는 모니터가 아닌가?
+Q&A에서 '공장 내 사용 모니터는 구형 장비로, 해상도는 1280×720 사양으로 확인됩니
+다. '라고 하는 쪽을 믿으면 되는지?
+
+Q2. 
+
+---
+1. 코드 품질 검사 스크립트 구현 (lint, type, security) - pending
+2. 할루시네이션 감지 subagent 설계 - pending
+3. 답변 품질 체크 subagent 설계 - pending
+4. 요청-응답 일치 subagent 설계 - pending
+5. 일관성 체크 subagent 설계 - pending
+6. 근거 검증 subagent 설계 - pending
+
+자동 리뷰 (code_reviewer 자동화) - hook
+커밋 sub-agent
+실패 케이스 자동화 - failure-collector agent
+기록용 sub-agents - note-taker agent
+세션 테스트 - session-init agent
+핸드오프 문서 - 기존 feature_list.json + progress.txt 패턴
+---
+subagent
+
+1. 코드 리뷰 자동
+2. lint, prettier, type, security 자동 검사
+3. AI 답변 품질체크 (체크리스트)
+4. 자동 커밋
+5. 실패 케이스 자동 기록
+6. 해야할 일, 진행 상황, 결정 사항 추적 기록
+7. 핸드오프 문서 progress.txt로 작업 로그, feature_list.json으로 기능 상태 추적
+---
+달랑 원칙:
+
+핵심만 담기
+빠른 참조 우선 (스캔 가능한 구조)
+한글 파일명
+복사 가능한 템플릿
+최소 마크업
+
+Writing Style:
+
+서술형 중심
+레이블 없이 흐름 있게
+반말 사용
+연결어로 자연스럽게
+짧은 문단
+두 스타일을 섞으면:
+
+핵심만 담되 (달랑), 설명은 서술형으로 (Writing)
+스캔 가능한 구조 (달랑) + 흐름 있는 설명 (Writing)
+리스트는 최소한 (둘 다)
+반말 사용 (Writing)
+짧은 문단 (Writing)
+---
+/home/jun/.claude
+여기에 필요 없는 파일이나 폴더들이 있는지 모두 꼼꼼히 검토해줘.
+please ultra think

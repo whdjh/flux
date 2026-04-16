@@ -1,0 +1,65 @@
+[서울(인천/김포 모두 포함)]에서 [도착지]로 가는 최저가 항공편 루트를 찾아줘. 직항, 경유, 대체/주변 공항 포함해서 비교하고, 최저가 순으로 정렬해. 경유 루트라면 최적 경유 도시 3곳 추천하고, 각 환승 대기시간과 총 소요시간 알려줘. 항공 검색 사이트(스카이스캐너, 구글 플라이트 등)에 잘 안 나오는 저비용 항공사 목록도 포함해서 평균 가격 범위와 함께 보여줘. [2025년 9월~10월] 기준으로, 왕복/편도 옵션 모두 비교해서 링크 달아줘.
+
+
+”다음 달 중 최저가 날짜 순으로 정리해줘. 항공사·시간대도 같이 알려줘.“
+”지금 가격이 50만원 이하로 떨어지는 시점이 언제일지 예측해줘.“
+”편도·왕복·다구간 중 어떤 방식이 이번 여행에 가장 저렴한지 계산해줘.“
+”항공권 가격이 급락할 가능성이 있는 날짜와 요일 패턴을 알려줘.“
+“구글플라이트,익스피디아,스카이스캐너 7일 관찰 후, X원 이하일 때 알려줘.(모니터링 플랜 생성)
+
+
+
+FAREWELL GOOGLE FLIGHTS. FAREWELL SKYSCANNER.
+$1,050 flight.
+I paid $92.
+No points. No tricks. Just smarter prompts.
+Here are the 7 ChatGPT commands I currently use for every trip: ⬇
+1. “Find the cheapest way to fly from [City A] to [City B] next month, include hidden routes + alternate airports.”
+→ ChatGPT uncovers what Google overlooks.
+2. “Which budget airlines operate this route that aren’t listed on Google Flights or Skyscanner?”
+→ Nearly 28% of flights are invisible. Until now.
+3. “Suggest layover cities that cut the price, even if it requires two separate bookings.”
+→ Split-ticketing = secret advantage.
+4. “Any mistake fares, flash sales, or unusually cheap flights departing [my airport] this month?”
+→ Travel blogs lag behind. AI doesn’t.
+5. “Compare this flight across all platforms, where is it cheapest right now?”
+→ One prompt replaces dozens of tabs.
+6. “Monitor this route for 4 days, alert me if the price dips below $95.”
+→ Let AI watch. You just book.
+7. “Can booking two one-ways beat the round-trip price? Check both.”
+→ The system isn’t perfect. Use it.
+Forget loyalty. Forget guessing.
+ChatGPT is your new travel agent, and it never rests.
+
+
+1. “Find the cheapest way to fly from Seoul (including Incheon/Gimpo)] to [Hong Kong] next month, include hidden routes + alternate airports.”
+
+2. “Which budget airlines operate this route that aren’t listed on Google Flights or Skyscanner?”
+
+3. “Suggest layover cities that cut the price, even if it requires two separate bookings.”
+
+4. “Any mistake fares, flash sales, or unusually cheap flights departing Seoul (including Incheon/Gimpo)] this month?”
+
+5. “Compare this flight across all platforms, where is it cheapest right now?”
+
+6. “Monitor this route for 4 days, alert me if the price dips below $95.”
+
+7. “Can booking two one-ways beat the round-trip price? Check both.”
+
+
+1. “다음 달 [City A]에서 [City B]로 가는 가장 저렴한 방법을 찾아보세요, 숨겨진 노선 + 대체 공항을 포함하세요. ”
+→ ChatGPT는 구글이 간과하는 것을 밝혀냈다.
+2. "구글 항공편이나 스카이스캐너에 등록되지 않은 이 노선을 어느 예산 항공사에서 운행하나요?" ”
+→ 거의 28%의 항공편은 보이지 않는다. 지금까지는.
+3. "두 번의 별도의 예약이 필요하더라도 가격을 낮추는 레이오버 도시를 제안하세요. ”
+→ 분할 티켓팅 = 비밀 이점.
+4. "이번 달 [내 공항]에서 떠나는 실수 요금, 반짝 세일 또는 특이하게 저렴한 항공편이 있나요?" ”
+→ 여행 블로그가 뒤쳐짐. AI는 그렇지 않아.
+5. "모든 플랫폼에 걸쳐 이 항공편을 비교해 보세요, 지금 어디가 가장 저렴한가요?" ”
+→ 하나의 프롬프트가 수십 개의 탭을 대체한다.
+6. "이 경로를 4일 동안 감시하고, 가격이 95달러 이하로 떨어지면 나에게 알려줘. ”
+→ AI가 보도록 해. 그냥 예약해.
+7. “편도 두 개를 예약하면 왕복 가격을 이길 수 있나요?” 둘 다 확인해. ”
+→ 시스템은 완벽하지 않다. 그걸 사용해.
+충성심은 잊어. 추측은 잊어.
+ChatGPT는 당신의 새로운 여행사이며, 절대 쉬지 않습니다

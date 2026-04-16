@@ -1,0 +1,49 @@
+Todo. 0124
+
+/home/jun/25years/4_April/portfolio/포트폴리오-최종/여기에 다시 시작
+/home/jun/25years/4_April/portfolio/포트폴리오-최종
+/mnt/c/Users/jjy84/Desktop/리서치 프로젝트/모음집/사업계획서_지식관리플랫폼.md
+/home/jun/25years/4_April/portfolio/여기에 정리 해보기/04_성장과정.md
+/home/jun/25years/4_April/portfolio/여기에 정리 해보기/05_성격의장단점.md
+맥락은 이렇게
+줬었어.
+---
+/home/jun/25years/4_April/portfolio/10_17_보관소
+/home/jun/25years/4_April/portfolio/여기에 정리 해보기
+/home/jun/25years/4_April/portfolio/자소서-이력서
+/mnt/c/Users/jjy84/Desktop/리서치 프로젝트
+/home/jun/ailayout-docs
+여기 있는 모든 파일들을 검토해서 
+
+/home/jun/25years/4_April/portfolio/포트폴리오-최종
+이 폴더 내 모든 파일과 비교 검토해서 애매한 부분이나 부족한 부분이나 그런 부정적인 부분들을 모두모두 찾아줘.
+
+그리고
+/home/jun/.claude/docs/문서작성.md
+
+please ultra think
+---
+
+1. 포폴 파일분리 전략 진행
+
+2. 4가지 프로젝트 링크
+퍼퓸투데이
+https://github.com/junyjeon/preference
+
+스냅노트
+https://github.com/junyjeon/boilerpalte.git
+
+AI 헬스 코치
+https://github.com/42-ai-hackathon/ai-agent
+https://github.com/junyjeon/health-coach-ai
+
+AI Layout
+https://github.com/BTS-MS/ailayout/tree/dev
+https://github.com/BTS-MS/ailayout/tree/docs
+
+---
+2.mgrep 설치중
+---
+ai 이미지 프롬프트 레포 생성중
+---
+내가 한 모든일을 기록중

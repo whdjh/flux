@@ -1,0 +1,151 @@
+// 디자인 시스템 토큰 & App Shell 스펙 템플릿 (한국어)
+// 목적: 팀이 공통으로 사용하는 색/간격/타이포/효과 등 "Foundations(토큰)"과
+//       앱의 공통 뼈대 "Shell(Topbar/Sidebar/Splitter/Content)"을 한 곳에서 정의.
+// 사용 방법:
+// 1) 이 파일의 빈칸을 팀 기준으로 채운다(색상, 폰트, 간격 등).
+// 2) 확정되면 Figma Variables/Tokens Studio와 코드(CSS 변수)로 동기화한다.
+// 3) 변경 시 PR로 리뷰하고 버전(semantic versioning) 갱신한다.
+// 포함 항목:
+//  - Foundations: spacing, radius, typography, color(light/dark/highContrast), semantic, effects, interaction, motion,
+//                 zIndex, overlay, density, breakpoints
+//  - Shell: grid, topbar, tabs, sidebar, splitter, content(card/list/views), icon, states
+//  - Accessibility: 대비 목표/히트영역/모션 정책
+//  - Naming: 레이어/컴포넌트 접두사 규칙
+
+{
+  // 메타 정보: 디자인 시스템 산출물 기본 정보
+  "meta": {
+    "name": "",          // 프로젝트/브랜드명
+    "version": ""        // 토큰 스펙 버전(예: 0.1.0)
+  },
+
+  // Foundations: 전 앱에서 재사용되는 기본 규칙(토큰)
+  "foundations": {
+    // 간격 스케일(8pt 권장). 필요 시 단계 추가/삭제 가능
+    "spacing": [4, 8, 12, 16, 24, 32, 40, 48, 64],
+
+    // 모서리 라운드 단계: 컴포넌트 전반에 일관 사용
+    "radius": { "sm": 4, "md": 8, "lg": 12, "xl": 16 },
+
+    // 타이포그래피: 폰트/굵기/사이즈 스케일/줄간격
+    "typography": {
+      "families": ["", ""],                // 영문/한글 폰트 스택(우선순위대로)
+      "weights": [400, 500, 600, 700],       // 실제 사용할 굵기만 유지
+      "scale": {                             // 폰트 크기 램프(px)
+        "xs": 12,   // 캡션/부가
+        "sm": 14,   // 보조 텍스트
+        "md": 16,   // 본문
+        "lg": 20,   // H3/섹션 제목
+        "xl": 24,   // H2
+        "xxl": 32,  // H1
+        "display": 40 // 히어로/브랜드용
+      },
+      "lineHeight": { "body": 1.5, "heading": 1.4 }
+    },
+
+    // 색상 토큰: 브랜드, 모드(라이트/다크/고대비), 의미 색상
+    "color": {
+      "brand": {
+        "primary": { "400": "", "500": "", "600": "" }, // 주색 램프(예: 퍼플)
+        "accent":  { "400": "" }                              // 보조 액센트(선택)
+      },
+      "modes": {
+        "light": {         // 라이트 테마 표면
+          "bg": "",       // 페이지 배경
+          "panel": "",    // 카드/모달/패널 표면
+          "panel2": "",   // 보조 표면(헤더/툴바 등)
+          "text": "",     // 기본 텍스트
+          "text2": "",    // 보조 텍스트
+          "border": ""    // 1px 구분선/보더
+        },
+        "dark": {          // 다크 테마 표면
+          "bg": "",
+          "panel": "",
+          "panel2": "",
+          "text": "",
+          "text2": "",
+          "border": ""
+        },
+        "highContrast": {  // (선택) 고대비 변형
+          "bg": "",
+          "panel": "",
+          "panel2": "",
+          "text": "",
+          "text2": "",
+          "border": ""
+        }
+      },
+      "semantic": {        // 상태 피드백 색상
+        "success": "",
+        "warning": "",
+        "danger":  "",
+        "info":    ""
+      }
+    },
+
+    // 효과: 그림자/글래스 등 시각 효과의 표준 값
+    "effects": {
+      "shadow": {
+        "1": "", // 예: 0 1px 2px rgba(0,0,0,0.08)
+        "2": ""  // 예: 0 4px 8px rgba(0,0,0,0.12)
+      },
+      // glass: 백드롭 블러(backdrop blur) + 글래스 투명감
+      "glass": { "blur": 22, "bgAlpha": 0.06, "borderAlpha": 0.16 }
+    },
+
+    // 인터랙션 토큰: 포커스 링/호버/프레스/선택 상태
+    "interaction": {
+      "focusRing": { "color": "", "width": 2, "offset": 2, "radius": 6 },
+      "state": {
+        "neutral": { "hover": "", "pressed": "", "selected": "" },
+        "primary": { "hover": "", "pressed": "" }
+      }
+    },
+
+    // 모션 토큰: 지속시간/이징 커브(easing, timing function)
+    "motion": {
+      "duration": { "fast": 100, "normal": 150, "slow": 200 },
+      // 권장 이징: standard(0.2,0,0,1), enter(0,0,0.2,1), exit(0.4,0,1,1)
+      "easing": { "standard": "", "enter": "", "exit": "" } // CSS cubic-bezier 문자열 입력
+    },
+
+    // 레이어 규칙: 오버레이/메뉴/모달의 z-index 기준
+    "zIndex": { "base": 0, "dropdown": 1000, "modal": 2000, "toast": 3000, "drag": 4000 },
+
+    // 오버레이 스크림(scrim, dim) 색상
+    "overlay": { "scrim": "" }, // 예: rgba(0,0,0,0.40)
+
+    //  밀도 정책: 컴팩트/기본/여유 배수
+    "density": { "compact": 0.9, "comfortable": 1.0, "spacious": 1.1 },
+
+    // 주 타깃 캔버스 폭(반응형 기준점)
+    "breakpoints": { "base": 1280, "large": 1440 }
+  },
+
+  // App Shell: 앱 크롬/뼈대 레이아웃 스펙
+  "shell": {
+    "grid": { "columns": 12, "gutter": 24, "margin": 24 },
+    "topbar": { "height": 56 },
+    "tabs": { "height": 34 },
+    "sidebar": { "width": 336, "min": 240, "max": 360, "resizable": true },
+    "splitter": { "gutter": 8, "presets": ["1/2", "1/3", "1/4"] },
+    "content": {
+      "listRowHeight": 52,
+      "card": { "width": 160, "height": 200, "radius": 12, "gutter": 24 },
+      "views": ["list", "grid", "masonry", "justified"]
+    },
+    "icon": { "sizes": [16, 20, 24], "stroke": 2 },
+    "states": ["hover", "focus", "active", "disabled", "dragOver", "selected"]
+  },
+
+  // 접근성 목표: 대비/히트 영역/모션 정책
+  "accessibility": {
+    "contrastText": "AA 4.5:1", // 본문 텍스트 대비 목표
+    "contrastUI":   "AA 3:1",   // UI 컴포넌트 대비 목표
+    "hitArea": 44,               // 최소 클릭 가능 크기(px)
+    "reduceMotion": true         // 모션 축소 지원
+  },
+
+  // 네이밍 규칙: 레이어/컴포넌트 탐색 용이성 확보
+  "naming": { "prefix": { "input": "Input", "content": "Content", "panel": "Panel", "shell": "Shell" } }
+}

@@ -1,0 +1,46 @@
+Todo. 0115
+
+계속해.
+please ultra think.
+---
+Writing Style과 달랑 원칙대로 간결하고 명확하지만 구체적이고 실용적으로.
+---
+/home/jun/.claude/docs/달랑원칙.md 에 따라 문서를 만들어줘.
+/home/jun/.claude/docs/Writing-Style.md WritingStyle이 필요한 부분을 잘 생각해서 스타일을 적용해줘.
+달랑 원칙과 WritingStyle 중에 하나로 선택하기 보단 둘의 장점을 적절히 섞어줘.
+---
+세션을 초기화 하고 도커 세팅을 진행하려 해. 그 세션에 어떤 프롬프트를 넣어야 할까?
+---
+도커 파일 찾아보기
+---
+메인 페이지 만들기
+로그인 페이지 만들기
+파일 업로드 ReactBits
+---
+/home/jun/1_january/changshin
+/home/jun/1_january/changshin-docs
+---
+홈 화면 상단 헤더에 Layout, Layout Edit, Routing Tree, Compare 이거 이름들이 직관적이지 않는 것 같아.
+그리고 어떤 메뉴들이 있어야하지?
+---
+헤더 우측,
+Quick search
+✅UI/UX 개선해야 함.
+
+worktree 4개 파서 병렬작업 진행하기
+Admin 대시보드
+사용자 관리 페이지
+메타데이터 관리
+다국어 완성
+
+Layout Edit&View 개선
+Multi-Line 기능 추가
+---
+트러블 슈팅 다른 세션에서도 할 수 있게 어떤 문서를 수정해야 할까?
+진행현황과 체크리스트도.
+---
+CLAUDE.md를 싹 다듬을 필요가 있을까?
+
+앞으로 제가 발전해야할 방향성에 대한 생각을 정리하고 싶어요.
+프리랜서, 대기업 , 스타트업, 창업
+중장기적으로 보았을 때 개발 감각, 

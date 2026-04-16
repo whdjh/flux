@@ -1,0 +1,20 @@
+Todo. 0829/0830
+a
+💭메인 뷰어 분할 기능(cursor, vscode 같은 탭 분할)
+-> https://github.com/microsoft/vscode/tree/main/src/vs/base/browser/ui/splitview
+-> https://github.com/microsoft/vscode/tree/main/src/vs/base/browser/ui/grid
+뷰어 UI 컴팩트하고 미니멀하게.
+Masonry 정렬은 핀터레스트 UI처럼.
+List 정렬은 한 줄로 웨일 브라우저의 방문기록처럼
+오름차순, 내림차순이 공간을 차지하는게 불편함.
+
+주제 별 분류 UI 생각하기
+설정 UI 만들기
+AI채팅 기록 UI 만들기
+
+ctrl + 휠 업/다운으로 cursor, vscode, 웹브라우저 같이 확대/축소
+사이드바 접기/펴기 버튼 위치를 옮길지 말지.
+
+디자인 시스템 .json 문서화
+Tauri로 마이그레이션 하기
+

@@ -1,0 +1,29 @@
+Todo. 1106
+
+🕐
+현대카드 애플페이됨 신한은행으로도 됨
+k패스 신청하기
+
+✅
+/home/jun/.claude
+Todo-logger를 폴더 하나 만들어서 다 빼놓으려고. README엔 Todo-logger 설계를 넣고, 관련 파일들을 다 복사해서 넣어줘. 깃헙에 올려서 스타 받으려고 하는거야.
+---
+✅
+wsl에서 cursor 알림소리를 hook으로 만들어서 넣었잖아. 
+/home/jun/8_August/electron/.claude
+이거.
+그 부분을 깃헙에 올리려고 해.
+폴더 하나 만들어서 그 안에 관련 파일과 설정을 복사해 넣어줘.
+깃헙에 올려서 스타 받으려는게 목적이야.
+please ultra think.
+---
+✅
+/home/jun/8_August/electron
+/home/jun/8_August/electron/electron-boilerplate
+이 프로젝트 분석해줘.
+please ultra think.
+---
+✅
+여기서 안쓰는 파일이나 쓸 데 없는 파일들 찾아줘.
+please ultra think.
+---

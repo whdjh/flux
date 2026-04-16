@@ -1,0 +1,44 @@
+Todo. 1129
+
+계속해.
+please ultra think.
+---
+Writing Style과 달랑 원칙대로 간결하고 명확하지만 구체적이고 실용적으로.
+---
+스냅노트/플럭스/영감수집 도구/통합 도구 가 모두 같은 프로젝트야.
+---
+✅Chrome Tabs 애니메이션 클론 코딩
+✅VSCode Tabs 시스템 클론 코딩
+✅VSCode 파일 시스템 클론 코딩
+✅VSCode 분할 뷰 시스템 클론 코딩
+🕐Swagger로 API를 확인하는 과정의 전략도 설계해야겠어
+🕐Figma Make 사용해보기
+🕐Claude design plugin + Figma Make로 포폴 페이지 만들기.
+---
+💭KT 디자인 시스템. 페이지는 필요 없고
+달랑 원칙대로 00, 01, 02 문서화 해서,
+어떤 것들을 선택할 수 있는지, 
+---
+AI 향수 추천 서비스
+AI 헬스 코치 서비스
+AI 의류 상품명 작명 서비스
+데스크톱 AI 생산성 자료 통합 서비스(스냅노트, 플럭스 등, electron 보일러 플레이트 등의 이름으로 불렀던거)
+AI 웹 버튜버 프로젝트
+---
+나는 마크다운을 싫어하고(AI를 사용할 때 쓸데없이 토큰을 낭비하고, 불필요한 기능과 문법이 가독성을 해치며, 마크다운 뷰어에서 봐야 의미가 있는게 맘에 안들어.)
+monaco editor 는 커서 기반 뭔가 알고리즘이 있잖아? 그래서 cursor ai가 자동완성을 할 수 있는거고(나중에 나도 메모 자동완성 확장을 원해서 그래.) 그리고 ctrl + d 단축키가 너무 맘에 들어.
+이런 이유 때문이야.
+---
+현재 Cursor IDE + Gemini 2.5 Pro preview | Cursor IDE + Claude Code + Claude 4 opus 조합 0티어
+[LLM 벤치](https://livebench.ai/#/)
+
+* 공식 링크
+  [해커톤 규칙](https://worldslargesthackathon.devpost.com/rules)
+  [커뮤니티 이벤트](https://app.getriver.io/beta/home)
+  [공식 예시 사이트](https://thechainsmokers.com/)
+  [다큐멘터리&해커톤 홍보영상](https://youtu.be/cvAj|81PFqq?si=I6gNQq7WGR-E4-Yu)
+  [5/30일 LiveStream](https://app.getriver.io/beta/events/worlds-largest-hackathon-livestream-kickoff-virtual-...
+
+@hackathon/files
+---
+이 앱은 Notion이나 Obsidian 같은 마크다운 기반 노트 앱이 아니다. "메모용 Cursor"에 가깝다. 플레인 텍스트를 빠르게 편집하고, 나중에 AI 자동완성을 붙이는 게 목표다. 마크다운을 쓰지 않는 이유가 있다. AI와 대화할 때 마크다운 문법이 토큰을 낭비한다. 별표, 해시, 백틱 같은 게 실제 내용 없이 자리만 차지하기 때문이다. 마크다운은 뷰어에서 렌더링해야 의미가 있는데, 그건 보이는 그대로 저장되는 메모 앱의 철학과 맞지 않다. 대신 경량 마크업을 쓴다. 문법은 세 가지뿐이다. 링크는 [텍스트](URL) 형식이고, 파일 참조는 @경로로 표현한다. 계층 구조는 2칸 들여쓰기로 만든다. 긴 URL이 화면을 넘어가면 ...으로 truncate 해서 표시하고, 저장은 전체 텍스트 그대로 한다. Monaco Editor를 유지하는 건 이런 맥락에서 이해된다. Monaco는 커서 기반 알고리즘을 가지고 있어서 Cursor AI처럼 자동완성을 구현할 수 있다. Ctrl+D로 같은 단어를 연속 선택하는 기능이나 멀티커서 편집도 메모 효율을 높인다. 블록 에디터나 WYSIWYG로 갈아타는 건 방향이 아니다.

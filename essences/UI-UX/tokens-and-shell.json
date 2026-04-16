@@ -1,0 +1,60 @@
+{
+  "meta": { "name": "Inspiration Collector", "version": "0.1.0" },
+  "foundations": {
+    "spacing": [4,8,12,16,24,32,40,48,64],
+    "radius": { "sm": 4, "md": 8, "lg": 12, "xl": 16 },
+    "typography": {
+      "families": ["Inter","Pretendard"],
+      "weights": [400,500,600,700],
+      "scale": { "xs":12, "sm":14, "md":16, "lg":20, "xl":24, "xxl":32, "display":40 },
+      "lineHeight": { "body": 1.5, "heading": 1.4 }
+    },
+    "color": {
+      "brand": {
+        "primary": { "400": "#7B4BA7", "500": "#5D3587", "600": "#4A2A6D" },
+        "accent":  { "400": "#A06CD5" }
+      },
+      "modes": {
+        "light": { "bg":"#F8F4F0","panel":"#FFFFFF","panel2":"#F3F3F4","text":"#111216","text2":"#6B7280","border":"#E5E7EB" },
+        "dark":  { "bg":"#1C1C1C","panel":"#2A2B2C","panel2":"#343536","text":"#EDEEF0","text2":"#A9AFB8","border":"#2F323A" },
+        "highContrast": { "bg":"#0B0B0B","panel":"#121416","panel2":"#191C1F","text":"#FFFFFF","text2":"#D1D5DB","border":"#8B5CF6" }
+      },
+      "semantic": { "success":"#10B981","warning":"#F59E0B","danger":"#EF4444","info":"#3B82F6" }
+    },
+    "effects": {
+      "shadow": { "1":"0 1px 2px rgba(0,0,0,0.08)", "2":"0 4px 8px rgba(0,0,0,0.12)" },
+      "glass": { "blur": 22, "bgAlpha": 0.06, "borderAlpha": 0.16 }
+    },
+    "interaction": {
+      "focusRing": { "color": "#5D3587", "width": 2, "offset": 2, "radius": 6 },
+      "state": {
+        "neutral": { "hover": "rgba(0,0,0,0.04)", "pressed": "rgba(0,0,0,0.08)", "selected": "rgba(93,53,135,0.10)" },
+        "primary": { "hover": "#4A2A6D", "pressed": "#3C2259" }
+      }
+    },
+    "motion": {
+      "duration": { "fast": 100, "normal": 150, "slow": 200 },
+      "easing": { "standard": "cubic-bezier(0.2,0,0,1)", "enter": "cubic-bezier(0,0,0.2,1)", "exit": "cubic-bezier(0.4,0,1,1)" }
+    },
+    "zIndex": { "base": 0, "dropdown": 1000, "modal": 2000, "toast": 3000, "drag": 4000 },
+    "overlay": { "scrim": "rgba(0,0,0,0.40)" },
+    "density": { "compact": 0.9, "comfortable": 1.0, "spacious": 1.1 },
+    "breakpoints": { "base": 1280, "large": 1440 }
+  },
+  "shell": {
+    "grid": { "columns": 12, "gutter": 24, "margin": 24 },
+    "topbar": { "height": 56 },
+    "tabs": { "height": 34 },
+    "sidebar": { "width": 336, "min": 240, "max": 360, "resizable": true },
+    "splitter": { "gutter": 8, "presets": ["1/2","1/3","1/4"] },
+    "content": {
+      "listRowHeight": 52,
+      "card": { "width": 160, "height": 200, "radius": 12, "gutter": 24 },
+      "views": ["list","grid","masonry","justified"]
+    },
+    "icon": { "sizes": [16,20,24], "stroke": 2 },
+    "states": ["hover","focus","active","disabled","dragOver","selected"]
+  },
+  "accessibility": { "contrastText": "AA 4.5:1", "contrastUI": "AA 3:1", "hitArea": 44, "reduceMotion": true },
+  "naming": { "prefix": { "input":"Input", "content":"Content", "panel":"Panel", "shell":"Shell" } }
+}

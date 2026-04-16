@@ -1,0 +1,78 @@
+Todo. 1011
+
+전체 흐름 설명
+1. Claude가 TodoList 생성 📝
+작업 시작 시 Claude가 자동으로 TodoWrite 도구 사용:
+사용자: "인증 기능을 구현해줘"
+Claude: "작업을 나누겠습니다"
+→ TodoWrite 실행 (내부적으로, 보이지 않음)
+→ todo-logger 서브 에이전트 자동 호출
+→ .claude/todo-history.md 파일에 기록
+2. 사용자가 TodoList 확인하는 방법 👀
+방법 1: 직접 파일 보기 (가장 간단)
+cat .claude/todo-history.md
+# 또는
+tail -n 50 .claude/todo-history.md  # 최근 50줄만
+방법 2: Claude에게 물어보기
+"현재 작업 목록 보여줘"
+"지금까지 뭐 했어?"
+"완료된 작업 알려줘"
+방법 3: VS Code에서 파일 열기
+.claude/todo-history.md 파일을 직접 열기
+실시간으로 업데이트되는 것 확인 가능
+3. 실제 파일 예시
+.claude/todo-history.md:
+# Claude TodoList History
+
+## ═══════════════════════════════════════════════
+## SESSION: 2025-01-10 14:30:45
+## ═══════════════════════════════════════════════
+
+### English
+- 📋 Set up authentication module
+- 📋 Implement login endpoint
+- 📋 Add JWT token generation
+
+### Korean (한국어)
+- 📋 인증 모듈 설정
+- 📋 로그인 엔드포인트 구현
+- 📋 JWT 토큰 생성 추가
+
+## ═══════════════════════════════════════════════
+## SESSION: 2025-01-10 16:45:20
+## ═══════════════════════════════════════════════
+
+### English
+- ✅ Set up authentication module
+- 🔄 Implement login endpoint
+- 📋 Add JWT token generation
+
+### Korean (한국어)
+- ✅ 인증 모듈 설정
+- 🔄 로그인 엔드포인트 구현
+- 📋 JWT 토큰 생성 추가
+4. 상태 아이콘 의미
+📋 pending: 아직 시작 안함
+🔄 in_progress: 현재 작업 중
+✅ completed: 완료됨
+🚧 blocked: 막혀있음 (의존성 대기)
+5. Git 커밋 시 활용
+# 최근 완료된 작업 확인
+tail -n 100 .claude/todo-history.md | grep "✅"
+
+# 커밋 메시지 자동 생성 (Claude에게 요청)
+"지금까지 완료한 작업으로 커밋 메시지 만들어줘"
+흐름 다이어그램
+사용자 요청
+    ↓
+Claude가 TodoWrite 실행 (자동)
+    ↓
+todo-logger 서브 에이전트 호출 (자동)
+    ↓
+.claude/todo-history.md에 기록 (영어+한국어 또는 한국어만)
+    ↓
+사용자가 파일 열어서 확인 또는 Claude에게 물어보기
+    ↓
+작업 진행하면서 상태 업데이트 (📋 → 🔄 → ✅)
+    ↓
+Git 커밋 시 todo-history.md 참고

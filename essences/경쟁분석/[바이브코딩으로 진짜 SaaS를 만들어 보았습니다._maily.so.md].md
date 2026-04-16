@@ -1,0 +1,1 @@
+[바이브코딩으로 진짜 SaaS를 만들어 보았습니다.](https://maily.so/josh/posts/g1o4k08grve?from=email&mid=8do729emerg)

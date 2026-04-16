@@ -1,0 +1,57 @@
+Todo. 1103
+
+실제 워크플로우 예시
+Step 1: iOS 앱이 Apple Watch에서 데이터 수집
+└─ HRV: 28ms (평소 65ms 대비 -57% 급락)
+└─ 수면: 4.5시간
+└─ 심박수: 85bpm
+└─ 계획: 새벽 5시 러닝 10km
+
+Step 2: Vercel Function이 MongoDB에 저장
+└─ POST /api/health (JWT 인증)
+
+Step 3: Trigger Agent가 위험 패턴 감지
+└─ Rolling Baseline 대비 변화율 계산
+└─ HRV 57% 급락 → CRITICAL 우선순위
+
+Step 4: Investigate Agent가 의료 기록 조회
+└─ 건보심평원 API 호출 ✨
+└─ 발견: "아모잘탄정 5mg (혈압약) 복용 중"
+└─ 자동 경고 생성: "운동 중 저혈압 주의", "어지러움 발생 시 즉시 중단"
+└─ 종합 판단: HRV 급락 + 수면 부족 + 혈압약 + 새벽 운동 = 🚨 RED
+
+Step 5: Plan Agent가 대체 계획 생성
+└─ Google Calendar에서 "아침 러닝" 일정 발견
+└─ LLM 기반 조정: 러닝 10km → 20분 산책으로 변경
+
+Step 6: Act Agent가 사용자 친화적 메시지 생성
+└─ 템플릿 기반 (빠른 응답)
+└─ "🚨 고혈압 이력이 있어 위험도가 높습니다.
+    수면 부족 상태에서 새벽 고강도 운동은
+    심혈관 부담을 가중시킬 수 있습니다."
+
+---
+이름 변경
+세션 파일 이름을 Mac 경로에 맞게 변경:
+# Mac에서
+cd ~/.claude/projects
+cp -r -home-jun-8-August-electron -Users-jun-8-August-electron
+
+---
+
+원본 Trigger Agent (243줄):
+
+모든 판단을 LLM에게 위임
+5가지 Evaluator는 코멘트로만 존재
+프롬프트에 데이터를 담아서 LLM에게 전달
+LLM이 JSON으로 응답
+
+해커톤 Trigger Service (697줄):
+이중 Baseline (Statistical + Rolling 28일)
+변화율 조건 (drop_percent, rise_percent, change_percent)
+Rule-based evaluation
+LLM은 조건 설정 시에만 사용 (선택적)
+
+핵심 차이는 **"언제 AI를 사용하는가"**입니다:
+원본: 매번 트리거 체크 시 LLM 호출
+해커톤: 조건 설정 시 한 번만 LLM 사용, 이후는 Rule로 체크

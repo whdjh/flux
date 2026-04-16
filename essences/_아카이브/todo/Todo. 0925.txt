@@ -1,0 +1,46 @@
+Todo. 0925
+
+Codex 코딩 우연히 해봄
+
+💭🧭⏱️✅
+
+VS Code Extension
+Mouse Hover Translate 만들어보는중
+
+30분만에 동작 성공함. 운이 좋다.
+
+개요
+현재 VS Code 확장(openai-codex)은 extension.ts에서 Hover Provider 하나만 등록하고, 번역 매니저·엔진 클래스로 구성된 매우 단순한 구조입니다.
+MouseTooltipTranslator는 브라우저 확장으로, 콘텐츠 스크립트가 마우스 이벤트를 훑고 백그라운드 워커와 메시지를 주고받으며 번역·TTS·OCR 등 다수 기능을 동시에 운용하는 대형 프로젝트입니다.
+폴더와 아키텍처 비교
+VS Code 확장 쪽은 src/config, src/translator 등 소수 디렉터리만 두고, 설정 읽기 → 번역 매니저 → Hover 출력이라는 직선형 호출 흐름을 취합니다.
+MouseTooltipTranslator는 src/contentScript.js에서 설정 로딩, DOM 이벤트 연결, OCR/자막/음성 모듈 초기화까지 담당하고, 번역 호출은 util.requestTranslate를 통해 백그라운드 서비스 워커로 위임합니다.
+원본 리포지터리에는 번역 엔진 외에도 speech, tts, ocr, popup 등 UI/미디어 처리 폴더가 다수 포함되어 있어 VS Code 환경에는 직접 대응되지 않습니다.
+번역 파이프라인
+VS Code 확장의 TranslatorManager는 기본 엔진과 폴백 엔진 배열만 순회하면서 첫 번째 성공 결과를 반환하고, 실패 시 Output Channel에 로그만 남깁니다.
+원본 translateCaller는 활성화 가능한 엔진 목록과 쿨다운 시간을 관리하고, 실패한 엔진을 일정 시간 동안 제외한 뒤 다른 엔진으로 재귀적으로 폴백하며, 동일 언어 번역 시 역방향 번역까지 시도합니다.
+원본은 util.cacheFn으로 동일 텍스트 요청을 캐싱해 API 호출을 줄이지만, VS Code 확장에는 이에 해당하는 캐시 레이어가 없습니다.
+엔진 구현 비교
+DeepL: VS Code 버전은 공식 REST 엔드포인트(api-free.deepl.com)와 API 키가 필요하며, 실패 시 TranslationError를 던집니다. 원본은 웹 클라이언트용 JSON-RPC(www2.deepl.com/jsonrpc)를 직접 구성하고 난수·타임스탬프를 조작해 비공식 무료 엔드포인트를 호출합니다.
+Google: VS Code 버전은 Google Cloud Translate v2 API를 사용하고, 인증 키 없이는 MissingCredentialsError를 발생시킵니다. 원본은 공개 translate.googleapis.com/translate_a/single 엔드포인트(클라이언트 gtx)로 호출하여 사전/음차 데이터를 추가로 파싱합니다.
+Papago: VS Code 버전은 네이버 공식 Open API(openapi.naver.com)를 호출하고, Client ID/Secret이 설정돼야 합니다. 원본은 웹 버전 Papago의 내부 API를 쓰기 위해 버전 스크립트를 내려받아 HMAC 토큰을 생성하고, 디바이스 UUID와 함께 전송합니다.
+결과 포맷과 부가 데이터
+VS Code 확장은 TranslateResult에 번역문, 감지 언어, 선택적으로 대체 번역만 담고 Hover에 Markdown으로 렌더링합니다.
+원본 BaseTranslator는 번역문 외에도 음차(transliteration), 사전(dict), 이미지 URL 등 부가 정보를 반환하고, 이를 툴팁 UI나 TTS 모듈이 활용합니다.
+따라서 원본이 제공하던 사전/음차/이미지 기능은 VS Code 확장으로 이식되지 않았습니다.
+설정과 자격 증명
+VS Code 확장은 openaiCodex.translate.* 설정에서 기본 엔진, 폴백, 언어 코드, 최대 글자 수, 각 엔진의 키를 읽어오며, README에서도 자격 증명 입력을 요구합니다.
+MouseTooltipTranslator는 브라우저 환경 설정을 저장소에 유지하며 API 키 없이도 작동하도록 비공식 엔드포인트/토큰 생성을 내장합니다.
+빌드·의존성
+VS Code 확장은 TypeScript와 VS Code 타입 정의 정도만 사용하는 경량 패키지입니다.
+원본은 Webpack 기반 번들, Vue/Vuetify UI, ky, Tesseract, speech/tts 관련 라이브러리 등 브라우저 확장 전체 스택을 포함합니다.
+VS Code 이식 관점에서의 함의
+현 VS Code 코드는 공식 API 키를 요구하는 대신 구현이 간단하지만, 원본이 제공하던 무료 엔드포인트 우회, 번역 결과 캐시, 사전/음차 표시, 역방향 번역, 다중 기능 연동 등은 빠져 있습니다. 이 부분을 유지하려면 MouseTooltipTranslator에서 해당 로직을 별도 모듈로 옮겨오거나 VS Code 환경에 맞게 재작성해야 합니다.
+특히 Papago/DeepL의 웹 토큰 생성 로직이나 Google의 사전 파싱을 활용하려면 ky·CryptoJS 등 추가 의존성과 HTTP 헤더 조작을 Node 환경에서도 재현해야 하며, 이는 현재 VS Code 확장의 구조에서는 구현돼 있지 않습니다.
+이와 같이 두 코드베이스는 구조·의존성·API 사용 방식에서 큰 차이가 있으므로, MouseTooltipTranslator의 동작을 VS Code에서 재현하려면 원본의 복잡한 클라이언트 로직을 추가로 분석하고 Node/VSC 환경에 맞춰 이식해야 합니다.
+
+
+DeepL, Google 번역 또는 네이버 파파고를 사용하여 마우스 커서 아래의 텍스트를 번역하는 Visual Studio Code 확장 프로그램입니다. 코드나 산문 위에 마우스를 가져가면 확장 프로그램이 주변 텍스트를 추출하여 구성된 번역 엔진으로 전송한 다음 마우스를 가져간 툴팁 안에 번역된 콘텐츠를 렌더링합니다.
+
+DeepL, Google Translate 또는 Naver Papago를 사용하여 마우스 커서 아래의 텍스트를 번역하는 Visual Studio Code 확장 프로그램입니다. 코드나 산문 위에 마우스를 올리면 확장 프로그램이 주변 텍스트를 추출하여 구성된 번역 엔진으로 전송하고, 번역된 내용을 호버 툴팁에 표시합니다.
+
