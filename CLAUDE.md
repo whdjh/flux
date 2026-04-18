@@ -28,14 +28,7 @@ pnpm test:e2e                   # E2E
 
 ### 환경변수
 
-```env
-# apps/frontend/web
-NEXT_PUBLIC_API_URL=https://api.flux.app      # 필수
-NEXT_PUBLIC_WS_URL=wss://api.flux.app/sync    # 필수
-OPENROUTER_API_KEY=...                        # 필수 (서버 전용)
-```
-
-자세한 플랫폼별 변수는 `docs/인프라.md` 참고.
+변수명·도메인은 12단계에서 확정. 현재는 제안안만 `docs/인프라.md` 참고.
 
 ## 절대 규칙
 
