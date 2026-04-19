@@ -201,7 +201,7 @@ describe("WsClient", () => {
 
   describe("재연결 (지수 백오프)", () => {
     it("예기치 않게 끊기면 자동 재연결을 시도한다", async () => {
-      const sleep = vi.fn(() => Promise.resolve());
+      const sleep = vi.fn((_ms: number) => Promise.resolve());
       const client = makeClient({
         sleep,
         reconnect: { maxAttempts: 3, baseDelayMs: 100, maxDelayMs: 1000 },
@@ -260,7 +260,7 @@ describe("WsClient", () => {
     });
 
     it("백오프 지연은 최대값에서 멈춘다", async () => {
-      const sleep = vi.fn(() => Promise.resolve());
+      const sleep = vi.fn((_ms: number) => Promise.resolve());
       const client = makeClient({
         sleep,
         reconnect: { maxAttempts: 10, baseDelayMs: 100, maxDelayMs: 250 },

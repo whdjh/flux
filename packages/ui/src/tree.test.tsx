@@ -63,7 +63,14 @@ describe("Tree", () => {
     render(
       <Tree nodes={simple} defaultExpandedIds={["root-1"]} onSelect={onSelect} />,
     );
-    const leaf = screen.getAllByRole("treeitem").find((el) => el.textContent?.includes("문서 1"))!;
+    // 정확히 "문서 1" 텍스트 노드를 가진 treeitem만 선택 (root-1의 자손인 "폴더 A / 문서 1" 혼동 방지)
+    const leaf = screen
+      .getAllByRole("treeitem")
+      .find((el) =>
+        Array.from(el.childNodes).some(
+          (c) => c.textContent?.trim() === "문서 1",
+        ),
+      )!;
     await user.click(leaf);
     expect(onSelect).toHaveBeenCalled();
     const called = onSelect.mock.calls[0][0];

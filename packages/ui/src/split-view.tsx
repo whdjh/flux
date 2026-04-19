@@ -37,31 +37,31 @@ export function SplitView({
   ) => {
     event.preventDefault();
     setDragging(true);
-  };
 
-  React.useEffect(() => {
-    if (!dragging) return;
+    // separator의 parentElement를 기준으로 한다 (ref 타이밍 이슈 회피).
+    const separatorNode = event.currentTarget;
+    const parent =
+      (separatorNode.parentElement as HTMLElement | null) ??
+      containerRef.current;
 
-    const handlePointerMove = (event: PointerEvent) => {
-      const node = containerRef.current;
+    const move = (e: PointerEvent) => {
+      const node = parent ?? containerRef.current;
       if (!node) return;
       const rect = node.getBoundingClientRect();
       if (rect.width <= 0) return;
-      const raw = (event.clientX - rect.left) / rect.width;
+      const raw = (e.clientX - rect.left) / rect.width;
       setRatio(clamp(raw, minRatio, maxRatio));
     };
-
-    const stop = () => setDragging(false);
-
-    window.addEventListener("pointermove", handlePointerMove);
-    window.addEventListener("pointerup", stop);
-    window.addEventListener("pointercancel", stop);
-    return () => {
-      window.removeEventListener("pointermove", handlePointerMove);
+    const stop = () => {
+      setDragging(false);
+      window.removeEventListener("pointermove", move);
       window.removeEventListener("pointerup", stop);
       window.removeEventListener("pointercancel", stop);
     };
-  }, [dragging, minRatio, maxRatio]);
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", stop);
+    window.addEventListener("pointercancel", stop);
+  };
 
   const handleKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (event) => {
     const step = event.shiftKey ? 0.1 : 0.02;

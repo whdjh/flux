@@ -140,15 +140,25 @@ export class DocumentRepository {
   }
 }
 
+function toTypedBytes(value: unknown): Uint8Array<ArrayBuffer> {
+  // ArrayBufferLike → 확정적으로 ArrayBuffer 기반 Uint8Array로 정규화
+  const buf = new ArrayBuffer(0);
+  const src =
+    value instanceof Uint8Array
+      ? value
+      : new Uint8Array(value as ArrayBufferLike);
+  const out = new Uint8Array(new ArrayBuffer(src.byteLength));
+  out.set(src);
+  return out as Uint8Array<ArrayBuffer>;
+  void buf;
+}
+
 function rowToDocument(row: DocumentRow): Document {
   return {
     id: row.id,
     user_id: row.user_id,
     title: row.title,
-    crdt_doc:
-      row.crdt_doc instanceof Uint8Array
-        ? row.crdt_doc
-        : new Uint8Array(row.crdt_doc),
+    crdt_doc: toTypedBytes(row.crdt_doc),
     created_at: row.created_at,
     updated_at: row.updated_at,
     folder_id: row.folder_id,

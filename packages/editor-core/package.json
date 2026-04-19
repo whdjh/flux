@@ -6,9 +6,19 @@
   "types": "src/index.ts",
   "scripts": {
     "build": "echo 'TODO: setup build'",
-    "lint": "echo 'TODO: setup linter'"
+    "lint": "echo 'TODO: setup linter'",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "devDependencies": {
-    "typescript": "^5.9.3"
+    "@vitest/coverage-v8": "^4.1.4",
+    "fast-check": "^4.7.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.4"
+  },
+  "dependencies": {
+    "@flux/shared": "workspace:^",
+    "loro-crdt": "^1.11.0"
   }
 }

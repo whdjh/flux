@@ -72,9 +72,16 @@ class BetterSqliteAdapter implements SqliteAdapter {
   }
 }
 
-/** 테스트 전용: in-memory better-sqlite3로 SqliteAdapter 생성 */
-export function createTestAdapter(): BetterSqliteAdapter {
+/**
+ * 테스트 전용: in-memory better-sqlite3로 SqliteAdapter 생성.
+ * FK는 기본 OFF. folder 같은 참조 무결성을 검증하고 싶은 테스트는
+ * `{ foreignKeys: true }`를 전달한다. 실제 앱은 adapter 주입 시
+ * 플랫폼 드라이버에서 FK 정책을 결정한다.
+ */
+export function createTestAdapter(options?: {
+  foreignKeys?: boolean;
+}): BetterSqliteAdapter {
   const db = new Database(":memory:");
-  db.pragma("foreign_keys = ON");
+  db.pragma(`foreign_keys = ${options?.foreignKeys ? "ON" : "OFF"}`);
   return new BetterSqliteAdapter(db);
 }

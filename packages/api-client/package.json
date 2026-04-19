@@ -11,9 +11,10 @@
     "test:watch": "vitest"
   },
   "devDependencies": {
+    "@types/node": "^25.3.3",
+    "msw": "^2.6.8",
     "typescript": "^5.9.3",
-    "vitest": "^4.1.4",
-    "msw": "^2.6.8"
+    "vitest": "^4.1.4"
   },
   "dependencies": {
     "@flux/shared": "workspace:*",
