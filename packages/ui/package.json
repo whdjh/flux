@@ -6,9 +6,28 @@
   "types": "src/index.ts",
   "scripts": {
     "build": "echo 'TODO: setup build'",
-    "lint": "echo 'TODO: setup linter'"
+    "lint": "echo 'TODO: setup linter'",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0"
+  },
+  "dependencies": {
+    "@flux/shared": "workspace:*"
   },
   "devDependencies": {
-    "typescript": "^5.9.3"
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.1.0",
+    "@testing-library/user-event": "^14.5.2",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitest/coverage-v8": "^4.1.4",
+    "jsdom": "^25.0.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.4"
   }
 }
