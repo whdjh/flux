@@ -6,9 +6,17 @@
   "types": "src/index.ts",
   "scripts": {
     "build": "echo 'TODO: setup build'",
-    "lint": "echo 'TODO: setup linter'"
+    "lint": "echo 'TODO: setup linter'",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "devDependencies": {
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.4",
+    "msw": "^2.6.8"
+  },
+  "dependencies": {
+    "@flux/shared": "workspace:*",
+    "zod": "^4.3.6"
   }
 }
