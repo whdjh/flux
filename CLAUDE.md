@@ -42,7 +42,7 @@ pnpm test:e2e                   # E2E
 
 | 변경 | 업데이트할 문서 |
 |------|----------------|
-| 디자인 토큰 (globals.css) | docs/design/디자인.md |
+| 디자인 토큰 (globals.css) | docs/design-system/디자인.md |
 | 기능 구현 완료 | docs/개발현황.md |
 | 트러블슈팅 해결 | docs/트러블슈팅.md |
 

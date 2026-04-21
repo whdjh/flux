@@ -5,7 +5,7 @@
 ## 맥락 로드
 
 1. `CLAUDE.md`
-2. `docs/design/디자인.md` — 원칙·색상·타이포·레이아웃·컴포넌트 스타일·접근성
+2. `docs/design-system/디자인.md` — 원칙·색상·타이포·레이아웃·컴포넌트 스타일·접근성
 3. `apps/frontend/web/src/app/globals.css` — 디자인 토큰 원본 (@theme, :root, .dark)
 4. `apps/frontend/web/src/app/design-system/page.tsx` — 토큰을 쓰는 예시 (12단계 산출물)
 5. `packages/shared/src/*.ts` — 타입만 참고. UI는 엔티티 타입 표시에 사용.
