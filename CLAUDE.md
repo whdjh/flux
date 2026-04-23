@@ -10,10 +10,10 @@
 2. `docs/requirements/요구사항.md` — 프로젝트가 무엇을 해야 하는지
 3. `docs/스택.md`, `docs/아키텍처.md`, `docs/파일구조.md` — 기술적 기준
 4. `docs/features/` — 기능 단위 명세
-5. `docs/context/` 최신 MMDD.md — 직전 세션 기록
-6. `docs/essences/` — 원재료 (필요 시에만)
+5. `docs/memory/context/` 최신 MMDD.md — 직전 세션 기록
+6. `docs/memory/essences/` — 원재료 (필요 시에만)
 
-전체 제품 정의는 `docs/essences/앱-재정의.md` (1028줄, 11개 챕터).
+전체 제품 정의는 `docs/memory/essences/앱-재정의.md` (1028줄, 11개 챕터).
 
 ## 빌드 및 실행
 

@@ -43,10 +43,10 @@ tmux list-sessions
 
 | 세션 | 프롬프트 파일 |
 |---|---|
-| `flux-api-client` | `docs/prompts/phase2/phase2-api-client.md` 전문 붙여넣기 |
-| `flux-store` | `docs/prompts/phase2/phase2-store.md` |
-| `flux-editor-core` | `docs/prompts/phase2/phase2-editor-core.md` |
-| `flux-ui` | `docs/prompts/phase2/phase2-ui.md` |
+| `flux-api-client` | `docs/memory/prompts/phase2/phase2-api-client.md` 전문 붙여넣기 |
+| `flux-store` | `docs/memory/prompts/phase2/phase2-store.md` |
+| `flux-editor-core` | `docs/memory/prompts/phase2/phase2-editor-core.md` |
+| `flux-ui` | `docs/memory/prompts/phase2/phase2-ui.md` |
 
 ## 모니터링
 
