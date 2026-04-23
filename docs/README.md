@@ -40,8 +40,9 @@ flux/
 ## 빠른 찾기
 
 **프로젝트 이해**
-- 왜 만드나 → `memory/essences/앱-재정의.md`
-- 뭘 해야 하나 → `requirements/요구사항.md`
+- 제품 정의 → `memory/essences/앱-재정의.md`
+- 요구사항 → `requirements/요구사항.md`
+- 타겟 페르소나 → `memory/essences/유저리서치/페르소나-메모.md`
 
 **기술 결정**
 - 스택·플랫폼 → `스택.md`
@@ -51,12 +52,12 @@ flux/
 - 테스트 전략 → `테스트.md`
 
 **제품 정의**
-- 기능 → `features/`
-- 화면 → `screens/`
-- 디자인 → `design-system/디자인.md`
+- 기능 명세 → `features/`
+- 화면 설계 → `screens/`
+- 디자인 시스템 → `design-system/디자인.md`
 
 **작업**
-- 지금 뭐 → `개발현황.md`
+- 진행 상태 → `개발현황.md`
 - 세션 기록 → `memory/context/MMDD.md`
 - 병렬 프롬프트 → `memory/prompts/`
 - 문제 기록 → `트러블슈팅.md`
