@@ -1,0 +1,32 @@
+{
+  "name": "@flux/cli",
+  "version": "0.0.0",
+  "private": true,
+  "bin": {
+    "flux": "./src/index.ts"
+  },
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "flux": "tsx src/index.ts",
+    "build": "echo 'TODO: setup build'",
+    "lint": "echo 'TODO: setup linter'",
+    "test": "vitest run --passWithNoTests",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@flux/api-client": "workspace:*",
+    "@flux/editor-core": "workspace:*",
+    "@flux/shared": "workspace:*",
+    "@flux/store": "workspace:*",
+    "better-sqlite3": "^11.7.0",
+    "commander": "^12.1.0",
+    "nanoid": "^5.0.9"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.11",
+    "@types/node": "^22.10.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.4"
+  }
+}
