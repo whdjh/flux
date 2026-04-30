@@ -1,28 +1,25 @@
-import { openCli } from "../db";
+import type { Store } from "@flux/store";
+import type { Item } from "@flux/shared";
 
-export interface ListOptions {
+export interface ListInput {
   folderId?: string | null;
   limit?: number;
 }
 
-export async function list(options: ListOptions = {}): Promise<void> {
-  const { store, adapter } = await openCli();
-  try {
-    const items = await store.items.findAll(
-      options.folderId !== undefined ? { folderId: options.folderId } : {}
-    );
-    const limit = options.limit ?? items.length;
-    if (items.length === 0) {
-      process.stdout.write("(no items)\n");
-      return;
-    }
-    for (const item of items.slice(0, limit)) {
-      const title = item.metadata?.title ?? item.content.slice(0, 40);
-      process.stdout.write(
-        `${item.created_at}  ${item.type.padEnd(10)}  ${item.id}  ${title}\n`
-      );
-    }
-  } finally {
-    adapter.close();
-  }
+export async function listItems(store: Store, input: ListInput = {}): Promise<Item[]> {
+  const items = await store.items.findAll(
+    input.folderId !== undefined ? { folderId: input.folderId } : {}
+  );
+  const limit = input.limit ?? items.length;
+  return items.slice(0, limit);
+}
+
+export function formatItemRow(item: Item): string {
+  const title = item.metadata?.title ?? item.content.slice(0, 40);
+  return `${item.created_at}  ${item.type.padEnd(10)}  ${item.id}  ${title}`;
+}
+
+export function formatItemList(items: Item[]): string {
+  if (items.length === 0) return "(no items)";
+  return items.map(formatItemRow).join("\n");
 }

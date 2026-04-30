@@ -1,7 +1,7 @@
-import type { ItemType } from "@flux/shared";
-import { openCli } from "../db";
+import type { Store } from "@flux/store";
+import type { Item, ItemType } from "@flux/shared";
 
-export interface CaptureOptions {
+export interface CaptureInput {
   type: ItemType;
   content: string;
   url?: string;
@@ -9,20 +9,18 @@ export interface CaptureOptions {
   folderId?: string | null;
 }
 
-export async function capture(options: CaptureOptions): Promise<void> {
-  const { store, adapter } = await openCli();
-  try {
-    const item = await store.items.insert({
-      type: options.type,
-      content: options.content,
-      metadata:
-        options.url || options.title
-          ? { url: options.url, title: options.title }
-          : undefined,
-      folder_id: options.folderId ?? null,
-    });
-    process.stdout.write(`captured ${item.id} (${item.type})\n`);
-  } finally {
-    adapter.close();
-  }
+export async function capture(store: Store, input: CaptureInput): Promise<Item> {
+  return store.items.insert({
+    type: input.type,
+    content: input.content,
+    metadata:
+      input.url || input.title
+        ? { url: input.url, title: input.title }
+        : undefined,
+    folder_id: input.folderId ?? null,
+  });
+}
+
+export function formatCaptured(item: Item): string {
+  return `captured ${item.id} (${item.type})`;
 }
