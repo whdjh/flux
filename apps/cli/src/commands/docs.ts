@@ -25,9 +25,6 @@ export interface DocShowResult {
   embeds: EmbedEntry[];
 }
 
-/**
- * 빈 노트를 만든다. crdt_doc은 비어 있는 스냅샷으로 초기화한다.
- */
 export async function createDoc(
   store: Store,
   input: CreateDocInput
@@ -50,9 +47,6 @@ export async function listDocs(
   );
 }
 
-/**
- * 노트에 아이템을 임베드한다. CRDT 스냅샷과 item_embeds 테이블을 함께 갱신한다.
- */
 export async function embedToDoc(
   store: Store,
   docId: string,
@@ -62,6 +56,12 @@ export async function embedToDoc(
   if (!document) return null;
   const item = await store.items.findById(itemId);
   if (!item) return null;
+
+  // embedItem은 같은 itemId가 이미 있으면 CRDT를 갱신하지 않는다.
+  // SQL 쪽도 row를 추가하지 않도록 먼저 확인해 양쪽 상태를 일치시킨다.
+  const existing = await store.embeds.findByDocument(docId);
+  const dup = existing.find((e) => e.item_id === itemId);
+  if (dup) return { document, embed: dup };
 
   const fluxDoc = loadOrCreate(document.crdt_doc);
   const position = listEmbeds(fluxDoc).length;
@@ -78,14 +78,12 @@ export async function embedToDoc(
   return { document: updated, embed };
 }
 
-/**
- * 노트 끝에 텍스트를 추가한다. CRDT 스냅샷을 갱신한다.
- */
 export async function appendToDoc(
   store: Store,
   docId: string,
   text: string
 ): Promise<Document | null> {
+  // 텍스트는 CRDT 컨테이너 끝(utf-16 길이)에 삽입해 단순 append 의미를 보존한다.
   const document = await store.documents.findById(docId);
   if (!document) return null;
 

@@ -120,6 +120,23 @@ describe("docs commands", () => {
       const result = await embedToDoc(ctx.store, doc.id, "missing-item");
       expect(result).toBeNull();
     });
+
+    it("does not duplicate when embedding the same item twice", async () => {
+      const doc = await createDoc(ctx.store, {});
+      const item = await capture(ctx.store, { type: "text", content: "x" });
+
+      const first = await embedToDoc(ctx.store, doc.id, item.id);
+      const second = await embedToDoc(ctx.store, doc.id, item.id);
+
+      expect(first?.embed.position).toBe(0);
+      expect(second?.embed.position).toBe(0);
+
+      const embeds = await ctx.store.embeds.findByDocument(doc.id);
+      expect(embeds).toHaveLength(1);
+
+      const shown = await showDoc(ctx.store, doc.id);
+      expect(shown?.embeds).toHaveLength(1);
+    });
   });
 
   describe("appendToDoc", () => {
