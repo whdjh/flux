@@ -82,17 +82,16 @@ export function register(
     .action(async (opts: { dryRun: boolean; limit: number }) => {
       const ctx = await openCli();
       try {
-        if (!opts.dryRun) {
-          process.stderr.write(
-            "non-dry-run not implemented (backend not ready)\n"
-          );
-          process.exit(1);
-        }
         const entries = await syncPush(ctx.store, {
-          dryRun: true,
+          dryRun: opts.dryRun,
           limit: opts.limit,
         });
         process.stdout.write(formatSyncEntries(entries) + "\n");
+      } catch (err) {
+        process.stderr.write(
+          `${err instanceof Error ? err.message : String(err)}\n`
+        );
+        process.exit(1);
       } finally {
         ctx.adapter.close();
       }

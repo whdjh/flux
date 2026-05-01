@@ -56,11 +56,6 @@ export function formatSearchHits(hits: SearchHit[], query: string): string {
   return hits.map(formatSearchHit).join("\n");
 }
 
-export function runSemanticPlaceholder(): never {
-  process.stderr.write("semantic mode not implemented\n");
-  process.exit(1);
-}
-
 export function register(
   program: Command,
   openCli: () => Promise<CliContext>
@@ -77,9 +72,6 @@ export function register(
         process.stderr.write(`unknown mode: ${opts.mode}\n`);
         process.exit(1);
       }
-      if (mode === "semantic") {
-        runSemanticPlaceholder();
-      }
       const ctx = await openCli();
       try {
         const hits = await searchAll(ctx.store, {
@@ -88,6 +80,11 @@ export function register(
           limit: opts.limit,
         });
         process.stdout.write(formatSearchHits(hits, query) + "\n");
+      } catch (err) {
+        process.stderr.write(
+          `${err instanceof Error ? err.message : String(err)}\n`
+        );
+        process.exit(1);
       } finally {
         ctx.adapter.close();
       }

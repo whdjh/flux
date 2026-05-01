@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { Store } from "@flux/store";
 import { NodeSqliteAdapter } from "../adapter";
 import Database from "better-sqlite3";
@@ -6,7 +6,6 @@ import {
   searchAll,
   formatSearchHit,
   formatSearchHits,
-  runSemanticPlaceholder,
   type SearchHit,
 } from "./search";
 import { capture } from "./capture";
@@ -168,23 +167,4 @@ describe("search commands", () => {
     });
   });
 
-  describe("runSemanticPlaceholder", () => {
-    it("writes to stderr and exits 1", () => {
-      const stderr = vi
-        .spyOn(process.stderr, "write")
-        .mockImplementation(() => true);
-      const exit = vi
-        .spyOn(process, "exit")
-        .mockImplementation(((_code?: number) => {
-          throw new Error("__exit__");
-        }) as never);
-
-      expect(() => runSemanticPlaceholder()).toThrow("__exit__");
-      expect(stderr).toHaveBeenCalledWith("semantic mode not implemented\n");
-      expect(exit).toHaveBeenCalledWith(1);
-
-      stderr.mockRestore();
-      exit.mockRestore();
-    });
-  });
 });
