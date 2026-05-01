@@ -5,6 +5,7 @@ import { register as registerCapture } from "./commands/capture";
 import { register as registerList } from "./commands/list";
 import { register as registerFolder } from "./commands/folder";
 import { register as registerDocs } from "./commands/docs";
+import { register as registerSearch } from "./commands/search";
 
 const program = new Command()
   .name("flux")
@@ -15,6 +16,7 @@ registerCapture(program, openCli);
 registerList(program, openCli);
 registerFolder(program, openCli);
 registerDocs(program, openCli);
+registerSearch(program, openCli);
 
 program.parseAsync(process.argv).catch((err) => {
   process.stderr.write(`error: ${err instanceof Error ? err.message : String(err)}\n`);
