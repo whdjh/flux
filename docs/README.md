@@ -6,7 +6,7 @@
 flux/
 ├── CLAUDE.md                   Claude Code가 세션마다 자동 로드
 ├── docs/
-│   ├── README.md               이 파일 — 문서 지도
+│   ├── README.md               이 파일. 문서 지도
 │   ├── requirements/           요구사항
 │   ├── features/               기능 명세
 │   ├── design-system/          디자인 시스템 (색·타이포·컴포넌트)
@@ -31,11 +31,11 @@ flux/
 
 ## 독자별
 
-| 성격 | 위치 | 읽는 주체 |
+| 성격 | 위치 | 독자 |
 |---|---|---|
-| 결정·명세 (사람이 읽고 결정) | `docs/` 루트 md + `requirements`·`features`·`design-system`·`screens` | 팀원·신입 |
+| 결정·명세 | `docs/` 루트 md + `requirements`·`features`·`design-system`·`screens` | 팀원·신입 |
 | AI 자동 참조 | `CLAUDE.md` + `.claude/` | Claude Code 세션 시작 시 자동 로드 |
-| AI 맥락 자산 (memory) | `docs/memory/` | AI가 필요할 때 수동 주입 |
+| AI 맥락 자산 | `docs/memory/` | AI가 필요할 때 끌어다 쓴다 |
 
 ## 빠른 찾기
 
