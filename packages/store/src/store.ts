@@ -32,18 +32,21 @@ export class Store {
     readonly adapter: SqliteAdapter,
     readonly options: StoreOptions
   ) {
+    const now = options.now ?? defaultNow;
+    // syncQueue를 먼저 만들고 Repository deps에 주입 — mutation 시 자동 enqueue.
+    this.syncQueue = new SyncQueue(adapter, now);
     const deps = {
       adapter,
       userId: options.userId,
       idFactory: options.idFactory ?? defaultIdFactory,
-      now: options.now ?? defaultNow,
+      now,
+      syncQueue: this.syncQueue,
     };
     this.items = new ItemRepository(deps);
     this.documents = new DocumentRepository(deps);
     this.folders = new FolderRepository(deps);
     this.sessions = new SessionRepository(deps);
     this.embeds = new ItemEmbedRepository(deps);
-    this.syncQueue = new SyncQueue(adapter, deps.now);
   }
 
   /**

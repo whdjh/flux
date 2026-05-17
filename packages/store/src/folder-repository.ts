@@ -50,6 +50,12 @@ export class FolderRepository {
       "INSERT INTO folders (id, user_id, name, parent_id) VALUES (?, ?, ?, ?)",
       [folder.id, folder.user_id, folder.name, folder.parent_id]
     );
+    await this.deps.syncQueue?.enqueue({
+      entity: "folders",
+      entity_id: folder.id,
+      op: "create",
+      payload: folder,
+    });
     return folder;
   }
 
@@ -67,6 +73,12 @@ export class FolderRepository {
       "UPDATE folders SET name = ?, parent_id = ? WHERE id = ? AND user_id = ?",
       [next.name, next.parent_id, id, this.deps.userId]
     );
+    await this.deps.syncQueue?.enqueue({
+      entity: "folders",
+      entity_id: id,
+      op: "update",
+      payload: next,
+    });
     return next;
   }
 
@@ -78,6 +90,12 @@ export class FolderRepository {
       "DELETE FROM folders WHERE id = ? AND user_id = ?",
       [id, this.deps.userId]
     );
+    await this.deps.syncQueue?.enqueue({
+      entity: "folders",
+      entity_id: id,
+      op: "delete",
+      payload: { id },
+    });
     return true;
   }
 

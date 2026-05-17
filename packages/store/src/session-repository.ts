@@ -68,6 +68,12 @@ export class SessionRepository {
         session.created_by,
       ]
     );
+    await this.deps.syncQueue?.enqueue({
+      entity: "sessions",
+      entity_id: session.id,
+      op: "create",
+      payload: session,
+    });
     return session;
   }
 
@@ -79,6 +85,12 @@ export class SessionRepository {
       "UPDATE sessions SET ended_at = ? WHERE id = ? AND user_id = ?",
       [next.ended_at, id, this.deps.userId]
     );
+    await this.deps.syncQueue?.enqueue({
+      entity: "sessions",
+      entity_id: id,
+      op: "update",
+      payload: next,
+    });
     return next;
   }
 
@@ -89,6 +101,12 @@ export class SessionRepository {
       "DELETE FROM sessions WHERE id = ? AND user_id = ?",
       [id, this.deps.userId]
     );
+    await this.deps.syncQueue?.enqueue({
+      entity: "sessions",
+      entity_id: id,
+      op: "delete",
+      payload: { id },
+    });
     return true;
   }
 }

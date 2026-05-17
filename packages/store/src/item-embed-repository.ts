@@ -44,6 +44,13 @@ export class ItemEmbedRepository {
       "INSERT INTO item_embeds (document_id, item_id, position) VALUES (?, ?, ?)",
       [embed.document_id, embed.item_id, embed.position]
     );
+    await this.deps.syncQueue?.enqueue({
+      entity: "item_embeds",
+      // item_embeds는 (document_id, item_id, position) 복합키. backend가 파싱.
+      entity_id: `${embed.document_id}:${embed.item_id}:${embed.position}`,
+      op: "create",
+      payload: embed,
+    });
     return embed;
   }
 
@@ -61,6 +68,12 @@ export class ItemEmbedRepository {
       "DELETE FROM item_embeds WHERE document_id = ? AND item_id = ? AND position = ?",
       [documentId, itemId, position]
     );
+    await this.deps.syncQueue?.enqueue({
+      entity: "item_embeds",
+      entity_id: `${documentId}:${itemId}:${position}`,
+      op: "delete",
+      payload: { document_id: documentId, item_id: itemId, position },
+    });
     return true;
   }
 }

@@ -78,6 +78,20 @@ export class DocumentRepository {
       "INSERT INTO documents_fts (id, title) VALUES (?, ?)",
       [doc.id, doc.title]
     );
+    await this.deps.syncQueue?.enqueue({
+      entity: "documents",
+      entity_id: doc.id,
+      op: "create",
+      // crdt_doc(바이너리)은 backend 도착 시점에 별도 채널로 — 메타만 enqueue
+      payload: {
+        id: doc.id,
+        user_id: doc.user_id,
+        title: doc.title,
+        created_at: doc.created_at,
+        updated_at: doc.updated_at,
+        folder_id: doc.folder_id,
+      },
+    });
     return doc;
   }
 
@@ -112,6 +126,18 @@ export class DocumentRepository {
         [next.title, id]
       );
     }
+    await this.deps.syncQueue?.enqueue({
+      entity: "documents",
+      entity_id: id,
+      op: "update",
+      payload: {
+        id: next.id,
+        user_id: next.user_id,
+        title: next.title,
+        updated_at: next.updated_at,
+        folder_id: next.folder_id,
+      },
+    });
     return next;
   }
 
@@ -125,6 +151,12 @@ export class DocumentRepository {
     await this.deps.adapter.exec("DELETE FROM documents_fts WHERE id = ?", [
       id,
     ]);
+    await this.deps.syncQueue?.enqueue({
+      entity: "documents",
+      entity_id: id,
+      op: "delete",
+      payload: { id },
+    });
     return true;
   }
 

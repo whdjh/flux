@@ -102,6 +102,12 @@ export class ItemRepository {
       "INSERT INTO items_fts (id, content) VALUES (?, ?)",
       [item.id, item.content]
     );
+    await this.deps.syncQueue?.enqueue({
+      entity: "items",
+      entity_id: item.id,
+      op: "create",
+      payload: item,
+    });
     return item;
   }
 
@@ -138,6 +144,12 @@ export class ItemRepository {
         [next.content, id]
       );
     }
+    await this.deps.syncQueue?.enqueue({
+      entity: "items",
+      entity_id: id,
+      op: "update",
+      payload: next,
+    });
     return next;
   }
 
@@ -150,6 +162,12 @@ export class ItemRepository {
       [this.deps.now(), id, this.deps.userId]
     );
     await this.deps.adapter.exec("DELETE FROM items_fts WHERE id = ?", [id]);
+    await this.deps.syncQueue?.enqueue({
+      entity: "items",
+      entity_id: id,
+      op: "delete",
+      payload: { id },
+    });
     return true;
   }
 
